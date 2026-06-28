@@ -1,0 +1,40 @@
+Seed: 2011 | Mode: Personal Myth | Weirdness: 70 | Ingredients: 4
+
+THE SMALL MYTH OF LOCAL SHOP LOST PROPERTY
+
+Best hook: Treat a local shop with a lost property box for impossible objects as a tiny household myth: it wants tribute, witnesses, and a bad drawing.
+Mode: Personal Myth | Seed: 2011 | Weirdness: 70
+
+Ingredients:
+- phrases: we are one clipboard away from a religion
+- people: a referee who believes truth is a contact sport
+- ideas: a local shop with a lost property box for impossible objects
+- places: a laundrette with suspiciously ceremonial dryers
+
+Hooks:
+- Treat a local shop with a lost property box for impossible objects as a tiny household myth: it wants tribute, witnesses, and a bad drawing.
+- a referee who believes truth is a contact sport becomes the symbol. the phrase 'we are one clipboard away from a religion' becomes the rule nobody remembers agreeing to.
+- A private annoyance turns into folklore when a local shop with a lost property box for impossible objects refuses to remain practical.
+- Keep it grounded: one human wants something simple, and the phrase 'we are one clipboard away from a religion' gets in the way.
+
+What This Could Become:
+This works best when the feeling is tiny but the treatment is ceremonial. Treat a local shop with a lost property box for impossible objects as a tiny household myth: it wants tribute, witnesses, and a bad drawing. The feeling sits inside a local shop with a lost property box for impossible objects; a referee who believes truth is a contact sport gives it a witness, and the phrase 'we are one clipboard away from a religion' gives it a ritual shape. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+First line: a local shop with a lost property box for impossible objects. Turn: callback loop: a private thought gets promoted into folklore. Callback: bring back the phrase 'we are one clipboard away from a religion' as the last proof.
+
+Next Moves:
+- Make the private feeling visible.
+- Choose the object that represents it.
+- Keep the phrase 'we are one clipboard away from a religion' visible; it is the strongest anchor.
+- End with a ritual nobody asked for.
+
+WHY THIS HAPPENED
+callback loop: a private thought gets promoted into folklore.
+- phrases drifted by invert in Z31 with trace [26, 29, 8, 4, 15, 14, 20] (Z31:26->20)
+- people drifted by misremember in Z29 with trace [17, 12, 4, 26, 10, 24, 15] (Z29:17->15)
+- ideas drifted by misremember in Z19 with trace [14, 17, 8, 9, 5, 1, 8] (Z19:14->8)
+- places drifted by literalize in Z41 with trace [2, 6, 28, 2, 12, 12, 24] (Z41:2->24)
+- Spark resolved as callback loop at midpoint 41.
+
+ProMentum seed 2011 | mode Personal Myth | weirdness 70 | ingredients 4

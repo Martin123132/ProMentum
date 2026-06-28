@@ -1,0 +1,40 @@
+Seed: 808 | Mode: Sketch Hook | Weirdness: 67 | Ingredients: 4
+
+ROOM TOO MANY OPINIONS MEETS ONE IDEA MISUNDERSTAND ANOTHER
+
+Best hook: The bit starts tiny: a library aisle nobody admits exists. By the end, the phrase 'this room has too many opinions for its square footage' has a committee.
+Mode: Sketch Hook | Seed: 808 | Weirdness: 67
+
+Ingredients:
+- places: a library aisle nobody admits exists
+- obsessions: the moment a joke becomes a system
+- phrases: this room has too many opinions for its square footage
+- rules: Let one idea misunderstand another idea with confidence.
+
+Hooks:
+- The bit starts tiny: a library aisle nobody admits exists. By the end, the phrase 'this room has too many opinions for its square footage' has a committee.
+- the phrase 'this room has too many opinions for its square footage' walks into the confident-misunderstanding rule, and the room immediately pretends this was scheduled.
+- A sketch where the phrase 'this room has too many opinions for its square footage' only wants one normal minute, but the confident-misunderstanding rule keeps making it official.
+- Keep it grounded: one human wants something simple, and the confident-misunderstanding rule gets in the way.
+
+What This Could Become:
+This should play like a clean sketch premise: one person tries to keep the day ordinary while the room votes against them. The bit starts tiny: a library aisle nobody admits exists. By the end, the phrase 'this room has too many opinions for its square footage' has a committee. the phrase 'this room has too many opinions for its square footage' wants a normal beat, a library aisle nobody admits exists gives the room a motive, and the confident-misunderstanding rule turns the beat into the problem. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+Opening image: the phrase 'this room has too many opinions for its square footage'. Turn: callback loop: the phrase 'this room has too many opinions for its square footage' is forced to explain itself through a library aisle nobody admits exists. Callback: bring back the confident-misunderstanding rule as the last proof.
+
+Next Moves:
+- Find the first visual gag.
+- Give one character a practical need.
+- End on the smallest callback.
+- Keep the phrase 'this room has too many opinions for its square footage' visible; it is the strongest anchor.
+
+WHY THIS HAPPENED
+callback loop: the phrase 'this room has too many opinions for its square footage' is forced to explain itself through a library aisle nobody admits exists.
+- places drifted by literalize in Z31 with trace [18, 20, 17, 19, 19, 7, 11] (Z31:18->11)
+- obsessions drifted by misremember in Z29 with trace [19, 4, 6, 22, 24, 4, 22] (Z29:19->22)
+- phrases drifted by misremember in Z17 with trace [10, 10, 3, 5, 5, 10, 9] (Z17:10->9)
+- rules drifted by make official in Z29 with trace [7, 9, 26, 21, 12, 19, 7] (Z29:7->7)
+- Spark resolved as callback loop at midpoint 67.
+
+ProMentum seed 808 | mode Sketch Hook | weirdness 67 | ingredients 4

@@ -1,0 +1,42 @@
+Seed: 1910 | Mode: Concept Mashup | Weirdness: 55 | Ingredients: 5
+
+LOCAL SHOP LOST PROPERTY MEETS TINY RULE WOULD RUIN
+
+Best hook: Pitch it as a local shop with a lost property box for impossible objects behaving like a tool, then reveal the question 'What tiny rule would ruin the whole day' is the real motive.
+Mode: Concept Mashup | Seed: 1910 | Weirdness: 55
+
+Ingredients:
+- ideas: a support group for abandoned punchlines
+- questions: What tiny rule would ruin the whole day?
+- formats: game quest prompt
+- places: the cupboard under the stairs
+- ideas: a local shop with a lost property box for impossible objects
+
+Hooks:
+- a local shop with a lost property box for impossible objects supplies the premise, the question 'What tiny rule would ruin the whole day' supplies the trouble, and a support group for abandoned punchlines supplies the first laugh.
+- Pitch it as a local shop with a lost property box for impossible objects behaving like a tool, then reveal the question 'What tiny rule would ruin the whole day' is the real motive.
+- Combine a local shop with a lost property box for impossible objects with the question 'What tiny rule would ruin the whole day', but make a support group for abandoned punchlines the emotional hinge.
+- Keep it grounded: one human wants something simple, and the question 'What tiny rule would ruin the whole day' gets in the way.
+
+What This Could Become:
+The strongest version keeps one emotional motive underneath the strange mechanics. Pitch it as a local shop with a lost property box for impossible objects behaving like a tool, then reveal the question 'What tiny rule would ruin the whole day' is the real motive. The useful pressure is between a local shop with a lost property box for impossible objects and the question 'What tiny rule would ruin the whole day'; a support group for abandoned punchlines is the human reason it does not fall apart. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+Cold open: a local shop with a lost property box for impossible objects. Turn: argument: a local shop with a lost property box for impossible objects is forced to explain itself through a support group for abandoned punchlines. Callback: bring back the question 'What tiny rule would ruin the whole day' as the last proof.
+
+Next Moves:
+- Keep the human motive simple.
+- Let one ingredient become the mechanism.
+- Save the weirdest ingredient for the turn.
+- Keep a local shop with a lost property box for impossible objects visible; it is the strongest anchor.
+
+WHY THIS HAPPENED
+argument: a local shop with a lost property box for impossible objects is forced to explain itself through a support group for abandoned punchlines.
+- ideas drifted by compress in Z41 with trace [15, 32, 9, 26, 31, 15, 25] (Z41:15->25)
+- questions drifted by invert in Z43 with trace [39, 37, 23, 19, 14, 36, 33] (Z43:39->33)
+- formats drifted by exaggerate in Z19 with trace [5, 18, 12, 13, 13, 7, 4] (Z19:5->4)
+- places drifted by misremember in Z41 with trace [18, 36, 21, 8, 20, 1, 14] (Z41:18->14)
+- ideas drifted by misremember in Z41 with trace [17, 23, 29, 6, 38, 13, 31] (Z41:17->31)
+- Spark resolved as argument at midpoint 72.
+
+ProMentum seed 1910 | mode Concept Mashup | weirdness 55 | ingredients 5

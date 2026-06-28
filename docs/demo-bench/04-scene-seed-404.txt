@@ -1,0 +1,42 @@
+Seed: 404 | Mode: Scene Seed | Weirdness: 72 | Ingredients: 5
+
+STUDENT ACCIDENTALLY FOUNDED COMMITTEE MEETS SMALLEST POSSIBLE APOCALYPSE
+
+Best hook: The scene ends when the question 'What is the smallest possible apocalypse' repeats the first line like a legal ruling.
+Mode: Scene Seed | Seed: 404 | Weirdness: 72
+
+Ingredients:
+- questions: What is the smallest possible apocalypse?
+- formats: game quest prompt
+- places: a laundrette with suspiciously ceremonial dryers
+- people: a student who accidentally founded a committee
+- formats: title list
+
+Hooks:
+- Put a laundrette with suspiciously ceremonial dryers in the room first, then let a student who accidentally founded a committee enter with the wrong emotional weather.
+- The scene ends when the question 'What is the smallest possible apocalypse' repeats the first line like a legal ruling.
+- Scene starts with a student who accidentally founded a committee; the interruption is the question 'What is the smallest possible apocalypse'; the lie is that everyone expected this.
+- Keep it grounded: one human wants something simple, and the question 'What is the smallest possible apocalypse' gets in the way.
+
+What This Could Become:
+This is a scene starter: give the first character a practical need and let the second ingredient interrupt it. The scene ends when the question 'What is the smallest possible apocalypse' repeats the first line like a legal ruling. Let a student who accidentally founded a committee enter with a normal objective, then use the question 'What is the smallest possible apocalypse' to make the room misunderstand the objective. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+First line: a student who accidentally founded a committee. Turn: callback loop: a student who accidentally founded a committee is forced to explain itself through a laundrette with suspiciously ceremonial dryers. Callback: bring back the question 'What is the smallest possible apocalypse' as the last proof.
+
+Next Moves:
+- Keep a student who accidentally founded a committee visible; it is the strongest anchor.
+- Name who enters first.
+- Give the room one rule.
+- Let the interruption win the scene.
+
+WHY THIS HAPPENED
+callback loop: a student who accidentally founded a committee is forced to explain itself through a laundrette with suspiciously ceremonial dryers.
+- questions drifted by exaggerate in Z37 with trace [32, 19, 23, 29, 20, 14, 17] (Z37:32->17)
+- formats drifted by make official in Z41 with trace [21, 10, 17, 28, 40, 0, 8] (Z41:21->8)
+- places drifted by make official in Z41 with trace [20, 38, 25, 26, 17, 12, 25] (Z41:20->25)
+- people drifted by invert in Z37 with trace [9, 9, 18, 7, 22, 1, 19] (Z37:9->19)
+- formats drifted by preserve in Z23 with trace [15, 8, 11, 14, 0, 17, 9] (Z23:15->9)
+- Spark resolved as callback loop at midpoint 7.
+
+ProMentum seed 404 | mode Scene Seed | weirdness 72 | ingredients 5

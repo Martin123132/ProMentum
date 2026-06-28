@@ -1,0 +1,44 @@
+Seed: 1001 | Mode: Title Storm | Weirdness: 49 | Ingredients: 6
+
+WORKING TITLES FOR REFEREE BELIEVES TRUTH CONTACT
+
+Best hook: Please Stop Giving the phrase 'this room has too many opinions for its square footage' Authority
+Mode: Title Storm | Seed: 1001 | Weirdness: 49
+
+Ingredients:
+- formats: podcast bit
+- people: a therapist under the stairs
+- places: a library aisle nobody admits exists
+- people: a referee who believes truth is a contact sport
+- phrases: this room has too many opinions for its square footage
+- obsessions: snacks
+
+Hooks:
+- Please Stop Giving the phrase 'this room has too many opinions for its square footage' Authority
+- a referee who believes truth is a contact sport: A Field Guide To Bad Decisions
+- The a library aisle nobody admits exists Incident, Explained By Nobody Qualified
+- The Day A Referee Who Believes Truth Is A Contact Sport Became Everyone's Problem
+
+What This Could Become:
+This is mostly a naming engine: the title should sound like it belongs to a project that got out of hand. Please Stop Giving the phrase 'this room has too many opinions for its square footage' Authority The title should make a referee who believes truth is a contact sport sound official, while the phrase 'this room has too many opinions for its square footage' keeps it from becoming too clean. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+First line: a referee who believes truth is a contact sport. Turn: argument: the spark becomes a naming problem with consequences. Callback: bring back the phrase 'this room has too many opinions for its square footage' as the last proof.
+
+Next Moves:
+- Pick the title with a verb in it.
+- Write the fake subtitle.
+- Keep a therapist under the stairs visible; it is the strongest anchor.
+- Use the dullest title as the serious version.
+
+WHY THIS HAPPENED
+argument: the spark becomes a naming problem with consequences.
+- formats drifted by exaggerate in Z31 with trace [17, 4, 18, 13, 27, 28, 2] (Z31:17->2)
+- people drifted by exaggerate in Z41 with trace [26, 18, 4, 20, 13, 18, 35] (Z41:26->35)
+- places drifted by invert in Z43 with trace [34, 8, 41, 32, 10, 38, 42] (Z43:34->42)
+- people drifted by invert in Z29 with trace [13, 6, 13, 3, 4, 15, 2] (Z29:13->2)
+- phrases drifted by make official in Z29 with trace [16, 26, 5, 21, 22, 22, 15] (Z29:16->15)
+- obsessions drifted by misremember in Z31 with trace [11, 11, 22, 6, 9, 8, 8] (Z31:11->8)
+- Spark resolved as argument at midpoint 95.
+
+ProMentum seed 1001 | mode Title Storm | weirdness 49 | ingredients 6

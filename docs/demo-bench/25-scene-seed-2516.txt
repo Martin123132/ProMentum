@@ -1,0 +1,42 @@
+Seed: 2516 | Mode: Scene Seed | Weirdness: 69 | Ingredients: 5
+
+FOOTBALL MATCH BECOMES PHILOSOPHY MEETS RITUAL
+
+Best hook: Scene starts with a football match that becomes a philosophy exam; the interruption is an obsession with ritual; the lie is that everyone expected this.
+Mode: Scene Seed | Seed: 2516 | Weirdness: 69
+
+Ingredients:
+- formats: one-page comic idea
+- people: a retired goalkeeper with legal energy
+- obsessions: ritual
+- ideas: a football match that becomes a philosophy exam
+- ideas: a sitcom where the stairs are in charge of HR
+
+Hooks:
+- Put a sitcom where the stairs are in charge of HR in the room first, then let a football match that becomes a philosophy exam enter with the wrong emotional weather.
+- Scene starts with a football match that becomes a philosophy exam; the interruption is an obsession with ritual; the lie is that everyone expected this.
+- The scene ends when an obsession with ritual repeats the first line like a legal ruling.
+- Keep it grounded: one human wants something simple, and an obsession with ritual gets in the way.
+
+What This Could Become:
+This is a scene starter: give the first character a practical need and let the second ingredient interrupt it. Scene starts with a football match that becomes a philosophy exam; the interruption is an obsession with ritual; the lie is that everyone expected this. Let a football match that becomes a philosophy exam enter with a normal objective, then use an obsession with ritual to make the room misunderstand the objective. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+First line: a football match that becomes a philosophy exam. Turn: callback loop: a football match that becomes a philosophy exam is forced to explain itself through a sitcom where the stairs are in charge of HR. Callback: bring back an obsession with ritual as the last proof.
+
+Next Moves:
+- Name who enters first.
+- Give the room one rule.
+- Let the interruption win the scene.
+- Keep a sitcom where the stairs are in charge of HR visible; it is the strongest anchor.
+
+WHY THIS HAPPENED
+callback loop: a football match that becomes a philosophy exam is forced to explain itself through a sitcom where the stairs are in charge of HR.
+- formats drifted by invert in Z43 with trace [17, 27, 8, 7, 8, 23, 37] (Z43:17->37)
+- people drifted by collide in Z29 with trace [16, 27, 11, 0, 21, 15, 11] (Z29:16->11)
+- obsessions drifted by misremember in Z31 with trace [16, 17, 7, 26, 11, 10, 12] (Z31:16->12)
+- ideas drifted by make official in Z41 with trace [33, 5, 21, 40, 30, 31, 29] (Z41:33->29)
+- ideas drifted by exaggerate in Z37 with trace [9, 6, 0, 7, 19, 11, 32] (Z37:9->32)
+- Spark resolved as callback loop at midpoint 80.
+
+ProMentum seed 2516 | mode Scene Seed | weirdness 69 | ingredients 5

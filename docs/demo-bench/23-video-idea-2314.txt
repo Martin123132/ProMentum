@@ -1,0 +1,44 @@
+Seed: 2314 | Mode: Video Idea | Weirdness: 83 | Ingredients: 6
+
+POV: FIRST MOVE HUMAN THEN HAS ENTERED THE CHAT
+
+Best hook: Open on the phrase 'that is not a plan, that is a kettle with witnesses'. Smash cut to the keep-it-human rule being treated like breaking news.
+Mode: Video Idea | Seed: 2314 | Weirdness: 83
+
+Ingredients:
+- rules: Keep the first move human, then let the world get strange.
+- questions: What is the smallest possible apocalypse?
+- obsessions: status
+- phrases: that is not a plan, that is a kettle with witnesses
+- questions: What tiny rule would ruin the whole day?
+- formats: game quest prompt
+
+Hooks:
+- POV: the keep-it-human rule has become the main character and the phrase 'that is not a plan, that is a kettle with witnesses' is taking minutes.
+- A 45-second escalation from the question 'What is the smallest possible apocalypse' to the phrase 'that is not a plan, that is a kettle with witnesses', ending with one very confident rule.
+- Open on the phrase 'that is not a plan, that is a kettle with witnesses'. Smash cut to the keep-it-human rule being treated like breaking news.
+- Escalate it until callback loop feels like the only sane outcome.
+
+What This Could Become:
+This wants to be fast: a visual opening, one caption-sized premise, then a turn before anyone can over-explain it. Open on the phrase 'that is not a plan, that is a kettle with witnesses'. Smash cut to the keep-it-human rule being treated like breaking news. The first image is the phrase 'that is not a plan, that is a kettle with witnesses'; the question 'What is the smallest possible apocalypse' is the turn, and the keep-it-human rule is the thing people remember. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+Opening image: the phrase 'that is not a plan, that is a kettle with witnesses'. Turn: callback loop: the phrase 'that is not a plan, that is a kettle with witnesses' is forced to explain itself through the question 'What is the smallest possible apocalypse'. Callback: bring back the keep-it-human rule as the last proof.
+
+Next Moves:
+- Open with the strangest image.
+- Keep the phrase 'that is not a plan, that is a kettle with witnesses' visible; it is the strongest anchor.
+- Cut before the explanation catches up.
+- Make the caption carry the premise.
+
+WHY THIS HAPPENED
+callback loop: the phrase 'that is not a plan, that is a kettle with witnesses' is forced to explain itself through the question 'What is the smallest possible apocalypse'.
+- rules drifted by collide in Z31 with trace [18, 27, 28, 30, 10, 4, 22] (Z31:18->22)
+- questions drifted by preserve in Z31 with trace [25, 8, 10, 30, 25, 15, 12] (Z31:25->12)
+- obsessions drifted by misremember in Z23 with trace [20, 10, 3, 17, 3, 0, 22] (Z23:20->22)
+- phrases drifted by invert in Z17 with trace [11, 11, 5, 14, 14, 11, 15] (Z17:11->15)
+- questions drifted by invert in Z41 with trace [0, 4, 24, 25, 15, 1, 13] (Z41:0->13)
+- formats drifted by collide in Z17 with trace [13, 4, 6, 5, 4, 1, 12] (Z17:13->12)
+- Spark resolved as callback loop at midpoint 24.
+
+ProMentum seed 2314 | mode Video Idea | weirdness 83 | ingredients 6

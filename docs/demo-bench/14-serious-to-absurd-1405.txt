@@ -1,0 +1,42 @@
+Seed: 1405 | Mode: Serious To Absurd | Weirdness: 42 | Ingredients: 5
+
+THE VERY OFFICIAL CASE FOR LIBRARY AISLE NOBODY ADMITS
+
+Best hook: Explain a library aisle nobody admits exists like a serious policy, then reveal the policy was written by the inevitable-callback rule.
+Mode: Serious To Absurd | Seed: 1405 | Weirdness: 42
+
+Ingredients:
+- places: a library aisle nobody admits exists
+- questions: What if the side character was secretly the weather?
+- rules: Give the smallest phrase the biggest consequence.
+- rules: End with a callback that sounds inevitable but should not be.
+- questions: What tiny rule would ruin the whole day?
+
+Hooks:
+- the question 'What tiny rule would ruin the whole day' is the reasonable version. The absurd version gives it a uniform.
+- Explain a library aisle nobody admits exists like a serious policy, then reveal the policy was written by the inevitable-callback rule.
+- Start with the sensible case for a library aisle nobody admits exists, then keep proving it until the inevitable-callback rule becomes unavoidable.
+- Keep it grounded: one human wants something simple, and the inevitable-callback rule gets in the way.
+
+What This Could Become:
+Start sensible and keep adding evidence until the sensible argument becomes the joke. Explain a library aisle nobody admits exists like a serious policy, then reveal the policy was written by the inevitable-callback rule. The sensible argument starts with a library aisle nobody admits exists; the question 'What tiny rule would ruin the whole day' supplies evidence, then the inevitable-callback rule makes the logic wobble. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+Opening image: a library aisle nobody admits exists. Turn: useful accident: the sensible version is pushed until it starts wobbling. Callback: bring back the inevitable-callback rule as the last proof.
+
+Next Moves:
+- Write the serious pitch first.
+- Add one over-logical rule.
+- Let the conclusion embarrass the premise.
+- Keep the inevitable-callback rule visible; it is the strongest anchor.
+
+WHY THIS HAPPENED
+useful accident: the sensible version is pushed until it starts wobbling.
+- places drifted by collide in Z19 with trace [11, 8, 4, 7, 13, 11, 6] (Z19:11->6)
+- questions drifted by preserve in Z23 with trace [8, 12, 17, 13, 2, 19, 13] (Z23:8->13)
+- rules drifted by make official in Z17 with trace [16, 4, 11, 6, 16, 0, 8] (Z17:16->8)
+- rules drifted by preserve in Z37 with trace [5, 15, 33, 8, 14, 33, 33] (Z37:5->33)
+- questions drifted by make official in Z19 with trace [2, 18, 5, 2, 5, 12, 4] (Z19:2->4)
+- Spark resolved as useful accident at midpoint 36.
+
+ProMentum seed 1405 | mode Serious To Absurd | weirdness 42 | ingredients 5

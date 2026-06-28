@@ -1,0 +1,42 @@
+Seed: 606 | Mode: Personal Myth | Weirdness: 52 | Ingredients: 5
+
+THE SMALL MYTH OF HAVE SEEN FUTURE NEEDS
+
+Best hook: Treat the phrase 'I have seen the future and it needs a chair' as a tiny household myth: it wants tribute, witnesses, and a bad drawing.
+Mode: Personal Myth | Seed: 606 | Weirdness: 52
+
+Ingredients:
+- rules: Keep the first move human, then let the world get strange.
+- obsessions: status
+- phrases: I have seen the future and it needs a chair
+- questions: What object has been waiting to become important?
+- rules: Make the sensible person accidentally escalate the situation.
+
+Hooks:
+- A private annoyance turns into folklore when the phrase 'I have seen the future and it needs a chair' refuses to remain practical.
+- the question 'What object has been waiting to become important' becomes the symbol. the sensible-person-escalates rule becomes the rule nobody remembers agreeing to.
+- Treat the phrase 'I have seen the future and it needs a chair' as a tiny household myth: it wants tribute, witnesses, and a bad drawing.
+- Keep it grounded: one human wants something simple, and the sensible-person-escalates rule gets in the way.
+
+What This Could Become:
+This works best when the feeling is tiny but the treatment is ceremonial. Treat the phrase 'I have seen the future and it needs a chair' as a tiny household myth: it wants tribute, witnesses, and a bad drawing. The feeling sits inside the phrase 'I have seen the future and it needs a chair'; the question 'What object has been waiting to become important' gives it a witness, and the sensible-person-escalates rule gives it a ritual shape. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+Cold open: the phrase 'I have seen the future and it needs a chair'. Turn: public misunderstanding: a private thought gets promoted into folklore. Callback: bring back the sensible-person-escalates rule as the last proof.
+
+Next Moves:
+- Keep the phrase 'I have seen the future and it needs a chair' visible; it is the strongest anchor.
+- Make the private feeling visible.
+- Choose the object that represents it.
+- End with a ritual nobody asked for.
+
+WHY THIS HAPPENED
+public misunderstanding: a private thought gets promoted into folklore.
+- rules drifted by invert in Z17 with trace [9, 10, 7, 16, 1, 16, 16] (Z17:9->16)
+- obsessions drifted by misremember in Z37 with trace [1, 26, 4, 9, 11, 36, 13] (Z37:1->13)
+- phrases drifted by preserve in Z29 with trace [6, 5, 6, 17, 13, 27, 21] (Z29:6->21)
+- questions drifted by invert in Z23 with trace [3, 1, 17, 22, 5, 6, 20] (Z23:3->20)
+- rules drifted by make official in Z43 with trace [26, 6, 18, 10, 15, 22, 14] (Z43:26->14)
+- Spark resolved as public misunderstanding at midpoint 74.
+
+ProMentum seed 606 | mode Personal Myth | weirdness 52 | ingredients 5

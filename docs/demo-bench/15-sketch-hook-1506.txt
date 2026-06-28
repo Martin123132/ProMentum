@@ -1,0 +1,46 @@
+Seed: 1506 | Mode: Sketch Hook | Weirdness: 91 | Ingredients: 7
+
+LOCAL SHOP LOST PROPERTY MEETS ROOM TOO MANY OPINIONS
+
+Best hook: The bit starts tiny: the phrase 'I have seen the future and it needs a chair'. By the end, a local shop with a lost property box for impossible objects has a committee.
+Mode: Sketch Hook | Seed: 1506 | Weirdness: 91
+
+Ingredients:
+- questions: What if the side character was secretly the weather?
+- people: a composer who only writes theme tunes for appliances
+- formats: podcast bit
+- phrases: I have seen the future and it needs a chair
+- rules: Treat one ordinary object as if it has institutional power.
+- phrases: this room has too many opinions for its square footage
+- ideas: a local shop with a lost property box for impossible objects
+
+Hooks:
+- A sketch where a local shop with a lost property box for impossible objects only wants one normal minute, but the phrase 'this room has too many opinions for its square footage' keeps making it official.
+- a local shop with a lost property box for impossible objects walks into the phrase 'this room has too many opinions for its square footage', and the room immediately pretends this was scheduled.
+- The bit starts tiny: the phrase 'I have seen the future and it needs a chair'. By the end, a local shop with a lost property box for impossible objects has a committee.
+- Escalate it until bad rule feels like the only sane outcome.
+
+What This Could Become:
+This should play like a clean sketch premise: one person tries to keep the day ordinary while the room votes against them. The bit starts tiny: the phrase 'I have seen the future and it needs a chair'. By the end, a local shop with a lost property box for impossible objects has a committee. a local shop with a lost property box for impossible objects wants a normal beat, the phrase 'I have seen the future and it needs a chair' gives the room a motive, and the phrase 'this room has too many opinions for its square footage' turns the beat into the problem. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+First line: a local shop with a lost property box for impossible objects. Turn: bad rule: a local shop with a lost property box for impossible objects is forced to explain itself through the phrase 'I have seen the future and it needs a chair'. Callback: bring back the phrase 'this room has too many opinions for its square footage' as the last proof.
+
+Next Moves:
+- Find the first visual gag.
+- Keep the phrase 'this room has too many opinions for its square footage' visible; it is the strongest anchor.
+- Give one character a practical need.
+- End on the smallest callback.
+
+WHY THIS HAPPENED
+bad rule: a local shop with a lost property box for impossible objects is forced to explain itself through the phrase 'I have seen the future and it needs a chair'.
+- questions drifted by invert in Z41 with trace [6, 3, 35, 25, 31, 22, 13] (Z41:6->13)
+- people drifted by literalize in Z17 with trace [12, 6, 5, 5, 10, 4, 11] (Z17:12->11)
+- formats drifted by collide in Z43 with trace [32, 17, 17, 34, 41, 2, 36] (Z43:32->36)
+- phrases drifted by invert in Z17 with trace [11, 11, 5, 14, 14, 11, 15] (Z17:11->15)
+- rules drifted by misremember in Z19 with trace [0, 2, 12, 17, 7, 1, 11] (Z19:0->11)
+- phrases drifted by preserve in Z37 with trace [4, 18, 18, 36, 32, 36, 30] (Z37:4->30)
+- ideas drifted by invert in Z31 with trace [3, 14, 10, 0, 2, 18, 9] (Z31:3->9)
+- Spark resolved as bad rule at midpoint 34.
+
+ProMentum seed 1506 | mode Sketch Hook | weirdness 91 | ingredients 7

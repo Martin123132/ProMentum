@@ -1,0 +1,42 @@
+Seed: 909 | Mode: Video Idea | Weirdness: 76 | Ingredients: 5
+
+POV: NOBODY TOUCH CEREMONIAL BISCUIT HAS ENTERED THE CHAT
+
+Best hook: Open on a village noticeboard that starts issuing prophecies. Smash cut to the phrase 'nobody touch the ceremonial biscuit' being treated like breaking news.
+Mode: Video Idea | Seed: 909 | Weirdness: 76
+
+Ingredients:
+- ideas: a support group for abandoned punchlines
+- phrases: nobody touch the ceremonial biscuit
+- formats: short video hook
+- people: a composer who only writes theme tunes for appliances
+- ideas: a village noticeboard that starts issuing prophecies
+
+Hooks:
+- A 45-second escalation from a support group for abandoned punchlines to a village noticeboard that starts issuing prophecies, ending with one very confident rule.
+- Open on a village noticeboard that starts issuing prophecies. Smash cut to the phrase 'nobody touch the ceremonial biscuit' being treated like breaking news.
+- POV: the phrase 'nobody touch the ceremonial biscuit' has become the main character and a village noticeboard that starts issuing prophecies is taking minutes.
+- Escalate it until argument feels like the only sane outcome.
+
+What This Could Become:
+This wants to be fast: a visual opening, one caption-sized premise, then a turn before anyone can over-explain it. Open on a village noticeboard that starts issuing prophecies. Smash cut to the phrase 'nobody touch the ceremonial biscuit' being treated like breaking news. The first image is a village noticeboard that starts issuing prophecies; a support group for abandoned punchlines is the turn, and the phrase 'nobody touch the ceremonial biscuit' is the thing people remember. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+Thumbnail: a village noticeboard that starts issuing prophecies. Turn: argument: a village noticeboard that starts issuing prophecies is forced to explain itself through a support group for abandoned punchlines. Callback: bring back the phrase 'nobody touch the ceremonial biscuit' as the last proof.
+
+Next Moves:
+- Open with the strangest image.
+- Cut before the explanation catches up.
+- Keep a support group for abandoned punchlines visible; it is the strongest anchor.
+- Make the caption carry the premise.
+
+WHY THIS HAPPENED
+argument: a village noticeboard that starts issuing prophecies is forced to explain itself through a support group for abandoned punchlines.
+- ideas drifted by collide in Z37 with trace [18, 3, 20, 14, 29, 15, 29] (Z37:18->29)
+- phrases drifted by collide in Z19 with trace [1, 2, 8, 8, 16, 12, 11] (Z19:1->11)
+- formats drifted by collide in Z43 with trace [9, 1, 13, 0, 8, 29, 11] (Z43:9->11)
+- people drifted by compress in Z37 with trace [2, 29, 18, 18, 36, 13, 27] (Z37:2->27)
+- ideas drifted by make official in Z37 with trace [33, 5, 9, 1, 28, 23, 6] (Z37:33->6)
+- Spark resolved as argument at midpoint 41.
+
+ProMentum seed 909 | mode Video Idea | weirdness 76 | ingredients 5

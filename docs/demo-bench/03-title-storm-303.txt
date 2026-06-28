@@ -1,0 +1,40 @@
+Seed: 303 | Mode: Title Storm | Weirdness: 63 | Ingredients: 4
+
+THE UNAUTHORIZED NAMES OF BUS STOP ATTRACTS UNRESOLVED
+
+Best hook: Please Stop Giving the question 'What if the side character was secretly the weather' Authority
+Mode: Title Storm | Seed: 303 | Weirdness: 63
+
+Ingredients:
+- questions: What tiny rule would ruin the whole day?
+- obsessions: ritual
+- places: a bus stop that attracts unresolved arguments
+- questions: What if the side character was secretly the weather?
+
+Hooks:
+- a bus stop that attracts unresolved arguments: A Field Guide To Bad Decisions
+- Minutes From The Day a bus stop that attracts unresolved arguments Became Everyone's Problem
+- Please Stop Giving the question 'What if the side character was secretly the weather' Authority
+- The Day A Bus Stop That Attracts Unresolved Arguments Became Everyone's Problem
+
+What This Could Become:
+This is mostly a naming engine: the title should sound like it belongs to a project that got out of hand. Please Stop Giving the question 'What if the side character was secretly the weather' Authority The title should make a bus stop that attracts unresolved arguments sound official, while the question 'What if the side character was secretly the weather' keeps it from becoming too clean. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+Cold open: a bus stop that attracts unresolved arguments. Turn: useful accident: the spark becomes a naming problem with consequences. Callback: bring back the question 'What if the side character was secretly the weather' as the last proof.
+
+Next Moves:
+- Pick the title with a verb in it.
+- Write the fake subtitle.
+- Keep the question 'What tiny rule would ruin the whole day' visible; it is the strongest anchor.
+- Use the dullest title as the serious version.
+
+WHY THIS HAPPENED
+useful accident: the spark becomes a naming problem with consequences.
+- questions drifted by compress in Z43 with trace [41, 9, 19, 2, 31, 7, 37] (Z43:41->37)
+- obsessions drifted by compress in Z41 with trace [2, 37, 9, 1, 36, 30, 12] (Z41:2->12)
+- places drifted by misremember in Z41 with trace [24, 1, 33, 21, 11, 34, 6] (Z41:24->6)
+- questions drifted by invert in Z41 with trace [21, 38, 21, 39, 22, 7, 17] (Z41:21->17)
+- Spark resolved as useful accident at midpoint 63.
+
+ProMentum seed 303 | mode Title Storm | weirdness 63 | ingredients 4

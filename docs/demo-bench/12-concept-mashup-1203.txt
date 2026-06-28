@@ -1,0 +1,44 @@
+Seed: 1203 | Mode: Concept Mashup | Weirdness: 73 | Ingredients: 6
+
+KITCHEN ARGUMENT TREATED ROYAL MEETS TINY RULE WOULD RUIN
+
+Best hook: The spark works if a kitchen argument treated like a royal succession crisis wants status and the question 'What tiny rule would ruin the whole day' wants snacks.
+Mode: Concept Mashup | Seed: 1203 | Weirdness: 73
+
+Ingredients:
+- people: a composer who only writes theme tunes for appliances
+- ideas: a notebook that edits your excuses overnight
+- questions: What tiny rule would ruin the whole day?
+- ideas: a kitchen argument treated like a royal succession crisis
+- formats: podcast bit
+- ideas: a sitcom where the stairs are in charge of HR
+
+Hooks:
+- a kitchen argument treated like a royal succession crisis supplies the premise, the question 'What tiny rule would ruin the whole day' supplies the trouble, and a notebook that edits your excuses overnight supplies the first laugh.
+- Pitch it as a kitchen argument treated like a royal succession crisis behaving like a tool, then reveal the question 'What tiny rule would ruin the whole day' is the real motive.
+- The spark works if a kitchen argument treated like a royal succession crisis wants status and the question 'What tiny rule would ruin the whole day' wants snacks.
+- Keep it grounded: one human wants something simple, and the question 'What tiny rule would ruin the whole day' gets in the way.
+
+What This Could Become:
+The strongest version keeps one emotional motive underneath the strange mechanics. The spark works if a kitchen argument treated like a royal succession crisis wants status and the question 'What tiny rule would ruin the whole day' wants snacks. The useful pressure is between a kitchen argument treated like a royal succession crisis and the question 'What tiny rule would ruin the whole day'; a notebook that edits your excuses overnight is the human reason it does not fall apart. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+Opening image: a kitchen argument treated like a royal succession crisis. Turn: bad rule: a kitchen argument treated like a royal succession crisis is forced to explain itself through a notebook that edits your excuses overnight. Callback: bring back the question 'What tiny rule would ruin the whole day' as the last proof.
+
+Next Moves:
+- Keep the human motive simple.
+- Keep a sitcom where the stairs are in charge of HR visible; it is the strongest anchor.
+- Let one ingredient become the mechanism.
+- Save the weirdest ingredient for the turn.
+
+WHY THIS HAPPENED
+bad rule: a kitchen argument treated like a royal succession crisis is forced to explain itself through a notebook that edits your excuses overnight.
+- people drifted by exaggerate in Z17 with trace [2, 15, 14, 6, 15, 8, 11] (Z17:2->11)
+- ideas drifted by collide in Z17 with trace [15, 8, 5, 12, 15, 0, 16] (Z17:15->16)
+- questions drifted by collide in Z37 with trace [23, 22, 3, 22, 10, 10, 20] (Z37:23->20)
+- ideas drifted by collide in Z43 with trace [15, 21, 23, 13, 9, 33, 0] (Z43:15->0)
+- formats drifted by invert in Z23 with trace [2, 4, 16, 0, 19, 10, 17] (Z23:2->17)
+- ideas drifted by literalize in Z37 with trace [34, 0, 12, 10, 8, 2, 30] (Z37:34->30)
+- Spark resolved as bad rule at midpoint 63.
+
+ProMentum seed 1203 | mode Concept Mashup | weirdness 73 | ingredients 6

@@ -1,0 +1,44 @@
+Seed: 1809 | Mode: Scene Seed | Weirdness: 86 | Ingredients: 6
+
+FOOTBALL MATCH BECOMES PHILOSOPHY MEETS PRIVATE THOUGHT PUBLIC CEREMONY
+
+Best hook: Scene starts with a football match that becomes a philosophy exam; the interruption is the public-ceremony rule; the lie is that everyone expected this.
+Mode: Scene Seed | Seed: 1809 | Weirdness: 86
+
+Ingredients:
+- rules: Turn a private thought into a public ceremony.
+- obsessions: tiny authority figures
+- places: a laundrette with suspiciously ceremonial dryers
+- ideas: a football match that becomes a philosophy exam
+- people: a referee who believes truth is a contact sport
+- places: the cupboard under the stairs
+
+Hooks:
+- The scene ends when the public-ceremony rule repeats the first line like a legal ruling.
+- Scene starts with a football match that becomes a philosophy exam; the interruption is the public-ceremony rule; the lie is that everyone expected this.
+- Put a referee who believes truth is a contact sport in the room first, then let a football match that becomes a philosophy exam enter with the wrong emotional weather.
+- Escalate it until useful accident feels like the only sane outcome.
+
+What This Could Become:
+This is a scene starter: give the first character a practical need and let the second ingredient interrupt it. Scene starts with a football match that becomes a philosophy exam; the interruption is the public-ceremony rule; the lie is that everyone expected this. Let a football match that becomes a philosophy exam enter with a normal objective, then use the public-ceremony rule to make the room misunderstand the objective. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+Cold open: a football match that becomes a philosophy exam. Turn: useful accident: a football match that becomes a philosophy exam is forced to explain itself through a referee who believes truth is a contact sport. Callback: bring back the public-ceremony rule as the last proof.
+
+Next Moves:
+- Name who enters first.
+- Give the room one rule.
+- Keep a referee who believes truth is a contact sport visible; it is the strongest anchor.
+- Let the interruption win the scene.
+
+WHY THIS HAPPENED
+useful accident: a football match that becomes a philosophy exam is forced to explain itself through a referee who believes truth is a contact sport.
+- rules drifted by exaggerate in Z43 with trace [36, 18, 7, 2, 17, 10, 7] (Z43:36->7)
+- obsessions drifted by exaggerate in Z17 with trace [5, 10, 6, 9, 2, 6, 10] (Z17:5->10)
+- places drifted by invert in Z29 with trace [12, 10, 12, 5, 26, 25, 13] (Z29:12->13)
+- ideas drifted by compress in Z29 with trace [6, 15, 8, 10, 3, 15, 10] (Z29:6->10)
+- people drifted by preserve in Z31 with trace [19, 27, 24, 2, 27, 12, 28] (Z31:19->28)
+- places drifted by collide in Z29 with trace [26, 21, 22, 20, 28, 25, 26] (Z29:26->26)
+- Spark resolved as useful accident at midpoint 48.
+
+ProMentum seed 1809 | mode Scene Seed | weirdness 86 | ingredients 6

@@ -1,0 +1,42 @@
+Seed: 2213 | Mode: Sketch Hook | Weirdness: 50 | Ingredients: 5
+
+LOCAL SHOP LOST PROPERTY MEETS HAVE SEEN FUTURE NEEDS
+
+Best hook: The bit starts tiny: a football match that becomes a philosophy exam. By the end, a local shop with a lost property box for impossible objects has a committee.
+Mode: Sketch Hook | Seed: 2213 | Weirdness: 50
+
+Ingredients:
+- rules: End with a callback that sounds inevitable but should not be.
+- questions: What would happen if everyone took the metaphor literally?
+- ideas: a local shop with a lost property box for impossible objects
+- phrases: I have seen the future and it needs a chair
+- ideas: a football match that becomes a philosophy exam
+
+Hooks:
+- A sketch where a local shop with a lost property box for impossible objects only wants one normal minute, but the phrase 'I have seen the future and it needs a chair' keeps making it official.
+- The bit starts tiny: a football match that becomes a philosophy exam. By the end, a local shop with a lost property box for impossible objects has a committee.
+- a local shop with a lost property box for impossible objects walks into the phrase 'I have seen the future and it needs a chair', and the room immediately pretends this was scheduled.
+- Keep it grounded: one human wants something simple, and the phrase 'I have seen the future and it needs a chair' gets in the way.
+
+What This Could Become:
+This should play like a clean sketch premise: one person tries to keep the day ordinary while the room votes against them. The bit starts tiny: a football match that becomes a philosophy exam. By the end, a local shop with a lost property box for impossible objects has a committee. a local shop with a lost property box for impossible objects wants a normal beat, a football match that becomes a philosophy exam gives the room a motive, and the phrase 'I have seen the future and it needs a chair' turns the beat into the problem. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+Cold open: a local shop with a lost property box for impossible objects. Turn: bad rule: a local shop with a lost property box for impossible objects is forced to explain itself through a football match that becomes a philosophy exam. Callback: bring back the phrase 'I have seen the future and it needs a chair' as the last proof.
+
+Next Moves:
+- Find the first visual gag.
+- Give one character a practical need.
+- End on the smallest callback.
+- Keep the phrase 'I have seen the future and it needs a chair' visible; it is the strongest anchor.
+
+WHY THIS HAPPENED
+bad rule: a local shop with a lost property box for impossible objects is forced to explain itself through a football match that becomes a philosophy exam.
+- rules drifted by preserve in Z23 with trace [2, 4, 16, 0, 19, 10, 17] (Z23:2->17)
+- questions drifted by preserve in Z17 with trace [13, 8, 13, 0, 7, 12, 13] (Z17:13->13)
+- ideas drifted by preserve in Z29 with trace [15, 27, 15, 28, 18, 24, 9] (Z29:15->9)
+- phrases drifted by compress in Z29 with trace [12, 28, 4, 4, 8, 15, 28] (Z29:12->28)
+- ideas drifted by compress in Z17 with trace [11, 9, 10, 8, 4, 14, 6] (Z17:11->6)
+- Spark resolved as bad rule at midpoint 40.
+
+ProMentum seed 2213 | mode Sketch Hook | weirdness 50 | ingredients 5

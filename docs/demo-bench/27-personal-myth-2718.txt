@@ -1,0 +1,42 @@
+Seed: 2718 | Mode: Personal Myth | Weirdness: 47 | Ingredients: 5
+
+THE SMALL MYTH OF UNCLE SPEAKS ENTIRELY WARNINGS
+
+Best hook: Treat an uncle who speaks entirely in warnings as a tiny household myth: it wants tribute, witnesses, and a bad drawing.
+Mode: Personal Myth | Seed: 2718 | Weirdness: 47
+
+Ingredients:
+- phrases: I respect the process, but the process is wearing my shoes
+- rules: Turn a private thought into a public ceremony.
+- people: an uncle who speaks entirely in warnings
+- obsessions: betrayal by furniture
+- questions: What is the smallest possible apocalypse?
+
+Hooks:
+- A private annoyance turns into folklore when an uncle who speaks entirely in warnings refuses to remain practical.
+- Treat an uncle who speaks entirely in warnings as a tiny household myth: it wants tribute, witnesses, and a bad drawing.
+- the question 'What is the smallest possible apocalypse' becomes the symbol. the phrase 'I respect the process, but the process is wearing my shoes' becomes the rule nobody remembers agreeing to.
+- Keep it grounded: one human wants something simple, and the phrase 'I respect the process, but the process is wearing my shoes' gets in the way.
+
+What This Could Become:
+This works best when the feeling is tiny but the treatment is ceremonial. Treat an uncle who speaks entirely in warnings as a tiny household myth: it wants tribute, witnesses, and a bad drawing. The feeling sits inside an uncle who speaks entirely in warnings; the question 'What is the smallest possible apocalypse' gives it a witness, and the phrase 'I respect the process, but the process is wearing my shoes' gives it a ritual shape. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+Opening image: an uncle who speaks entirely in warnings. Turn: ceremony: a private thought gets promoted into folklore. Callback: bring back the phrase 'I respect the process, but the process is wearing my shoes' as the last proof.
+
+Next Moves:
+- Keep the phrase 'I respect the process, but the process is wearing my shoes' visible; it is the strongest anchor.
+- Make the private feeling visible.
+- Choose the object that represents it.
+- End with a ritual nobody asked for.
+
+WHY THIS HAPPENED
+ceremony: a private thought gets promoted into folklore.
+- phrases drifted by make official in Z17 with trace [5, 6, 16, 14, 16, 12, 9] (Z17:5->9)
+- rules drifted by make official in Z37 with trace [2, 28, 12, 18, 35, 4, 19] (Z37:2->19)
+- people drifted by collide in Z17 with trace [0, 4, 7, 12, 3, 11, 1] (Z17:0->1)
+- obsessions drifted by literalize in Z41 with trace [36, 10, 39, 18, 33, 7, 11] (Z41:36->11)
+- questions drifted by exaggerate in Z29 with trace [15, 7, 11, 13, 9, 19, 2] (Z29:15->2)
+- Spark resolved as ceremony at midpoint 75.
+
+ProMentum seed 2718 | mode Personal Myth | weirdness 47 | ingredients 5

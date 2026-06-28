@@ -1,0 +1,44 @@
+Seed: 2112 | Mode: Serious To Absurd | Weirdness: 64 | Ingredients: 6
+
+THE VERY OFFICIAL CASE FOR RETIRED GOALKEEPER LEGAL ENERGY
+
+Best hook: Explain a retired goalkeeper with legal energy like a serious policy, then reveal the policy was written by the question 'What if the side character was secretly the weather'.
+Mode: Serious To Absurd | Seed: 2112 | Weirdness: 64
+
+Ingredients:
+- questions: What callback would make this feel inevitable?
+- formats: cold open
+- places: a kitchen where the kettle remembers too much
+- people: a retired goalkeeper with legal energy
+- formats: scene seed
+- questions: What if the side character was secretly the weather?
+
+Hooks:
+- a kitchen where the kettle remembers too much is the reasonable version. The absurd version gives it a uniform.
+- Start with the sensible case for a retired goalkeeper with legal energy, then keep proving it until the question 'What if the side character was secretly the weather' becomes unavoidable.
+- Explain a retired goalkeeper with legal energy like a serious policy, then reveal the policy was written by the question 'What if the side character was secretly the weather'.
+- Keep it grounded: one human wants something simple, and the question 'What if the side character was secretly the weather' gets in the way.
+
+What This Could Become:
+Start sensible and keep adding evidence until the sensible argument becomes the joke. Explain a retired goalkeeper with legal energy like a serious policy, then reveal the policy was written by the question 'What if the side character was secretly the weather'. The sensible argument starts with a retired goalkeeper with legal energy; a kitchen where the kettle remembers too much supplies evidence, then the question 'What if the side character was secretly the weather' makes the logic wobble. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+Opening image: a retired goalkeeper with legal energy. Turn: ceremony: the sensible version is pushed until it starts wobbling. Callback: bring back the question 'What if the side character was secretly the weather' as the last proof.
+
+Next Moves:
+- Keep a retired goalkeeper with legal energy visible; it is the strongest anchor.
+- Write the serious pitch first.
+- Add one over-logical rule.
+- Let the conclusion embarrass the premise.
+
+WHY THIS HAPPENED
+ceremony: the sensible version is pushed until it starts wobbling.
+- questions drifted by misremember in Z41 with trace [10, 27, 40, 22, 18, 8, 18] (Z41:10->18)
+- formats drifted by literalize in Z23 with trace [18, 8, 22, 22, 21, 12, 21] (Z23:18->21)
+- places drifted by exaggerate in Z43 with trace [21, 23, 11, 5, 17, 32, 12] (Z43:21->12)
+- people drifted by literalize in Z19 with trace [18, 6, 2, 3, 12, 11, 14] (Z19:18->14)
+- formats drifted by misremember in Z41 with trace [28, 26, 3, 14, 12, 10, 4] (Z41:28->4)
+- questions drifted by misremember in Z19 with trace [9, 5, 13, 9, 13, 16, 18] (Z19:9->18)
+- Spark resolved as ceremony at midpoint 75.
+
+ProMentum seed 2112 | mode Serious To Absurd | weirdness 64 | ingredients 6

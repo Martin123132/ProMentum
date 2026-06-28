@@ -1,0 +1,42 @@
+Seed: 2819 | Mode: Serious To Absurd | Weirdness: 79 | Ingredients: 5
+
+THE VERY OFFICIAL CASE FOR SUPPORT GROUP ABANDONED PUNCHLINES
+
+Best hook: Explain a support group for abandoned punchlines like a serious policy, then reveal the policy was written by the phrase 'I have seen the future and it needs a chair'.
+Mode: Serious To Absurd | Seed: 2819 | Weirdness: 79
+
+Ingredients:
+- formats: title list
+- phrases: I have seen the future and it needs a chair
+- people: an uncle who speaks entirely in warnings
+- ideas: a support group for abandoned punchlines
+- obsessions: tiny authority figures
+
+Hooks:
+- Explain a support group for abandoned punchlines like a serious policy, then reveal the policy was written by the phrase 'I have seen the future and it needs a chair'.
+- Start with the sensible case for a support group for abandoned punchlines, then keep proving it until the phrase 'I have seen the future and it needs a chair' becomes unavoidable.
+- an uncle who speaks entirely in warnings is the reasonable version. The absurd version gives it a uniform.
+- Escalate it until public misunderstanding feels like the only sane outcome.
+
+What This Could Become:
+Start sensible and keep adding evidence until the sensible argument becomes the joke. Explain a support group for abandoned punchlines like a serious policy, then reveal the policy was written by the phrase 'I have seen the future and it needs a chair'. The sensible argument starts with a support group for abandoned punchlines; an uncle who speaks entirely in warnings supplies evidence, then the phrase 'I have seen the future and it needs a chair' makes the logic wobble. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+Thumbnail: a support group for abandoned punchlines. Turn: public misunderstanding: the sensible version is pushed until it starts wobbling. Callback: bring back the phrase 'I have seen the future and it needs a chair' as the last proof.
+
+Next Moves:
+- Keep a support group for abandoned punchlines visible; it is the strongest anchor.
+- Write the serious pitch first.
+- Add one over-logical rule.
+- Let the conclusion embarrass the premise.
+
+WHY THIS HAPPENED
+public misunderstanding: the sensible version is pushed until it starts wobbling.
+- formats drifted by exaggerate in Z37 with trace [13, 30, 17, 6, 20, 27, 36] (Z37:13->36)
+- phrases drifted by make official in Z43 with trace [1, 41, 27, 27, 11, 39, 1] (Z43:1->1)
+- people drifted by compress in Z37 with trace [21, 20, 36, 4, 1, 18, 24] (Z37:21->24)
+- ideas drifted by make official in Z41 with trace [22, 5, 24, 20, 16, 4, 35] (Z41:22->35)
+- obsessions drifted by misremember in Z37 with trace [0, 31, 1, 0, 31, 20, 26] (Z37:0->26)
+- Spark resolved as public misunderstanding at midpoint 57.
+
+ProMentum seed 2819 | mode Serious To Absurd | weirdness 79 | ingredients 5

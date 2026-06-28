@@ -1,0 +1,40 @@
+Seed: 2415 | Mode: Title Storm | Weirdness: 57 | Ingredients: 4
+
+SEVEN TITLES FOR NOTEBOOK EDITS EXCUSES OVERNIGHT
+
+Best hook: Please Stop Giving the question 'Who benefits if the chair is declared sacred' Authority
+Mode: Title Storm | Seed: 2415 | Weirdness: 57
+
+Ingredients:
+- ideas: a notebook that edits your excuses overnight
+- obsessions: the moment a joke becomes a system
+- questions: Who benefits if the chair is declared sacred?
+- questions: What tiny rule would ruin the whole day?
+
+Hooks:
+- The the question 'What tiny rule would ruin the whole day' Incident, Explained By Nobody Qualified
+- Please Stop Giving the question 'Who benefits if the chair is declared sacred' Authority
+- a notebook that edits your excuses overnight: A Field Guide To Bad Decisions
+- The Day A Notebook That Edits Your Excuses Overnight Became Everyone's Problem
+
+What This Could Become:
+This is mostly a naming engine: the title should sound like it belongs to a project that got out of hand. Please Stop Giving the question 'Who benefits if the chair is declared sacred' Authority The title should make a notebook that edits your excuses overnight sound official, while the question 'Who benefits if the chair is declared sacred' keeps it from becoming too clean. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+Opening image: a notebook that edits your excuses overnight. Turn: fusion: the spark becomes a naming problem with consequences. Callback: bring back the question 'Who benefits if the chair is declared sacred' as the last proof.
+
+Next Moves:
+- Pick the title with a verb in it.
+- Write the fake subtitle.
+- Keep a notebook that edits your excuses overnight visible; it is the strongest anchor.
+- Use the dullest title as the serious version.
+
+WHY THIS HAPPENED
+fusion: the spark becomes a naming problem with consequences.
+- ideas drifted by literalize in Z29 with trace [11, 0, 14, 11, 4, 17, 22] (Z29:11->22)
+- obsessions drifted by invert in Z23 with trace [17, 22, 18, 16, 20, 22, 14] (Z23:17->14)
+- questions drifted by misremember in Z41 with trace [8, 13, 5, 11, 17, 35, 9] (Z41:8->9)
+- questions drifted by misremember in Z23 with trace [17, 7, 20, 13, 7, 18, 9] (Z23:17->9)
+- Spark resolved as fusion at midpoint 51.
+
+ProMentum seed 2415 | mode Title Storm | weirdness 57 | ingredients 4

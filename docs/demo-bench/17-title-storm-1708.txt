@@ -1,0 +1,42 @@
+Seed: 1708 | Mode: Title Storm | Weirdness: 78 | Ingredients: 5
+
+SEVEN TITLES FOR ONE CLIPBOARD AWAY RELIGION
+
+Best hook: Minutes From The Day the phrase 'we are one clipboard away from a religion' Became Everyone's Problem
+Mode: Title Storm | Seed: 1708 | Weirdness: 78
+
+Ingredients:
+- questions: What tiny rule would ruin the whole day?
+- formats: game quest prompt
+- phrases: we are one clipboard away from a religion
+- obsessions: tiny authority figures
+- formats: title list
+
+Hooks:
+- the phrase 'we are one clipboard away from a religion': A Field Guide To Bad Decisions
+- Please Stop Giving the question 'What tiny rule would ruin the whole day' Authority
+- Minutes From The Day the phrase 'we are one clipboard away from a religion' Became Everyone's Problem
+- The Day The Phrase 'We Are One Clipboard Away From A Religion' Became Everyone's Problem
+
+What This Could Become:
+This is mostly a naming engine: the title should sound like it belongs to a project that got out of hand. Minutes From The Day the phrase 'we are one clipboard away from a religion' Became Everyone's Problem The title should make the phrase 'we are one clipboard away from a religion' sound official, while the question 'What tiny rule would ruin the whole day' keeps it from becoming too clean. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+First line: the phrase 'we are one clipboard away from a religion'. Turn: useful accident: the spark becomes a naming problem with consequences. Callback: bring back the question 'What tiny rule would ruin the whole day' as the last proof.
+
+Next Moves:
+- Pick the title with a verb in it.
+- Write the fake subtitle.
+- Use the dullest title as the serious version.
+- Keep the phrase 'we are one clipboard away from a religion' visible; it is the strongest anchor.
+
+WHY THIS HAPPENED
+useful accident: the spark becomes a naming problem with consequences.
+- questions drifted by make official in Z31 with trace [26, 5, 19, 15, 6, 11, 0] (Z31:26->0)
+- formats drifted by compress in Z41 with trace [3, 26, 21, 17, 10, 12, 40] (Z41:3->40)
+- phrases drifted by misremember in Z43 with trace [14, 5, 17, 8, 5, 32, 22] (Z43:14->22)
+- obsessions drifted by misremember in Z37 with trace [32, 9, 0, 29, 10, 35, 11] (Z37:32->11)
+- formats drifted by compress in Z23 with trace [0, 0, 0, 0, 0, 0, 0] (Z23:0->0)
+- Spark resolved as useful accident at midpoint 69.
+
+ProMentum seed 1708 | mode Title Storm | weirdness 78 | ingredients 5

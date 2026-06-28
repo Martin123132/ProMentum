@@ -1,0 +1,46 @@
+Seed: 2617 | Mode: Concept Mashup | Weirdness: 90 | Ingredients: 7
+
+LOCAL SHOP LOST PROPERTY MEETS PRACTICAL TASK BECOME MYTHOLOGICAL
+
+Best hook: The spark works if a local shop with a lost property box for impossible objects wants status and the practical-task-becomes-myth rule wants snacks.
+Mode: Concept Mashup | Seed: 2617 | Weirdness: 90
+
+Ingredients:
+- obsessions: tiny authority figures
+- rules: Make a practical task become mythological.
+- obsessions: ritual
+- obsessions: betrayal by furniture
+- obsessions: the rules changing mid-sentence
+- places: a laundrette with suspiciously ceremonial dryers
+- ideas: a local shop with a lost property box for impossible objects
+
+Hooks:
+- The spark works if a local shop with a lost property box for impossible objects wants status and the practical-task-becomes-myth rule wants snacks.
+- Combine a local shop with a lost property box for impossible objects with the practical-task-becomes-myth rule, but make a laundrette with suspiciously ceremonial dryers the emotional hinge.
+- Pitch it as a local shop with a lost property box for impossible objects behaving like a tool, then reveal the practical-task-becomes-myth rule is the real motive.
+- Escalate it until argument feels like the only sane outcome.
+
+What This Could Become:
+The strongest version keeps one emotional motive underneath the strange mechanics. The spark works if a local shop with a lost property box for impossible objects wants status and the practical-task-becomes-myth rule wants snacks. The useful pressure is between a local shop with a lost property box for impossible objects and the practical-task-becomes-myth rule; a laundrette with suspiciously ceremonial dryers is the human reason it does not fall apart. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+Opening image: a local shop with a lost property box for impossible objects. Turn: argument: a local shop with a lost property box for impossible objects is forced to explain itself through a laundrette with suspiciously ceremonial dryers. Callback: bring back the practical-task-becomes-myth rule as the last proof.
+
+Next Moves:
+- Keep a local shop with a lost property box for impossible objects visible; it is the strongest anchor.
+- Keep the human motive simple.
+- Let one ingredient become the mechanism.
+- Save the weirdest ingredient for the turn.
+
+WHY THIS HAPPENED
+argument: a local shop with a lost property box for impossible objects is forced to explain itself through a laundrette with suspiciously ceremonial dryers.
+- obsessions drifted by exaggerate in Z43 with trace [18, 12, 0, 26, 36, 13, 14] (Z43:18->14)
+- rules drifted by misremember in Z31 with trace [3, 21, 21, 11, 24, 15, 20] (Z31:3->20)
+- obsessions drifted by compress in Z19 with trace [17, 14, 16, 4, 12, 4, 1] (Z19:17->1)
+- obsessions drifted by exaggerate in Z19 with trace [2, 8, 2, 12, 8, 7, 6] (Z19:2->6)
+- obsessions drifted by invert in Z31 with trace [8, 2, 11, 5, 5, 10, 29] (Z31:8->29)
+- places drifted by invert in Z41 with trace [38, 8, 19, 11, 15, 17, 9] (Z41:38->9)
+- ideas drifted by invert in Z29 with trace [24, 20, 24, 10, 23, 21, 26] (Z29:24->26)
+- Spark resolved as argument at midpoint 79.
+
+ProMentum seed 2617 | mode Concept Mashup | weirdness 90 | ingredients 7

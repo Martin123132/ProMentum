@@ -1,0 +1,15 @@
+[project]
+name = "promentum"
+version = "0.1.2"
+description = "Local-first deterministic first-move generator."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "ProMentum" }]
+dependencies = []
+
+[project.scripts]
+promentum = "idea_collider_app.app:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

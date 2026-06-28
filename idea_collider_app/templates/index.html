@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ProMentum</title>
+    <link rel="stylesheet" href="/static/app.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="side-nav" aria-label="Main navigation">
+        <a class="brand" href="/start" data-link>
+          <span class="brand-mark">PM</span>
+          <span>
+            <strong>ProMentum</strong>
+            <small>turn stuck thoughts into first moves</small>
+          </span>
+        </a>
+        <nav>
+          <a href="/start" data-link data-page="start">Start</a>
+          <a href="/bank" data-link data-page="bank">Spark Bank</a>
+          <a href="/collide" data-link data-page="collide">Generate</a>
+          <a href="/result" data-link data-page="result">Result</a>
+          <a href="/library" data-link data-page="library">Library</a>
+          <a href="/settings" data-link data-page="settings">Settings</a>
+        </nav>
+        <div class="side-status" id="sideStatus">
+          <span class="status-dot red"></span>
+          <span>Loading bank</span>
+        </div>
+        <ol class="flow-rail" id="flowRail" aria-label="guided flow">
+          <li>Start</li>
+          <li>Build Bank</li>
+          <li>Generate</li>
+          <li>Result</li>
+          <li>Library</li>
+          <li>Settings</li>
+        </ol>
+      </aside>
+
+      <div class="main-shell">
+        <header class="topbar">
+          <div>
+            <p class="page-step" id="pageStep">Start</p>
+            <h1 id="pageTitle">ProMentum</h1>
+          </div>
+          <div class="status-pill" id="doctorStatus">Local only</div>
+        </header>
+
+        <main id="pageRoot" class="page-root" tabindex="-1"></main>
+      </div>
+    </div>
+    <script src="/static/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Print versions
+        run: |
+          python --version
+
+      - name: Compile sources
+        run: python -m compileall idea_collider_app tests scripts
+
+      - name: Run unit tests
+        run: python -m unittest discover -s tests
+
+      - name: Quick content smoke
+        run: New-Item -ItemType Directory -Force -Path D:\Temp, D:\ProMentumData_CI | Out-Null
+
+      - name: Smoke script
+        env:
+          PROMENTUM_HOME: D:\ProMentumData_CI
+          IDEA_COLLIDER_DISABLE_OPEN: "1"
+          TMP: D:\Temp
+          TEMP: D:\Temp
+        run: python scripts\sample_collisions.py --count 5

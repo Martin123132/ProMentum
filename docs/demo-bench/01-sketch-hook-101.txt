@@ -1,0 +1,42 @@
+Seed: 101 | Mode: Sketch Hook | Weirdness: 45 | Ingredients: 5
+
+NEIGHBOUR TREATS ERRAND ESPIONAGE MEETS SENSIBLE PERSON ACCIDENTALLY ESCALATE
+
+Best hook: The bit starts tiny: the practical-task-becomes-myth rule. By the end, a neighbour who treats every errand as espionage has a committee.
+Mode: Sketch Hook | Seed: 101 | Weirdness: 45
+
+Ingredients:
+- rules: Make a practical task become mythological.
+- people: a neighbour who treats every errand as espionage
+- formats: short video hook
+- questions: What if the side character was secretly the weather?
+- rules: Make the sensible person accidentally escalate the situation.
+
+Hooks:
+- A sketch where a neighbour who treats every errand as espionage only wants one normal minute, but the sensible-person-escalates rule keeps making it official.
+- a neighbour who treats every errand as espionage walks into the sensible-person-escalates rule, and the room immediately pretends this was scheduled.
+- The bit starts tiny: the practical-task-becomes-myth rule. By the end, a neighbour who treats every errand as espionage has a committee.
+- Keep it grounded: one human wants something simple, and the sensible-person-escalates rule gets in the way.
+
+What This Could Become:
+This should play like a clean sketch premise: one person tries to keep the day ordinary while the room votes against them. The bit starts tiny: the practical-task-becomes-myth rule. By the end, a neighbour who treats every errand as espionage has a committee. a neighbour who treats every errand as espionage wants a normal beat, the practical-task-becomes-myth rule gives the room a motive, and the sensible-person-escalates rule turns the beat into the problem. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+Thumbnail: a neighbour who treats every errand as espionage. Turn: useful accident: a neighbour who treats every errand as espionage is forced to explain itself through the practical-task-becomes-myth rule. Callback: bring back the sensible-person-escalates rule as the last proof.
+
+Next Moves:
+- Keep a neighbour who treats every errand as espionage visible; it is the strongest anchor.
+- Find the first visual gag.
+- Give one character a practical need.
+- End on the smallest callback.
+
+WHY THIS HAPPENED
+useful accident: a neighbour who treats every errand as espionage is forced to explain itself through the practical-task-becomes-myth rule.
+- rules drifted by compress in Z43 with trace [15, 18, 5, 31, 3, 25, 11] (Z43:15->11)
+- people drifted by preserve in Z41 with trace [26, 34, 18, 38, 32, 22, 5] (Z41:26->5)
+- formats drifted by literalize in Z43 with trace [5, 40, 5, 7, 26, 13, 8] (Z43:5->8)
+- questions drifted by literalize in Z31 with trace [28, 26, 13, 23, 13, 18, 14] (Z31:28->14)
+- rules drifted by preserve in Z41 with trace [37, 12, 6, 23, 25, 23, 30] (Z41:37->30)
+- Spark resolved as useful accident at midpoint 25.
+
+ProMentum seed 101 | mode Sketch Hook | weirdness 45 | ingredients 5

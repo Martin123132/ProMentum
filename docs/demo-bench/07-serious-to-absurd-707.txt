@@ -1,0 +1,42 @@
+Seed: 707 | Mode: Serious To Absurd | Weirdness: 88 | Ingredients: 5
+
+THE VERY OFFICIAL CASE FOR FOOTBALL MATCH BECOMES PHILOSOPHY
+
+Best hook: Explain a football match that becomes a philosophy exam like a serious policy, then reveal the policy was written by the question 'What is the smallest possible apocalypse'.
+Mode: Serious To Absurd | Seed: 707 | Weirdness: 88
+
+Ingredients:
+- places: a library aisle nobody admits exists
+- people: a composer who only writes theme tunes for appliances
+- ideas: a football match that becomes a philosophy exam
+- questions: What is the smallest possible apocalypse?
+- obsessions: the moment a joke becomes a system
+
+Hooks:
+- Start with the sensible case for a football match that becomes a philosophy exam, then keep proving it until the question 'What is the smallest possible apocalypse' becomes unavoidable.
+- a library aisle nobody admits exists is the reasonable version. The absurd version gives it a uniform.
+- Explain a football match that becomes a philosophy exam like a serious policy, then reveal the policy was written by the question 'What is the smallest possible apocalypse'.
+- Escalate it until useful accident feels like the only sane outcome.
+
+What This Could Become:
+Start sensible and keep adding evidence until the sensible argument becomes the joke. Explain a football match that becomes a philosophy exam like a serious policy, then reveal the policy was written by the question 'What is the smallest possible apocalypse'. The sensible argument starts with a football match that becomes a philosophy exam; a library aisle nobody admits exists supplies evidence, then the question 'What is the smallest possible apocalypse' makes the logic wobble. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+First line: a football match that becomes a philosophy exam. Turn: useful accident: the sensible version is pushed until it starts wobbling. Callback: bring back the question 'What is the smallest possible apocalypse' as the last proof.
+
+Next Moves:
+- Write the serious pitch first.
+- Add one over-logical rule.
+- Let the conclusion embarrass the premise.
+- Keep a football match that becomes a philosophy exam visible; it is the strongest anchor.
+
+WHY THIS HAPPENED
+useful accident: the sensible version is pushed until it starts wobbling.
+- places drifted by compress in Z43 with trace [6, 19, 4, 19, 42, 30, 7] (Z43:6->7)
+- people drifted by compress in Z19 with trace [8, 3, 5, 1, 16, 4, 7] (Z19:8->7)
+- ideas drifted by invert in Z31 with trace [27, 28, 29, 1, 20, 18, 20] (Z31:27->20)
+- questions drifted by invert in Z43 with trace [38, 26, 4, 27, 20, 34, 8] (Z43:38->8)
+- obsessions drifted by literalize in Z19 with trace [4, 9, 0, 12, 1, 1, 2] (Z19:4->2)
+- Spark resolved as useful accident at midpoint 60.
+
+ProMentum seed 707 | mode Serious To Absurd | weirdness 88 | ingredients 5

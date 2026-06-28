@@ -1,0 +1,44 @@
+Seed: 505 | Mode: Concept Mashup | Weirdness: 81 | Ingredients: 6
+
+LOCAL SHOP LOST PROPERTY MEETS ROOM TOO MANY OPINIONS
+
+Best hook: The spark works if a local shop with a lost property box for impossible objects wants status and the phrase 'this room has too many opinions for its square footage' wants snacks.
+Mode: Concept Mashup | Seed: 505 | Weirdness: 81
+
+Ingredients:
+- rules: Make the sensible person accidentally escalate the situation.
+- formats: short video hook
+- phrases: this room has too many opinions for its square footage
+- ideas: a local shop with a lost property box for impossible objects
+- questions: What callback would make this feel inevitable?
+- ideas: a sitcom where the stairs are in charge of HR
+
+Hooks:
+- The spark works if a local shop with a lost property box for impossible objects wants status and the phrase 'this room has too many opinions for its square footage' wants snacks.
+- Pitch it as a local shop with a lost property box for impossible objects behaving like a tool, then reveal the phrase 'this room has too many opinions for its square footage' is the real motive.
+- Combine a local shop with a lost property box for impossible objects with the phrase 'this room has too many opinions for its square footage', but make a sitcom where the stairs are in charge of HR the emotional hinge.
+- Escalate it until ceremony feels like the only sane outcome.
+
+What This Could Become:
+The strongest version keeps one emotional motive underneath the strange mechanics. The spark works if a local shop with a lost property box for impossible objects wants status and the phrase 'this room has too many opinions for its square footage' wants snacks. The useful pressure is between a local shop with a lost property box for impossible objects and the phrase 'this room has too many opinions for its square footage'; a sitcom where the stairs are in charge of HR is the human reason it does not fall apart. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+Thumbnail: a local shop with a lost property box for impossible objects. Turn: ceremony: a local shop with a lost property box for impossible objects is forced to explain itself through a sitcom where the stairs are in charge of HR. Callback: bring back the phrase 'this room has too many opinions for its square footage' as the last proof.
+
+Next Moves:
+- Keep the human motive simple.
+- Let one ingredient become the mechanism.
+- Save the weirdest ingredient for the turn.
+- Keep a sitcom where the stairs are in charge of HR visible; it is the strongest anchor.
+
+WHY THIS HAPPENED
+ceremony: a local shop with a lost property box for impossible objects is forced to explain itself through a sitcom where the stairs are in charge of HR.
+- rules drifted by collide in Z41 with trace [10, 18, 27, 17, 15, 16, 40] (Z41:10->40)
+- formats drifted by exaggerate in Z23 with trace [3, 18, 4, 7, 9, 9, 18] (Z23:3->18)
+- phrases drifted by invert in Z19 with trace [11, 10, 16, 5, 1, 12, 17] (Z19:11->17)
+- ideas drifted by misremember in Z17 with trace [1, 12, 0, 8, 13, 10, 13] (Z17:1->13)
+- questions drifted by compress in Z29 with trace [13, 9, 2, 27, 1, 23, 19] (Z29:13->19)
+- ideas drifted by preserve in Z29 with trace [27, 7, 21, 25, 16, 27, 26] (Z29:27->26)
+- Spark resolved as ceremony at midpoint 89.
+
+ProMentum seed 505 | mode Concept Mashup | weirdness 81 | ingredients 6

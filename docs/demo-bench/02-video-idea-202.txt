@@ -1,0 +1,42 @@
+Seed: 202 | Mode: Video Idea | Weirdness: 54 | Ingredients: 5
+
+POV: NOBODY TOUCH CEREMONIAL BISCUIT HAS ENTERED THE CHAT
+
+Best hook: Open on a local shop with a lost property box for impossible objects. Smash cut to the phrase 'nobody touch the ceremonial biscuit' being treated like breaking news.
+Mode: Video Idea | Seed: 202 | Weirdness: 54
+
+Ingredients:
+- people: a neighbour who treats every errand as espionage
+- ideas: a local shop with a lost property box for impossible objects
+- people: a failed wizard now doing customer support
+- ideas: a village noticeboard that starts issuing prophecies
+- phrases: nobody touch the ceremonial biscuit
+
+Hooks:
+- Open on a local shop with a lost property box for impossible objects. Smash cut to the phrase 'nobody touch the ceremonial biscuit' being treated like breaking news.
+- POV: the phrase 'nobody touch the ceremonial biscuit' has become the main character and a local shop with a lost property box for impossible objects is taking minutes.
+- A 45-second escalation from a failed wizard now doing customer support to a local shop with a lost property box for impossible objects, ending with one very confident rule.
+- Keep it grounded: one human wants something simple, and the phrase 'nobody touch the ceremonial biscuit' gets in the way.
+
+What This Could Become:
+This wants to be fast: a visual opening, one caption-sized premise, then a turn before anyone can over-explain it. Open on a local shop with a lost property box for impossible objects. Smash cut to the phrase 'nobody touch the ceremonial biscuit' being treated like breaking news. The first image is a local shop with a lost property box for impossible objects; a failed wizard now doing customer support is the turn, and the phrase 'nobody touch the ceremonial biscuit' is the thing people remember. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+Opening image: a local shop with a lost property box for impossible objects. Turn: bad rule: a local shop with a lost property box for impossible objects is forced to explain itself through a failed wizard now doing customer support. Callback: bring back the phrase 'nobody touch the ceremonial biscuit' as the last proof.
+
+Next Moves:
+- Open with the strangest image.
+- Cut before the explanation catches up.
+- Keep a local shop with a lost property box for impossible objects visible; it is the strongest anchor.
+- Make the caption carry the premise.
+
+WHY THIS HAPPENED
+bad rule: a local shop with a lost property box for impossible objects is forced to explain itself through a failed wizard now doing customer support.
+- people drifted by invert in Z23 with trace [19, 17, 3, 5, 22, 2, 5] (Z23:19->5)
+- ideas drifted by invert in Z43 with trace [13, 38, 4, 10, 13, 4, 22] (Z43:13->22)
+- people drifted by preserve in Z41 with trace [28, 5, 0, 16, 5, 15, 28] (Z41:28->28)
+- ideas drifted by compress in Z19 with trace [12, 5, 1, 1, 2, 11, 18] (Z19:12->18)
+- phrases drifted by exaggerate in Z19 with trace [8, 11, 15, 12, 6, 8, 13] (Z19:8->13)
+- Spark resolved as bad rule at midpoint 44.
+
+ProMentum seed 202 | mode Video Idea | weirdness 54 | ingredients 5

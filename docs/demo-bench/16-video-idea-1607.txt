@@ -1,0 +1,40 @@
+Seed: 1607 | Mode: Video Idea | Weirdness: 61 | Ingredients: 4
+
+POV: CALLBACK SOUNDS INEVITABLE BUT HAS ENTERED THE CHAT
+
+Best hook: Open on a support group for abandoned punchlines. Smash cut to the inevitable-callback rule being treated like breaking news.
+Mode: Video Idea | Seed: 1607 | Weirdness: 61
+
+Ingredients:
+- people: a referee who believes truth is a contact sport
+- rules: End with a callback that sounds inevitable but should not be.
+- ideas: a support group for abandoned punchlines
+- obsessions: ritual
+
+Hooks:
+- POV: the inevitable-callback rule has become the main character and a support group for abandoned punchlines is taking minutes.
+- Open on a support group for abandoned punchlines. Smash cut to the inevitable-callback rule being treated like breaking news.
+- A 45-second escalation from a referee who believes truth is a contact sport to a support group for abandoned punchlines, ending with one very confident rule.
+- Keep it grounded: one human wants something simple, and the inevitable-callback rule gets in the way.
+
+What This Could Become:
+This wants to be fast: a visual opening, one caption-sized premise, then a turn before anyone can over-explain it. Open on a support group for abandoned punchlines. Smash cut to the inevitable-callback rule being treated like breaking news. The first image is a support group for abandoned punchlines; a referee who believes truth is a contact sport is the turn, and the inevitable-callback rule is the thing people remember. The first beat should feel practical. The second beat should misread the first. The final beat should callback the opening as if the whole spark was obvious from the start.
+
+Scene Or Format Seed:
+Cold open: a support group for abandoned punchlines. Turn: callback loop: a support group for abandoned punchlines is forced to explain itself through a referee who believes truth is a contact sport. Callback: bring back the inevitable-callback rule as the last proof.
+
+Next Moves:
+- Keep a support group for abandoned punchlines visible; it is the strongest anchor.
+- Open with the strangest image.
+- Cut before the explanation catches up.
+- Make the caption carry the premise.
+
+WHY THIS HAPPENED
+callback loop: a support group for abandoned punchlines is forced to explain itself through a referee who believes truth is a contact sport.
+- people drifted by compress in Z41 with trace [4, 1, 31, 7, 34, 11, 2] (Z41:4->2)
+- rules drifted by exaggerate in Z37 with trace [36, 8, 15, 28, 23, 11, 0] (Z37:36->0)
+- ideas drifted by literalize in Z19 with trace [5, 9, 15, 3, 10, 12, 2] (Z19:5->2)
+- obsessions drifted by compress in Z17 with trace [9, 4, 5, 15, 5, 8, 6] (Z17:9->6)
+- Spark resolved as callback loop at midpoint 53.
+
+ProMentum seed 1607 | mode Video Idea | weirdness 61 | ingredients 4
