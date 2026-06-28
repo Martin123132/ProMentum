@@ -99,15 +99,14 @@ try {
   }
 
   $allowedScreenshots = @(
-    "docs\screenshots\promentum-start.png",
-    "docs\screenshots\promentum-result.png"
+    "promentum-start.png",
+    "promentum-result.png"
   )
   $screenshotDir = Join-Path $extractDir "docs\screenshots"
   if (Test-Path -LiteralPath $screenshotDir) {
     $unexpectedScreenshot = Get-ChildItem -LiteralPath $screenshotDir -File -Force |
       Where-Object {
-        $relative = $_.FullName.Substring($extractDir.Length + 1)
-        $relative -notin $allowedScreenshots
+        $_.Name -notin $allowedScreenshots
       } |
       Select-Object -First 1
     if ($unexpectedScreenshot) {
