@@ -33,11 +33,11 @@ class StorageTests(unittest.TestCase):
 
                 opened = storage.open_data_folder()
                 self.assertFalse(opened["opened"])
-                self.assertTrue(opened["path"].startswith(tmp))
+                self.assertEqual(Path(opened["path"]), Path(tmp).resolve())
 
                 opened_exports = storage.open_exports_folder()
                 self.assertFalse(opened_exports["opened"])
-                self.assertTrue(opened_exports["path"].startswith(tmp))
+                self.assertEqual(Path(opened_exports["path"]), Path(tmp).resolve() / "exports")
 
                 blank = storage.reset_blank_state()
                 self.assertEqual(sum(len(blank[key]) for key in storage.INGREDIENT_KEYS), 0)
