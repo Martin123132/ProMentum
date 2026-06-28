@@ -88,8 +88,10 @@ try {
     "scripts\sample_collisions.py",
     "scripts\stop_dev_processes.ps1",
     "docs\demo-bench\README.md",
+    "docs\release-notes\v0.1.3.md",
     "docs\screenshots\promentum-start.png",
-    "docs\screenshots\promentum-result.png"
+    "docs\screenshots\promentum-result.png",
+    "docs\screenshots\promentum-share-card.png"
   )
   foreach ($relative in $required) {
     $path = Join-Path $extractDir $relative
@@ -100,7 +102,8 @@ try {
 
   $allowedScreenshots = @(
     "promentum-start.png",
-    "promentum-result.png"
+    "promentum-result.png",
+    "promentum-share-card.png"
   )
   $screenshotDir = Join-Path $extractDir "docs\screenshots"
   if (Test-Path -LiteralPath $screenshotDir) {

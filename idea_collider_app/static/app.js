@@ -59,8 +59,8 @@ const pageMeta = {
     cue: "Pick a mode and control weirdness to move from sane to chaotic.",
     goal: "Goal: generate one result, then save what you like.",
     tips: [
-      "Pick a seed mode and keep weirdness around the middle to start.",
-      "Use the same seed only when you want an intentional repeat.",
+      "Use First-Run Defaults when you want the least fiddly start.",
+      "Leave Seed blank unless you want an intentional repeat.",
       "If output feels flat, raise weirdness a little and run again.",
     ],
     actionText: "Generate First Move",
@@ -716,6 +716,7 @@ function renderCollide() {
       <section class="panel">
         <h2>Choose the push</h2>
         <p>The same seed gives the same spark. Raise weirdness when the bank feels too sensible.</p>
+        ${renderFirstRunCard()}
         <div class="form-grid result-section">
           <label class="field">Mode<select id="modeInput">${modeOptions}</select></label>
           <label class="field">Ingredients<input id="ingredientInput" type="number" min="3" max="7" value="5" /></label>
@@ -738,6 +739,19 @@ function renderCollide() {
           ${trafficLights()}
         </div>
       </aside>
+    </div>
+  `;
+}
+
+function renderFirstRunCard() {
+  return `
+    <div class="first-run-card">
+      <div>
+        <p class="result-kicker">First 60 seconds</p>
+        <h3>Start with the friendly defaults</h3>
+        <p>Concept Mashup, five ingredients, medium weirdness, and an auto seed gives a useful first result without tuning.</p>
+      </div>
+      <button id="firstRunDefaultsButton" type="button">Use First-Run Defaults</button>
     </div>
   `;
 }
@@ -851,6 +865,7 @@ function renderResult() {
         </aside>
       </div>
       ${renderResultUseMap(currentResult)}
+      ${renderShareCard(currentResult)}
       <div class="result-actions">
         <section class="action-group action-group-primary">
           <h3>Keep this result</h3>
@@ -861,6 +876,7 @@ function renderResult() {
             <button id="copyHookButton">Copy Hook</button>
             <button id="exportTxtButton">Export TXT</button>
             <button id="exportHtmlButton">Export HTML</button>
+            <button id="exportShareButton">Export Share Card</button>
             <button id="openExportsButton" ${lastExportPath ? "" : "disabled"}>Open Exports Folder</button>
           </div>
         </section>
@@ -915,6 +931,29 @@ function renderResult() {
   `;
 }
 
+function renderShareCard(result) {
+  const nextMove = (result.next_steps || [])[0] || "Pick the strongest hook and make one rough version.";
+  return `
+    <section class="share-card-panel" aria-label="Share this spark">
+      <div class="share-card-preview">
+        <p class="result-kicker">Share card</p>
+        <h3>${escapeHtml(result.title)}</h3>
+        <p class="share-card-hook">${escapeHtml(result.best_hook)}</p>
+        <p class="share-card-next"><strong>Next move:</strong> ${escapeHtml(nextMove)}</p>
+        <p class="share-card-recipe">${escapeHtml(result.recipe || "")}</p>
+      </div>
+      <div class="share-card-actions">
+        <h3>Send the useful bit</h3>
+        <p class="micro-hint">Copy a short summary, or export a standalone local HTML card for sharing or keeping.</p>
+        <div class="button-row tight">
+          <button id="copyShareButton">Copy Share Summary</button>
+          <button id="exportShareCardButton" class="cyan">Export Share Card</button>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
 function renderResultUseMap(result) {
   const nextMove = (result.next_steps || [])[0] || "Pick the part that made you grin and write one rough version.";
   const bestIngredient = result.best_ingredient?.text || (result.ingredients || [])[0]?.text || "the strongest ingredient";
@@ -950,11 +989,13 @@ function renderResultHandoffPanel() {
   const copied = Boolean(lastCopyAction);
   const exported = Boolean(lastExportPath);
   const exportName = exported ? _fileNameFromPath(lastExportPath) : "No file exported yet";
-  const exportFormat = exportName.toLowerCase().endsWith(".html") ? "HTML" : "TXT";
+  const exportFormat = exportFormatLabel(exportName);
   const copyLabel = lastCopyAction?.kind === "copy-hook"
     ? "Hook copied"
     : lastCopyAction?.kind === "copy-recipe"
       ? "Recipe copied"
+      : lastCopyAction?.kind === "copy-share"
+        ? "Share summary copied"
       : copied
         ? "Output copied"
         : "Copy when ready";
@@ -981,6 +1022,13 @@ function renderResultHandoffPanel() {
       })}
     </div>
   `;
+}
+
+function exportFormatLabel(fileName) {
+  const lower = String(fileName || "").toLowerCase();
+  if (lower.endsWith("-share-card.html")) return "SHARE CARD";
+  if (lower.endsWith(".html")) return "HTML";
+  return "TXT";
 }
 
 function renderHandoffCard({ tone, title, copy, status, detail = "" }) {
@@ -1037,6 +1085,18 @@ function resultModeNudge(mode, bestIngredient) {
     "Random Spark": fallback,
   };
   return nudges[mode] || fallback;
+}
+
+function shareSummaryText(result) {
+  const nextMove = (result.next_steps || [])[0] || "Pick the strongest hook and make one rough version.";
+  return [
+    `ProMentum Spark: ${result.title || "Untitled Spark"}`,
+    "",
+    `Best hook: ${result.best_hook || ""}`,
+    `Next move: ${nextMove}`,
+    "",
+    result.recipe || "",
+  ].join("\n").trim() + "\n";
 }
 
 function renderLibrary() {
@@ -1396,6 +1456,7 @@ function bindCollide() {
     el(id)?.addEventListener("input", updateCollisionPreview);
     el(id)?.addEventListener("change", updateCollisionPreview);
   });
+  el("firstRunDefaultsButton")?.addEventListener("click", applyFirstRunDefaults);
   el("collideButton").addEventListener("click", () =>
     withBusyAction("collideButton", "Generating...", () => runGenerateFromInputs(false)),
   );
@@ -1413,6 +1474,22 @@ function bindCollide() {
       }
     }
   });
+  updateCollisionPreview();
+}
+
+function applyFirstRunDefaults() {
+  const modeInput = el("modeInput");
+  const ingredientInput = el("ingredientInput");
+  const weirdnessInput = el("weirdnessInput");
+  const weirdnessValue = el("weirdnessValue");
+  const seedInput = el("seedInput");
+  if (modeInput) modeInput.value = modes.includes("Concept Mashup") ? "Concept Mashup" : modes[0] || "Random Spark";
+  if (ingredientInput) ingredientInput.value = "5";
+  if (weirdnessInput) weirdnessInput.value = "55";
+  if (weirdnessValue) weirdnessValue.textContent = "55";
+  if (seedInput) seedInput.value = "";
+  const message = el("collideMessage");
+  if (message) message.textContent = "Friendly defaults loaded. Press Generate First Move.";
   updateCollisionPreview();
 }
 
@@ -1451,9 +1528,14 @@ function bindResult() {
   el("copyRecipeButton").addEventListener("click", () =>
     withBusyAction("copyRecipeButton", "Copying...", () => copyText(currentResult.recipe, "Copied seed recipe.", "copy-recipe")),
   );
+  el("copyShareButton")?.addEventListener("click", () =>
+    withBusyAction("copyShareButton", "Copying...", () => copyText(shareSummaryText(currentResult), "Copied share summary.", "copy-share")),
+  );
   el("saveFavouriteButton").addEventListener("click", () => withBusyAction("saveFavouriteButton", "Saving...", saveFavourite));
   el("exportTxtButton").addEventListener("click", () => withBusyAction("exportTxtButton", "Exporting...", () => exportResult("txt")));
   el("exportHtmlButton").addEventListener("click", () => withBusyAction("exportHtmlButton", "Exporting...", () => exportResult("html")));
+  el("exportShareButton")?.addEventListener("click", () => withBusyAction("exportShareButton", "Exporting...", () => exportResult("share")));
+  el("exportShareCardButton")?.addEventListener("click", () => withBusyAction("exportShareCardButton", "Exporting...", () => exportResult("share")));
   el("openExportsButton")?.addEventListener("click", openExportsFolder);
 }
 
@@ -1706,7 +1788,8 @@ async function exportResult(format) {
   lastExportPath = data.export.path;
   const openExportsButton = el("openExportsButton");
   if (openExportsButton) openExportsButton.disabled = false;
-  markResultAction("export", `Exported ${data.export.format.toUpperCase()} as ${_fileNameFromPath(data.export.path)}.`);
+  const exportLabel = data.export.format === "share" ? "SHARE CARD" : data.export.format.toUpperCase();
+  markResultAction("export", `Exported ${exportLabel} as ${_fileNameFromPath(data.export.path)}.`);
 }
 
 async function refreshDoctor() {
@@ -1757,15 +1840,15 @@ async function copyText(text, successMessage, actionKind = "copy-output") {
     if (navigator.clipboard?.writeText) {
       await navigator.clipboard.writeText(text);
     } else {
-      fallbackCopy(text, actionKind);
+      fallbackCopy(text, actionKind, successMessage);
     }
     markResultAction(actionKind, successMessage);
   } catch {
-    fallbackCopy(text, actionKind);
+    fallbackCopy(text, actionKind, successMessage);
   }
 }
 
-function fallbackCopy(text, actionKind = "copy-output") {
+function fallbackCopy(text, actionKind = "copy-output", successMessage = "Copied.") {
   const fallback = el("copyFallback");
   fallback.hidden = false;
   fallback.value = text;
@@ -1774,7 +1857,7 @@ function fallbackCopy(text, actionKind = "copy-output") {
   try {
     document.execCommand("copy");
     fallback.hidden = true;
-    markResultAction(actionKind, "Copied.");
+    markResultAction(actionKind, successMessage);
   } catch {
     markResultAction(actionKind, "Clipboard blocked. Text is selected below.");
   }

@@ -1245,6 +1245,34 @@ label.field {
   gap: 16px;
 }
 
+.first-run-card {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  border: 1px solid #c9e8ee;
+  border-radius: var(--radius);
+  background:
+    linear-gradient(90deg, rgba(242, 252, 255, 0.98), rgba(255, 255, 255, 0.94)),
+    var(--brand-bg);
+  background-size: auto, 780px auto;
+  background-position: center, right -390px top -230px;
+  background-repeat: no-repeat;
+  padding: 16px;
+}
+
+.first-run-card h3,
+.share-card-actions h3 {
+  margin: 4px 0 0;
+  font-size: 18px;
+}
+
+.first-run-card p {
+  margin-top: 6px;
+  max-width: 560px;
+}
+
 .collision-preview-card {
   border: 1px solid #c9e8ee;
   border-radius: var(--radius);
@@ -1489,6 +1517,68 @@ label.field {
   font-weight: 700;
   line-height: 1.4;
   max-width: none;
+}
+
+.share-card-panel {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
+  gap: 12px;
+  align-items: stretch;
+}
+
+.share-card-preview,
+.share-card-actions {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fbfcfd;
+  padding: 16px;
+}
+
+.share-card-preview {
+  border-left: 6px solid var(--cyan);
+  background:
+    linear-gradient(90deg, rgba(242, 252, 255, 0.98), rgba(255, 255, 255, 0.95)),
+    var(--brand-bg);
+  background-size: auto, 820px auto;
+  background-position: center, right -370px top -260px;
+  background-repeat: no-repeat;
+}
+
+.share-card-preview h3 {
+  margin: 6px 0 0;
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.share-card-hook {
+  margin-top: 12px;
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 850;
+  line-height: 1.35;
+}
+
+.share-card-next {
+  margin-top: 10px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.share-card-recipe {
+  margin-top: 14px;
+  border-top: 1px solid rgba(216, 222, 227, 0.85);
+  color: var(--muted);
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 12px;
+  padding-top: 10px;
+  overflow-wrap: anywhere;
+}
+
+.share-card-actions {
+  display: grid;
+  align-content: center;
+  gap: 10px;
 }
 
 .result-actions {
@@ -2036,6 +2126,8 @@ label.field {
   .settings-health-grid,
   .settings-path-row,
   .empty-state-visual,
+  .first-run-card,
+  .share-card-panel,
   .coach-compact {
     grid-template-columns: 1fr;
   }
@@ -2101,6 +2193,15 @@ label.field {
 
   .result-actions {
     grid-template-columns: 1fr;
+  }
+
+  .first-run-card {
+    align-items: stretch;
+  }
+
+  .first-run-card button {
+    width: 100%;
+    justify-content: center;
   }
 
   .result-handoff-panel {

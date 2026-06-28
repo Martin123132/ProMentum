@@ -55,7 +55,10 @@ get unstuck without turning your own thoughts into a cloud service.
 - Raise or lower weirdness depending on whether you want grounded or chaotic.
 - Save favourites locally.
 - Export TXT or HTML files.
+- Export a standalone **Share Card** HTML file for the best hook and next move.
 - Open your data and exports folders from inside the app.
+
+![ProMentum Share card controls](docs/screenshots/promentum-share-card.png)
 
 ## Why Local First
 

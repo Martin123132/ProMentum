@@ -160,6 +160,65 @@ def collision_to_html(result: dict[str, Any]) -> str:
     return f"<!doctype html>\n<html><head><meta charset=\"utf-8\"><title>{title}</title></head><body><main>{body}</main></body></html>\n"
 
 
+def share_card_to_text(result: dict[str, Any]) -> str:
+    next_steps = result.get("next_steps") or []
+    next_move = str(next_steps[0]) if next_steps else "Pick the strongest hook and make one rough version."
+    return "\n".join(
+        [
+            f"ProMentum Spark: {result.get('title') or 'Untitled Spark'}",
+            "",
+            f"Best hook: {result.get('best_hook') or ''}",
+            f"Next move: {next_move}",
+            "",
+            str(result.get("recipe") or ""),
+        ]
+    ).strip() + "\n"
+
+
+def share_card_to_html(result: dict[str, Any]) -> str:
+    title = html.escape(str(result.get("title") or "Untitled Spark"))
+    hook = html.escape(str(result.get("best_hook") or ""))
+    next_steps = result.get("next_steps") or []
+    next_move = html.escape(str(next_steps[0]) if next_steps else "Pick the strongest hook and make one rough version.")
+    recipe = html.escape(str(result.get("recipe") or ""))
+    mode = html.escape(str(result.get("mode") or "Spark"))
+    return f"""<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{title} - ProMentum Share Card</title>
+  <style>
+    :root {{ color-scheme: light; font-family: Inter, Segoe UI, Arial, sans-serif; }}
+    body {{ margin: 0; min-height: 100vh; display: grid; place-items: center; background: #eef2f1; color: #172026; }}
+    main {{ width: min(760px, calc(100vw - 32px)); }}
+    article {{ border: 1px solid #d8dee3; border-left: 8px solid #00a8c6; border-radius: 18px; background: #ffffff; box-shadow: 0 18px 44px rgba(23, 32, 38, 0.14); padding: clamp(22px, 5vw, 42px); }}
+    .kicker {{ color: #64717b; font-size: 12px; font-weight: 900; letter-spacing: 0.08em; margin: 0 0 10px; text-transform: uppercase; }}
+    h1 {{ font-size: clamp(30px, 7vw, 58px); line-height: 1.02; margin: 0; }}
+    .hook {{ background: #eefbfe; border-left: 5px solid #00a8c6; border-radius: 12px; font-size: clamp(20px, 4vw, 30px); font-weight: 850; line-height: 1.28; margin: 24px 0 0; padding: 18px; }}
+    .move {{ color: #3f4b54; font-size: 18px; font-weight: 750; line-height: 1.45; margin: 18px 0 0; }}
+    .recipe {{ border-top: 1px solid #d8dee3; color: #64717b; font-family: Consolas, Courier New, monospace; font-size: 13px; margin: 26px 0 0; padding-top: 16px; overflow-wrap: anywhere; }}
+    .brand {{ align-items: center; color: #172026; display: flex; font-weight: 900; gap: 10px; margin-bottom: 18px; }}
+    .badge {{ background: #172026; border-radius: 10px; color: #fff; display: inline-grid; min-height: 38px; min-width: 38px; place-items: center; }}
+    .mode {{ color: #64717b; font-size: 12px; font-weight: 900; margin-left: auto; text-transform: uppercase; }}
+  </style>
+</head>
+<body>
+  <main>
+    <article>
+      <div class="brand"><span class="badge">PM</span><span>ProMentum</span><span class="mode">{mode}</span></div>
+      <p class="kicker">Shareable first move</p>
+      <h1>{title}</h1>
+      <p class="hook">{hook}</p>
+      <p class="move"><strong>Next move:</strong> {next_move}</p>
+      <p class="recipe">{recipe}</p>
+    </article>
+  </main>
+</body>
+</html>
+"""
+
+
 def _bank_items(state: dict[str, Any]) -> list[dict[str, str]]:
     items: list[dict[str, str]] = []
     for key in INGREDIENT_KEYS:

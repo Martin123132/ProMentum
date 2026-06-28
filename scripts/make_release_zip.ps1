@@ -84,6 +84,7 @@ New-Item -ItemType Directory -Force -Path $stage | Out-Null
   "scripts",
   "tests",
   "docs\demo-bench",
+  "docs\release-notes",
   "docs\screenshots"
 ) | ForEach-Object { Copy-ReleasePath $_ }
 

@@ -31,6 +31,13 @@ class StorageTests(unittest.TestCase):
                 self.assertTrue(Path(exported["path"]).exists())
                 self.assertTrue(str(exported["path"]).startswith(tmp))
 
+                share_export = storage.export_result(result, "share")
+                share_path = Path(share_export["path"])
+                self.assertEqual(share_export["format"], "share")
+                self.assertTrue(share_path.exists())
+                self.assertTrue(share_path.name.endswith("-share-card.html"))
+                self.assertIn("ProMentum Share Card", share_path.read_text(encoding="utf-8"))
+
                 opened = storage.open_data_folder()
                 self.assertFalse(opened["opened"])
                 self.assertEqual(Path(opened["path"]), Path(tmp).resolve())

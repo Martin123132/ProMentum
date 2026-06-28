@@ -9,7 +9,7 @@ import sys
 import time
 from typing import Any
 
-from .engine import INGREDIENT_KEYS, collision_to_html, collision_to_text, readiness
+from .engine import INGREDIENT_KEYS, collision_to_html, collision_to_text, readiness, share_card_to_html
 
 
 APP_NAME = "ProMentum"
@@ -152,12 +152,27 @@ def clear_favourites() -> None:
 
 
 def export_result(result: dict[str, Any], export_format: str = "txt") -> dict[str, Any]:
-    export_format = "html" if str(export_format).lower() == "html" else "txt"
+    requested_format = str(export_format).lower()
+    if requested_format in {"share", "share-card", "card"}:
+        export_format = "share"
+        extension = "html"
+    elif requested_format == "html":
+        export_format = "html"
+        extension = "html"
+    else:
+        export_format = "txt"
+        extension = "txt"
     title = str(result.get("title") or "promentum-result")
     stem = _slugify(title)[:70] or "promentum-result"
     stamp = time.strftime("%Y%m%d-%H%M%S")
-    path = exports_dir() / f"{stamp}-{stem}.{export_format}"
-    content = collision_to_html(result) if export_format == "html" else collision_to_text(result)
+    suffix = "-share-card" if export_format == "share" else ""
+    path = exports_dir() / f"{stamp}-{stem}{suffix}.{extension}"
+    if export_format == "share":
+        content = share_card_to_html(result)
+    elif export_format == "html":
+        content = collision_to_html(result)
+    else:
+        content = collision_to_text(result)
     path.write_text(content, encoding="utf-8")
     return {"path": str(path), "format": export_format, "title": title}
 

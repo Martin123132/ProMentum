@@ -27,6 +27,7 @@ python -m idea_collider_app.app --doctor
 5. From Spark Bank, add at least one realistic ingredient in three categories.
 6. Open Generate and confirm:
    - `Seed` field has focus by default.
+   - `Use First-Run Defaults` resets mode, ingredient count, weirdness, and seed to a simple first run.
    - Seed normalizes to a whole-number only experience: typing non-integers shows guidance, blank means random.
    - A seed can be pasted and then cleared to `auto` for random behavior.
    - Weirdness slider updates the value badge instantly and clearly.
@@ -38,6 +39,7 @@ python -m idea_collider_app.app --doctor
    - `Keep Same Ingredients`, `Lock Best Ingredient`, `Regenerate Variant` return fresh output.
    - `Save Favourite` adds an item to Library.
    - `Export TXT` and `Export HTML` write files.
+   - `Copy Share Summary` and `Export Share Card` create a short shareable version without leaving the machine.
    - `Open Exports Folder` opens after export.
 8. Open Library and load one favourite to Result.
 9. Open Settings and confirm data path shows local folder on D:\.

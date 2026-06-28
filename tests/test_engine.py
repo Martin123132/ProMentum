@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+import html
 import unittest
 
-from idea_collider_app.engine import generate_collision, readiness
+from idea_collider_app.engine import generate_collision, readiness, share_card_to_html, share_card_to_text
 from scripts.sample_collisions import DEMO_CASES
 from idea_collider_app.storage import load_default_state
 
@@ -37,6 +38,17 @@ class EngineTests(unittest.TestCase):
         self.assertIn("WHY THIS HAPPENED", result["text"])
         self.assertIn("Next Moves", result["text"])
         self.assertGreaterEqual(len(result["hooks"]), 3)
+
+    def test_share_card_renderers_include_repeatable_context(self) -> None:
+        result = generate_collision(self.state, {"seed": 555, "mode": "Concept Mashup"})
+        text = share_card_to_text(result)
+        card_html = share_card_to_html(result)
+        self.assertIn("ProMentum Spark:", text)
+        self.assertIn(result["best_hook"], text)
+        self.assertIn(result["recipe"], text)
+        self.assertIn("ProMentum Share Card", card_html)
+        self.assertIn(html.escape(result["best_hook"]), card_html)
+        self.assertIn(result["recipe"], card_html)
 
     def test_readiness_traffic_lights(self) -> None:
         empty = {key: [] for key in ["ideas", "phrases", "people", "places", "obsessions", "questions", "formats", "rules"]}
