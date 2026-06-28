@@ -83,9 +83,13 @@ try {
     "idea_collider_app\static\app.css",
     "idea_collider_app\static\assets\promentum-workshop.webp",
     "idea_collider_app\static\assets\promentum-console.webp",
+    "idea_collider_app\static\assets\spark-bank-workbench.webp",
+    "idea_collider_app\static\assets\saved-sparks-shelf.webp",
     "scripts\sample_collisions.py",
     "scripts\stop_dev_processes.ps1",
-    "docs\demo-bench\README.md"
+    "docs\demo-bench\README.md",
+    "docs\screenshots\promentum-start.png",
+    "docs\screenshots\promentum-result.png"
   )
   foreach ($relative in $required) {
     $path = Join-Path $extractDir $relative
@@ -94,10 +98,26 @@ try {
     }
   }
 
+  $allowedScreenshots = @(
+    "docs\screenshots\promentum-start.png",
+    "docs\screenshots\promentum-result.png"
+  )
+  $screenshotDir = Join-Path $extractDir "docs\screenshots"
+  if (Test-Path -LiteralPath $screenshotDir) {
+    $unexpectedScreenshot = Get-ChildItem -LiteralPath $screenshotDir -File -Force |
+      Where-Object {
+        $relative = $_.FullName.Substring($extractDir.Length + 1)
+        $relative -notin $allowedScreenshots
+      } |
+      Select-Object -First 1
+    if ($unexpectedScreenshot) {
+      throw "Release ZIP contains unexpected screenshot file: $($unexpectedScreenshot.FullName)"
+    }
+  }
+
   $forbidden = Get-ChildItem -LiteralPath $extractDir -Force -Recurse |
     Where-Object {
       $_.Name -in @(".git", "__pycache__", ".pytest_cache", "idea_collider_data", "promentum_data", "dist", "build") -or
-      $_.FullName -like "*\docs\screenshots\*" -or
       $_.Extension -eq ".pyc"
     }
   if ($forbidden) {

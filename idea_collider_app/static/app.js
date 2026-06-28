@@ -102,7 +102,7 @@ const pageMeta = {
     goal: "Goal: know where files are stored and keep the workflow clean.",
     tips: [
       "Use `PROMENTUM_HOME` to point data to a different folder.",
-      "`IDEA_COLLIDER_HOME` still works for older test scripts.",
+      "Older portable data folders still load, but new setup should use ProMentum naming.",
       "Open Data and Exports folders after runs to check what was saved.",
       "The app can be restarted any time without reinstall.",
     ],
@@ -488,23 +488,21 @@ function trafficLights() {
 
 function coachPanel(pageKey) {
   const meta = pageMeta[pageKey];
-  const isCompact = pageKey !== "start";
+  const isCompact = true;
   const quickAction = pageKey === "start" && readiness.level === "red"
     ? { label: "Add a first idea", link: "/bank" }
     : pageKey === "collide" && readiness.level === "red"
       ? { label: "Add ingredients", link: "/bank" }
       : null;
   const tips = (meta.tips || []).map((tip) => `<li>${escapeHtml(tip)}</li>`).join("");
-  const tipBlock = isCompact
-    ? `<details class="coach-details"><summary>Quick tips</summary><ol class="guide-list">${tips}</ol></details>`
-    : `<ol class="guide-list">${tips}</ol>`;
+  const tipBlock = `<details class="coach-details"><summary>Quick tips</summary><ol class="guide-list">${tips}</ol></details>`;
   const coachAction = pageKey === "collide"
     ? `<button class="button-link" id="coachGenerateButton" ${readiness.level === "red" ? "disabled" : ""}>${escapeHtml(meta.actionText)}</button>`
     : pageKey === "settings"
       ? `<button class="button-link" id="coachStorageCheckButton">${escapeHtml(meta.actionText)}</button>`
     : `<a class="button-link" href="${meta.actionLink}" data-link>${escapeHtml(meta.actionText)}</a>`;
   return `
-    <section class="coach panel ${isCompact ? "coach-compact" : ""}">
+    <section class="coach panel coach-compact coach-${escapeHtml(pageKey)}">
       <p class="coach-step">Step ${escapeHtml(meta.stage)}</p>
       <h2>${escapeHtml(meta.title)} flow</h2>
       <p>${escapeHtml(meta.cue)}</p>
@@ -608,7 +606,7 @@ function bankPulseLabel(stats) {
 function bankPulseHint(stats) {
   if (!stats.count) return "Add one short line to wake up this category.";
   if (stats.duplicates) return "Clean Duplicates will tidy repeated lines.";
-  if (stats.longLines) return "Shorter lines collide more cleanly.";
+  if (stats.longLines) return "Shorter lines spark more cleanly.";
   if (stats.count < 3) return "Three or more lines gives the engine better choice.";
   return "Good shape. Save Bank when you are done.";
 }
@@ -841,7 +839,7 @@ function renderResult() {
           <p class="result-kicker">Fresh first move</p>
           <h2 class="result-title">${escapeHtml(currentResult.title)}</h2>
           <div class="result-meta-pills">
-            <span>${escapeHtml(currentResult.mode || "Collision")}</span>
+            <span>${escapeHtml(currentResult.mode || "Spark")}</span>
             <span>Seed ${escapeHtml(currentResult.seed)}</span>
             <span>Weirdness ${escapeHtml(currentResult.weirdness)}</span>
             <span>${escapeHtml(currentResult.ingredient_count || 0)} ingredients</span>

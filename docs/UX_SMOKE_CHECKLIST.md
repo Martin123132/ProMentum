@@ -19,7 +19,7 @@ python -m idea_collider_app.app --doctor
 
 1. Opened app quickly from one command or `START_ProMentum_WINDOWS.bat`.
 2. Start page explains next step and traffic-light state is readable without clicks.
-3. Press **Quick Add** from Start and confirm ingredient lands in the bank.
+3. Press **Add Ingredient** from Start and confirm the ingredient lands in the bank.
 4. Open Spark Bank and confirm:
    - `New ingredient` field has focus.
    - One line add works with **Enter**.
@@ -34,7 +34,7 @@ python -m idea_collider_app.app --doctor
    - **Generate First Move** works once the engine says ready.
 7. Open Result and run:
    - `Copy Output` works.
-   - `Copy Best Hook` and `Copy Seed Recipe` work.
+   - `Copy Hook` and `Copy Seed Recipe` work.
    - `Keep Same Ingredients`, `Lock Best Ingredient`, `Regenerate Variant` return fresh output.
    - `Save Favourite` adds an item to Library.
    - `Export TXT` and `Export HTML` write files.

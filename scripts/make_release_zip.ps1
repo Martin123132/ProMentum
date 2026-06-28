@@ -83,7 +83,8 @@ New-Item -ItemType Directory -Force -Path $stage | Out-Null
   "idea_collider_app",
   "scripts",
   "tests",
-  "docs\demo-bench"
+  "docs\demo-bench",
+  "docs\screenshots"
 ) | ForEach-Object { Copy-ReleasePath $_ }
 
 Compress-Archive -Path (Join-Path $stage "*") -DestinationPath $zipPath -Force
