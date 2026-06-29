@@ -48,6 +48,8 @@ class AppSmokeTests(unittest.TestCase):
                 launcher = Path("START_ProMentum_WINDOWS.bat").read_text(encoding="utf-8")
                 self.assertIn("PROMENTUM_HOME", launcher)
                 self.assertIn("D:\\ProMentumData", launcher)
+                self.assertIn('if not exist "%PROMENTUM_HOME%\\" md "%PROMENTUM_HOME%"', launcher)
+                self.assertIn('if not exist "%PROMENTUM_HOME%\\"', launcher)
                 self.assertIn("ProMentum v", app_js)
                 self.assertIn("PROJECT_STAGES", app_js)
                 self.assertIn("renderToday", app_js)

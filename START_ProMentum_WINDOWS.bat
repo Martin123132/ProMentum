@@ -29,8 +29,8 @@ if defined IDEA_COLLIDER_HOME (
 )
 if exist "D:\" (
   set "PROMENTUM_HOME=D:\ProMentumData"
-  md "%PROMENTUM_HOME%" >nul 2>nul
-  if errorlevel 1 (
+  if not exist "%PROMENTUM_HOME%\" md "%PROMENTUM_HOME%" >nul 2>nul
+  if not exist "%PROMENTUM_HOME%\" (
     set "PROMENTUM_HOME=%CD%\promentum_data"
   )
 ) else (

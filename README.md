@@ -115,6 +115,11 @@ on GitHub is the same local app people open on Windows.
 
 ## For Testers
 
+For a structured public test, use:
+
+- `docs\TESTER_CHECKLIST.md`
+- `docs\FEEDBACK_TEMPLATE.md`
+
 Try this simple loop:
 
 1. Add one strange ingredient to the Spark Bank.

@@ -1,6 +1,8 @@
 # ProMentum UX Smoke Checklist
 
 Use this for a quick first-run pass on Windows after UI or release changes.
+For public tester notes, use `docs\TESTER_CHECKLIST.md` and
+`docs\FEEDBACK_TEMPLATE.md`.
 
 ## Environment
 
@@ -43,7 +45,7 @@ python -m idea_collider_app.app --doctor
    - `Copy Share Summary` and `Export Share Card` create a short shareable version without leaving the machine.
    - `Open Exports Folder` opens after export.
 8. Open Momentum and confirm:
-   - Project title, v0.3.0 stage, traffic light, notes, blockers, wins, history, and action list are visible.
+   - Project title, stage, traffic light, notes, blockers, wins, history, and action list are visible.
    - Add Action works and appears in the project list.
    - Checking an action updates the traffic-light summary after save.
    - Add Win works and appears in the project journal.
