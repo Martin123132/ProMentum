@@ -9,7 +9,15 @@ import sys
 import time
 from typing import Any
 
-from .engine import INGREDIENT_KEYS, collision_to_html, collision_to_text, readiness, share_card_to_html
+from .engine import (
+    INGREDIENT_KEYS,
+    collision_to_html,
+    collision_to_text,
+    project_card_to_html,
+    project_card_to_text,
+    readiness,
+    share_card_to_html,
+)
 
 
 APP_NAME = "ProMentum"
@@ -69,6 +77,10 @@ def user_state_path() -> Path:
 
 def favourites_path() -> Path:
     return app_data_dir() / "favourites.json"
+
+
+def projects_path() -> Path:
+    return app_data_dir() / "projects.json"
 
 
 def load_default_state() -> dict[str, Any]:
@@ -151,6 +163,88 @@ def clear_favourites() -> None:
     _write_json(favourites_path(), [])
 
 
+def list_projects() -> list[dict[str, Any]]:
+    data = _read_json(projects_path(), fallback=[])
+    if not isinstance(data, list):
+        return []
+    return [_normalize_project(item) for item in data if isinstance(item, dict)]
+
+
+def save_project_from_result(result: dict[str, Any], payload: dict[str, Any] | None = None) -> dict[str, Any]:
+    payload = payload or {}
+    now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    project = {
+        "id": f"project-{int(time.time() * 1000)}",
+        "title": str(payload.get("title") or result.get("title") or "Untitled Project"),
+        "best_hook": str(result.get("best_hook") or ""),
+        "mode": result.get("mode"),
+        "seed": result.get("seed"),
+        "weirdness": result.get("weirdness"),
+        "stage": str(payload.get("stage") or "Choose"),
+        "readiness_level": str(payload.get("readiness_level") or "amber"),
+        "notes": str(payload.get("notes") or ""),
+        "recipe": str(result.get("recipe") or ""),
+        "actions": _actions_from_result(result, payload.get("actions")),
+        "source_result": result,
+        "created_at": now,
+        "updated_at": now,
+    }
+    projects = list_projects()
+    normalized = _normalize_project(project)
+    projects.insert(0, normalized)
+    _write_json(projects_path(), projects[:100])
+    return normalized
+
+
+def save_project(project: dict[str, Any]) -> dict[str, Any]:
+    normalized = _normalize_project(project)
+    normalized["updated_at"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    projects = list_projects()
+    replaced = False
+    for index, existing in enumerate(projects):
+        if str(existing.get("id")) == str(normalized.get("id")):
+            projects[index] = normalized
+            replaced = True
+            break
+    if not replaced:
+        projects.insert(0, normalized)
+    _write_json(projects_path(), projects[:100])
+    return normalized
+
+
+def delete_project(project_id: str) -> bool:
+    projects = list_projects()
+    filtered = [item for item in projects if str(item.get("id")) != str(project_id)]
+    if len(filtered) == len(projects):
+        return False
+    _write_json(projects_path(), filtered)
+    return True
+
+
+def clear_projects() -> None:
+    _write_json(projects_path(), [])
+
+
+def export_project(project: dict[str, Any], export_format: str = "project-card") -> dict[str, Any]:
+    normalized = _normalize_project(project)
+    requested = str(export_format or "project-card").lower()
+    if requested in {"txt", "text"}:
+        content = project_card_to_text(normalized)
+        extension = "txt"
+        export_format = "project-txt"
+        suffix = "-project-card"
+    else:
+        content = project_card_to_html(normalized)
+        extension = "html"
+        export_format = "project-card"
+        suffix = "-project-card"
+    stem = _slugify(str(normalized.get("title") or "promentum-project"))[:70] or "promentum-project"
+    stamp = time.strftime("%Y%m%d-%H%M%S")
+    path = exports_dir() / f"{stamp}-{stem}{suffix}.{extension}"
+    path.write_text(content, encoding="utf-8")
+    return {"path": str(path), "format": export_format, "title": normalized.get("title")}
+
+
 def export_result(result: dict[str, Any], export_format: str = "txt") -> dict[str, Any]:
     requested_format = str(export_format).lower()
     if requested_format in {"share", "share-card", "card"}:
@@ -219,10 +313,12 @@ def doctor() -> dict[str, Any]:
         "data_dir": str(app_data_dir()),
         "state_path": str(user_state_path()),
         "favourites_path": str(favourites_path()),
+        "projects_path": str(projects_path()),
         "exports_dir": str(exports_dir()),
         "state_ok": bool(sum(len(state.get(key, [])) for key in INGREDIENT_KEYS)),
         "readiness": readiness(state),
         "favourite_count": len(list_favourites()),
+        "project_count": len(list_projects()),
         "portable_default": str(repo_root() / "promentum_data"),
     }
 
@@ -242,6 +338,97 @@ def _normalize_state(state: dict[str, Any]) -> dict[str, Any]:
 def _normalize_lines(value: Any, fallback: Any) -> list[str]:
     source = value if isinstance(value, list) else fallback
     return [str(item).strip() for item in source if str(item).strip()]
+
+
+def _actions_from_result(result: dict[str, Any], override: Any = None) -> list[dict[str, Any]]:
+    if isinstance(override, list) and override:
+        return _normalize_actions(override)
+    raw_steps = result.get("next_steps") or []
+    steps = [str(step).strip() for step in raw_steps if str(step).strip()]
+    if not steps:
+        steps = ["Make one rough version.", "Show it to one person.", "Decide the next tiny move."]
+    if len(steps) < 3:
+        steps.append("Make one rough version.")
+    return _normalize_actions([{"text": step, "done": False} for step in steps[:5]])
+
+
+def _normalize_project(project: dict[str, Any]) -> dict[str, Any]:
+    now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    source_result = project.get("source_result") if isinstance(project.get("source_result"), dict) else {}
+    title = str(project.get("title") or source_result.get("title") or "Untitled Project").strip()
+    raw_readiness = project.get("readiness") if isinstance(project.get("readiness"), dict) else {}
+    readiness_level = str(project.get("readiness_level") or raw_readiness.get("level") or "amber").lower()
+    if readiness_level not in {"red", "amber", "green"}:
+        readiness_level = "amber"
+    actions = _normalize_actions(project.get("actions") or [])
+    normalized = {
+        "id": str(project.get("id") or f"project-{int(time.time() * 1000)}"),
+        "title": title or "Untitled Project",
+        "best_hook": str(project.get("best_hook") or source_result.get("best_hook") or ""),
+        "mode": project.get("mode") or source_result.get("mode"),
+        "seed": project.get("seed") if project.get("seed") is not None else source_result.get("seed"),
+        "weirdness": project.get("weirdness") if project.get("weirdness") is not None else source_result.get("weirdness"),
+        "stage": _normalize_stage(project.get("stage")),
+        "readiness_level": readiness_level,
+        "notes": str(project.get("notes") or ""),
+        "recipe": str(project.get("recipe") or source_result.get("recipe") or ""),
+        "actions": actions,
+        "source_result": source_result,
+        "created_at": str(project.get("created_at") or now),
+        "updated_at": str(project.get("updated_at") or now),
+    }
+    normalized["readiness"] = project_readiness(normalized)
+    return normalized
+
+
+def _normalize_actions(actions: Any) -> list[dict[str, Any]]:
+    normalized: list[dict[str, Any]] = []
+    source = actions if isinstance(actions, list) else []
+    for index, action in enumerate(source):
+        if isinstance(action, dict):
+            text = str(action.get("text") or "").strip()
+            done = bool(action.get("done"))
+            action_id = str(action.get("id") or f"action-{index + 1}")
+        else:
+            text = str(action).strip()
+            done = False
+            action_id = f"action-{index + 1}"
+        if text:
+            normalized.append({"id": action_id, "text": text, "done": done})
+    return normalized[:12]
+
+
+def _normalize_stage(value: Any) -> str:
+    allowed = ["Capture", "Generate", "Choose", "Shape", "Do Next"]
+    text = str(value or "Choose").strip().lower()
+    for stage in allowed:
+        if text == stage.lower():
+            return stage
+    return "Choose"
+
+
+def project_readiness(project: dict[str, Any]) -> dict[str, Any]:
+    actions = project.get("actions") or []
+    total = len(actions)
+    done = sum(1 for action in actions if action.get("done"))
+    level = str(project.get("readiness_level") or "amber").lower()
+    if level not in {"red", "amber", "green"}:
+        level = "amber"
+    labels = {"red": "Needs shaping", "amber": "Ready to try", "green": "Ready to do"}
+    next_action = "Add one small action."
+    if total:
+        next_open = next((action.get("text") for action in actions if not action.get("done")), "")
+        if next_open:
+            next_action = str(next_open)
+        else:
+            next_action = "All listed actions are ticked. Choose the next project move."
+    return {
+        "level": level,
+        "label": labels[level],
+        "done": done,
+        "total": total,
+        "next_action": next_action,
+    }
 
 
 def _read_json(path: Path, fallback: Any) -> Any:

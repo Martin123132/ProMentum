@@ -46,6 +46,24 @@ class StorageTests(unittest.TestCase):
                 self.assertFalse(opened_exports["opened"])
                 self.assertEqual(Path(opened_exports["path"]), Path(tmp).resolve() / "exports")
 
+                project = storage.save_project_from_result(result)
+                self.assertEqual(storage.list_projects()[0]["id"], project["id"])
+                self.assertEqual(project["readiness"]["level"], "amber")
+                project["actions"][0]["done"] = True
+                project["readiness_level"] = "green"
+                updated = storage.save_project(project)
+                self.assertEqual(updated["readiness"]["done"], 1)
+                self.assertEqual(updated["readiness"]["level"], "green")
+                project_export = storage.export_project(updated)
+                project_path = Path(project_export["path"])
+                self.assertEqual(project_export["format"], "project-card")
+                self.assertTrue(project_path.exists())
+                self.assertTrue(project_path.name.endswith("-project-card.html"))
+                self.assertIn("ProMentum Project Card", project_path.read_text(encoding="utf-8"))
+                self.assertTrue(project_path.is_relative_to(Path(tmp)))
+                storage.delete_project(updated["id"])
+                self.assertEqual(storage.list_projects(), [])
+
                 blank = storage.reset_blank_state()
                 self.assertEqual(sum(len(blank[key]) for key in storage.INGREDIENT_KEYS), 0)
                 self.assertEqual(storage.doctor()["readiness"]["level"], "red")

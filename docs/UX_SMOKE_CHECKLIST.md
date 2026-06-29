@@ -38,21 +38,29 @@ python -m idea_collider_app.app --doctor
    - `Copy Hook` and `Copy Seed Recipe` work.
    - `Keep Same Ingredients`, `Lock Best Ingredient`, `Regenerate Variant` return fresh output.
    - `Save Favourite` adds an item to Library.
+   - `Save as Project` opens Momentum with a real project.
    - `Export TXT` and `Export HTML` write files.
    - `Copy Share Summary` and `Export Share Card` create a short shareable version without leaving the machine.
    - `Open Exports Folder` opens after export.
-8. Open Library and load one favourite to Result.
-9. Open Settings and confirm data path shows local folder on D:\.
-10. Quick check on mobile-like width (500px or lower):
+8. Open Momentum and confirm:
+   - Project title, workflow stage, traffic light, notes, and action list are visible.
+   - Add Action works and appears in the project list.
+   - Checking an action updates the traffic-light summary after save.
+   - `Copy Project Brief` works.
+   - `Export Project Card` writes a local HTML file and enables exports-folder opening.
+   - Closing and reopening the app restores the project.
+9. Open Library and load one favourite to Result.
+10. Open Settings and confirm data path shows local folder on D:\ and projects path is visible.
+11. Quick check on mobile-like width (500px or lower):
     - Side-nav compresses cleanly without clipping labels.
     - Form controls and call-to-action buttons stack full width.
     - No horizontal overflow in long output blocks.
-11. Quick check on tablet width (768px-900px):
+12. Quick check on tablet width (768px-900px):
     - Page and side-nav spacing feels breathable.
     - Top bar, traffic meter, and main cards remain readable.
-12. Close browser, restart app, and confirm the bank data and favourites still restore from local storage.
-13. On at least one OS/browser refresh, verify no stale errors remain in the console during first smoke run.
-14. Close the local app server before ending the dev stage:
+13. Close browser, restart app, and confirm the bank data, projects, and favourites still restore from local storage.
+14. On at least one OS/browser refresh, verify no stale errors remain in the console during first smoke run.
+15. Close the local app server before ending the dev stage:
     `powershell -ExecutionPolicy Bypass -File scripts\stop_dev_processes.ps1`
 
 ## Smoke Runbook
@@ -83,6 +91,7 @@ powershell -ExecutionPolicy Bypass -File scripts\stop_dev_processes.ps1
 Recommended run notes:
 - During the browser flow, keep notes for each section that fails:
   - Start / Bank / Generate / Result / Library / Settings
+  - Momentum / project save / project export
 - Log pass/fail per check above in plain text for testers.
 - For any visual issue, capture one screenshot at the failing viewport.
 

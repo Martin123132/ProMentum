@@ -18,7 +18,7 @@ from . import storage
 ROOT = storage.repo_root()
 STATIC_DIR = ROOT / "idea_collider_app" / "static"
 TEMPLATE_DIR = ROOT / "idea_collider_app" / "templates"
-APP_ROUTES = {"/", "/start", "/bank", "/collide", "/result", "/library", "/settings"}
+APP_ROUTES = {"/", "/start", "/bank", "/collide", "/result", "/momentum", "/library", "/settings"}
 
 
 def _json_bytes(payload: object) -> bytes:
@@ -67,6 +67,8 @@ class IdeaColliderHandler(BaseHTTPRequestHandler):
                 self._json({"ok": True, **payload, "modes": MODES})
             elif path == "/api/favourites":
                 self._json({"ok": True, "favourites": storage.list_favourites()})
+            elif path == "/api/projects":
+                self._json({"ok": True, "projects": storage.list_projects()})
             elif path == "/api/doctor":
                 self._json({"ok": True, "version": __version__, "python": sys.version.split()[0], "doctor": storage.doctor()})
             elif path.startswith("/static/"):
@@ -108,6 +110,24 @@ class IdeaColliderHandler(BaseHTTPRequestHandler):
                     return
                 exported = storage.export_result(result, str(payload.get("format") or "txt"))
                 self._json({"ok": True, "export": exported})
+            elif path == "/api/projects":
+                project_payload = payload.get("project")
+                result = payload.get("result")
+                if isinstance(project_payload, dict) and project_payload.get("id"):
+                    project = storage.save_project(project_payload)
+                elif isinstance(result, dict) and result.get("best_hook"):
+                    project = storage.save_project_from_result(result, payload)
+                else:
+                    self._json({"ok": False, "error": "No project or result supplied"}, HTTPStatus.BAD_REQUEST)
+                    return
+                self._json({"ok": True, "project": project, "projects": storage.list_projects()})
+            elif path == "/api/projects/export":
+                project = payload.get("project") or {}
+                if not isinstance(project, dict) or not project.get("id"):
+                    self._json({"ok": False, "error": "No project supplied"}, HTTPStatus.BAD_REQUEST)
+                    return
+                exported = storage.export_project(project, str(payload.get("format") or "project-card"))
+                self._json({"ok": True, "export": exported})
             elif path == "/api/open-data":
                 self._json({"ok": True, "data_folder": storage.open_data_folder()})
             elif path == "/api/open-exports":
@@ -135,6 +155,18 @@ class IdeaColliderHandler(BaseHTTPRequestHandler):
                     return
                 storage.delete_favourite(str(target_id))
                 self._json({"ok": True, "favourites": storage.list_favourites()})
+                return
+            if path == "/api/projects":
+                if payload.get("clear") is True:
+                    storage.clear_projects()
+                    self._json({"ok": True, "projects": storage.list_projects()})
+                    return
+                target_id = payload.get("id")
+                if not target_id:
+                    self._json({"ok": False, "error": "No project id supplied"}, HTTPStatus.BAD_REQUEST)
+                    return
+                storage.delete_project(str(target_id))
+                self._json({"ok": True, "projects": storage.list_projects()})
                 return
             self._json({"ok": False, "error": "Unknown route"}, HTTPStatus.NOT_FOUND)
         except json.JSONDecodeError:

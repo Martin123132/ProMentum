@@ -27,7 +27,7 @@ class AppSmokeTests(unittest.TestCase):
             )
             try:
                 url = self._read_url(proc)
-                for path in ("/", "/start", "/bank", "/collide", "/result", "/library", "/settings"):
+                for path in ("/", "/start", "/bank", "/collide", "/result", "/momentum", "/library", "/settings"):
                     with request.urlopen(f"{url}{path}", timeout=5) as response:
                         self.assertEqual(response.status, 200)
                         body = response.read().decode("utf-8")
@@ -77,6 +77,12 @@ class AppSmokeTests(unittest.TestCase):
                 self.assertIn("renderResultHandoffPanel", app_js)
                 self.assertIn("markResultAction", app_js)
                 self.assertIn("setResultMessage", app_js)
+                self.assertIn("renderMomentum", app_js)
+                self.assertIn("bindMomentum", app_js)
+                self.assertIn("Save as Project", app_js)
+                self.assertIn("Export Project Card", app_js)
+                self.assertIn("projectBriefText", app_js)
+                self.assertIn("clientProjectReadiness", app_js)
                 self.assertIn("if (el(\"settingsMessage\"))", app_js)
                 self.assertIn("resultModeNudge", app_js)
                 self.assertIn("settingsHealthGrid", app_js)
@@ -98,6 +104,9 @@ class AppSmokeTests(unittest.TestCase):
                 self.assertIn(".result-use-map", app_css)
                 self.assertIn(".result-use-card", app_css)
                 self.assertIn(".share-card-panel", app_css)
+                self.assertIn(".project-layout", app_css)
+                self.assertIn(".project-workflow", app_css)
+                self.assertIn(".project-action-row", app_css)
                 self.assertIn(".result-handoff-panel", app_css)
                 self.assertIn(".handoff-card", app_css)
                 self.assertIn(".result-export-path", app_css)
@@ -141,6 +150,26 @@ class AppSmokeTests(unittest.TestCase):
                 self.assertTrue(generated["ok"])
                 self.assertIn("best_hook", generated["result"])
 
+                project = self._post_json(url + "/api/projects", {"result": generated["result"]})
+                self.assertTrue(project["ok"])
+                self.assertIn("actions", project["project"])
+                self.assertEqual(project["project"]["readiness"]["level"], "amber")
+                self.assertTrue(project["project"]["id"].startswith("project-"))
+
+                projects = self._json(url + "/api/projects")
+                self.assertEqual(len(projects["projects"]), 1)
+
+                project["project"]["readiness_level"] = "green"
+                project["project"]["actions"][0]["done"] = True
+                updated = self._post_json(url + "/api/projects", {"project": project["project"]})
+                self.assertEqual(updated["project"]["readiness"]["level"], "green")
+                self.assertEqual(updated["project"]["readiness"]["done"], 1)
+
+                project_export = self._post_json(url + "/api/projects/export", {"project": updated["project"]})
+                self.assertTrue(project_export["ok"])
+                self.assertEqual(project_export["export"]["format"], "project-card")
+                self.assertTrue(project_export["export"]["path"].endswith("-project-card.html"))
+
                 exported = self._post_json(url + "/api/export", {"result": generated["result"], "format": "share"})
                 self.assertTrue(exported["ok"])
                 self.assertEqual(exported["export"]["format"], "share")
@@ -152,6 +181,10 @@ class AppSmokeTests(unittest.TestCase):
                 reset = self._post_json(url + "/api/state", {"reset": "blank"})
                 self.assertTrue(reset["ok"])
                 self.assertEqual(reset["readiness"]["level"], "red")
+
+                deleted = self._delete_json(url + "/api/projects", {"id": updated["project"]["id"]})
+                self.assertTrue(deleted["ok"])
+                self.assertEqual(deleted["projects"], [])
             finally:
                 proc.terminate()
                 try:
@@ -182,6 +215,12 @@ class AppSmokeTests(unittest.TestCase):
     def _post_json(self, url: str, payload: dict) -> dict:
         data = json.dumps(payload).encode("utf-8")
         req = request.Request(url, data=data, headers={"content-type": "application/json"}, method="POST")
+        with request.urlopen(req, timeout=5) as response:
+            return json.loads(response.read().decode("utf-8"))
+
+    def _delete_json(self, url: str, payload: dict) -> dict:
+        data = json.dumps(payload).encode("utf-8")
+        req = request.Request(url, data=data, headers={"content-type": "application/json"}, method="DELETE")
         with request.urlopen(req, timeout=5) as response:
             return json.loads(response.read().decode("utf-8"))
 

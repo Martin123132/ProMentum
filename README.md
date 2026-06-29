@@ -6,7 +6,7 @@ Welcome to ProMentum. It is a local-first creative spark tool for the moment
 where you have ideas, scraps, phrases, people, places, obsessions, half-jokes,
 and no obvious next step. Feed it your raw material, press **Generate First
 Move**, and it turns the mess into repeatable hooks, scene seeds, titles,
-formats, and tiny next actions.
+formats, tiny next actions, and saved Momentum projects.
 
 No API keys. No cloud calls. No accounts. No npm. No build step.
 
@@ -47,6 +47,18 @@ get unstuck without turning your own thoughts into a cloud service.
 
 ![ProMentum Result page](docs/screenshots/promentum-result.png)
 
+The v0.2.0 workflow is deliberately simple:
+
+```text
+Capture -> Generate -> Choose -> Shape -> Do Next
+```
+
+When a result feels useful, save it as a Momentum project. The project keeps the
+hook, traffic-light readiness, notes, and small actions so you can return later
+without reconstructing the idea from memory.
+
+![ProMentum Momentum page](docs/screenshots/promentum-momentum.png)
+
 ## What You Can Do
 
 - Build a **Spark Bank** of ideas, phrases, people, places, questions, formats, and rules.
@@ -54,8 +66,12 @@ get unstuck without turning your own thoughts into a cloud service.
 - Lock a seed so the same input gives the same result again.
 - Raise or lower weirdness depending on whether you want grounded or chaotic.
 - Save favourites locally.
+- Save a generated spark as a **Momentum Project**.
+- Break a project into small actions and tick them off.
+- Mark project readiness with a red, amber, or green traffic light.
 - Export TXT or HTML files.
 - Export a standalone **Share Card** HTML file for the best hook and next move.
+- Export a standalone **Project Card** HTML file for a project plan.
 - Open your data and exports folders from inside the app.
 
 ![ProMentum Share card controls](docs/screenshots/promentum-share-card.png)
@@ -86,6 +102,7 @@ on GitHub is the same local app people open on Windows.
 - `Spark Bank`: edit the raw ingredients that make the output feel like yours.
 - `Generate`: choose mode, seed, weirdness, and ingredient count.
 - `Result`: read the generated spark, copy it, shape it, save it, or export it.
+- `Momentum`: turn a chosen spark into a local project with actions and readiness.
 - `Library`: reload favourites you want to keep.
 - `Settings`: check local storage and open data folders.
 
@@ -95,10 +112,13 @@ Try this simple loop:
 
 1. Add one strange ingredient to the Spark Bank.
 2. Generate a first move.
-3. Save a favourite.
-4. Export TXT.
-5. Close the app and reopen it.
-6. Check that your bank and favourite are still there.
+3. Save it as a Momentum project.
+4. Add one small action and mark the traffic light.
+5. Export a Project Card.
+6. Save a favourite.
+7. Export TXT.
+8. Close the app and reopen it.
+9. Check that your bank, project, and favourite are still there.
 
 Good tester notes are plain:
 
@@ -106,6 +126,7 @@ Good tester notes are plain:
 - Did Python block you?
 - Did the launcher make sense?
 - Did save/export make sense?
+- Did the Momentum project page make the next action clearer?
 - Which seed or mode made you grin?
 
 ## Development

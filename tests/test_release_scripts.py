@@ -29,9 +29,10 @@ class ReleaseScriptTests(unittest.TestCase):
             release.writestr("scripts/sample_collisions.py", "\n")
             release.writestr("scripts/stop_dev_processes.ps1", "\n")
             release.writestr("docs/demo-bench/README.md", "# Demo Bench\n")
-            release.writestr("docs/release-notes/v0.1.3.md", "# ProMentum v0.1.3 Release Review\n")
+            release.writestr("docs/release-notes/v0.2.0.md", "# ProMentum v0.2.0 Release Review\n")
             release.writestr("docs/screenshots/promentum-start.png", "fake-png\n")
             release.writestr("docs/screenshots/promentum-result.png", "fake-png\n")
+            release.writestr("docs/screenshots/promentum-momentum.png", "fake-png\n")
             release.writestr("docs/screenshots/promentum-share-card.png", "fake-png\n")
             for name, content in (extra_files or {}).items():
                 release.writestr(name, content)

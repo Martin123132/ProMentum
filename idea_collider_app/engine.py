@@ -219,6 +219,94 @@ def share_card_to_html(result: dict[str, Any]) -> str:
 """
 
 
+def project_card_to_text(project: dict[str, Any]) -> str:
+    actions = project.get("actions") or []
+    readiness_info = project.get("readiness") or {}
+    lines = [
+        f"ProMentum Project: {project.get('title') or 'Untitled Project'}",
+        "",
+        f"Traffic light: {readiness_info.get('label') or 'Not marked'}",
+        f"Current stage: {project.get('stage') or 'Capture'}",
+        "",
+        f"Hook: {project.get('best_hook') or ''}",
+        "",
+        "Do Next:",
+    ]
+    if actions:
+        for action in actions:
+            marker = "x" if action.get("done") else " "
+            lines.append(f"- [{marker}] {action.get('text') or ''}")
+    else:
+        lines.append("- [ ] Make one rough version.")
+    notes = str(project.get("notes") or "").strip()
+    if notes:
+        lines.extend(["", "Notes:", notes])
+    lines.extend(["", str(project.get("recipe") or "")])
+    return "\n".join(lines).strip() + "\n"
+
+
+def project_card_to_html(project: dict[str, Any]) -> str:
+    title = html.escape(str(project.get("title") or "Untitled Project"))
+    hook = html.escape(str(project.get("best_hook") or ""))
+    stage = html.escape(str(project.get("stage") or "Capture"))
+    recipe = html.escape(str(project.get("recipe") or ""))
+    readiness_info = project.get("readiness") or {}
+    readiness_label = html.escape(str(readiness_info.get("label") or "Not marked"))
+    readiness_level = html.escape(str(readiness_info.get("level") or "amber"))
+    notes = html.escape(str(project.get("notes") or "")).replace("\n", "<br>\n")
+    action_items = []
+    for action in project.get("actions") or []:
+        done = "done" if action.get("done") else ""
+        marker = "Done" if action.get("done") else "Next"
+        action_items.append(
+            f"<li class=\"{done}\"><span>{html.escape(marker)}</span>{html.escape(str(action.get('text') or ''))}</li>"
+        )
+    if not action_items:
+        action_items.append("<li><span>Next</span>Make one rough version.</li>")
+    return f"""<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{title} - ProMentum Project Card</title>
+  <style>
+    :root {{ color-scheme: light; font-family: Inter, Segoe UI, Arial, sans-serif; }}
+    body {{ margin: 0; min-height: 100vh; display: grid; place-items: center; background: #eef2f1; color: #172026; }}
+    main {{ width: min(860px, calc(100vw - 32px)); }}
+    article {{ border: 1px solid #d8dee3; border-left: 8px solid #27a367; border-radius: 18px; background: #fff; box-shadow: 0 18px 44px rgba(23, 32, 38, 0.14); padding: clamp(22px, 5vw, 42px); }}
+    .brand {{ align-items: center; color: #172026; display: flex; font-weight: 900; gap: 10px; margin-bottom: 18px; }}
+    .badge {{ background: #172026; border-radius: 10px; color: #fff; display: inline-grid; min-height: 38px; min-width: 38px; place-items: center; }}
+    .stage {{ color: #64717b; font-size: 12px; font-weight: 900; margin-left: auto; text-transform: uppercase; }}
+    h1 {{ font-size: clamp(32px, 7vw, 58px); line-height: 1.02; margin: 0; }}
+    .light {{ border: 1px solid #d8dee3; border-radius: 999px; display: inline-flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 900; margin: 18px 0 0; padding: 8px 12px; }}
+    .dot {{ width: 12px; height: 12px; border-radius: 999px; background: #d79b23; }}
+    .dot.green {{ background: #27a367; }} .dot.red {{ background: #d94b4b; }} .dot.amber {{ background: #d79b23; }}
+    .hook {{ background: #eefbfe; border-left: 5px solid #00a8c6; border-radius: 12px; font-size: clamp(18px, 3vw, 26px); font-weight: 850; line-height: 1.3; margin: 22px 0 0; padding: 18px; }}
+    ul {{ display: grid; gap: 10px; list-style: none; margin: 22px 0 0; padding: 0; }}
+    li {{ border: 1px solid #d8dee3; border-radius: 10px; display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 12px; padding: 12px; }}
+    li span {{ color: #64717b; font-size: 11px; font-weight: 900; text-transform: uppercase; }}
+    li.done {{ background: #f0fff6; border-color: #beebcd; }}
+    .notes {{ color: #3f4b54; font-size: 15px; font-weight: 700; line-height: 1.5; margin: 20px 0 0; }}
+    .recipe {{ border-top: 1px solid #d8dee3; color: #64717b; font-family: Consolas, Courier New, monospace; font-size: 13px; margin: 26px 0 0; padding-top: 16px; overflow-wrap: anywhere; }}
+  </style>
+</head>
+<body>
+  <main>
+    <article>
+      <div class="brand"><span class="badge">PM</span><span>ProMentum</span><span class="stage">{stage}</span></div>
+      <h1>{title}</h1>
+      <div class="light"><span class="dot {readiness_level}"></span>{readiness_label}</div>
+      <p class="hook">{hook}</p>
+      <ul>{"".join(action_items)}</ul>
+      {f'<p class="notes">{notes}</p>' if notes else ''}
+      <p class="recipe">{recipe}</p>
+    </article>
+  </main>
+</body>
+</html>
+"""
+
+
 def _bank_items(state: dict[str, Any]) -> list[dict[str, str]]:
     items: list[dict[str, str]] = []
     for key in INGREDIENT_KEYS:

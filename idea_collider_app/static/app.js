@@ -4,21 +4,26 @@ let appState = null;
 let readiness = null;
 let modes = [];
 let favourites = [];
+let projects = [];
 let currentResult = null;
 let activeBankKey = "ideas";
 let lastVariantSeed = null;
 let transientMessage = "";
 let lastExportPath = null;
+let lastProjectExportPath = null;
 let lastResultAction = null;
 let lastCopyAction = null;
 let collideMessageTimer = null;
 let librarySearch = "";
+let activeProjectId = "";
+let projectMessage = "";
 
 const FLOW_STEPS = [
   { id: "start", route: "/start", label: "Start", lockedReason: null },
   { id: "bank", route: "/bank", label: "Build Bank", lockedReason: null },
   { id: "collide", route: "/collide", label: "Generate", lockedReason: "Add at least some ingredients first." },
   { id: "result", route: "/result", label: "Result", lockedReason: "Generate once to create something to review." },
+  { id: "momentum", route: "/momentum", label: "Momentum", lockedReason: "Save a result as a project first." },
   { id: "library", route: "/library", label: "Library", lockedReason: null },
   { id: "settings", route: "/settings", label: "Settings", lockedReason: null },
 ];
@@ -26,7 +31,7 @@ const FLOW_STEPS = [
 const pageMeta = {
   start: {
     title: "Start",
-    step: "Get unstuck",
+    step: "Capture",
     stage: "1",
     cue: "Add a few ingredients until the traffic light turns amber, then green.",
     goal: "Goal: grow the spark bank so ProMentum can give you a first move.",
@@ -40,7 +45,7 @@ const pageMeta = {
   },
   bank: {
     title: "Spark Bank",
-    step: "Feed the engine",
+    step: "Capture",
     stage: "2",
     cue: "Add ingredients by category so results feel personal, not generic.",
     goal: "Goal: build a few entries in at least 3 categories.",
@@ -54,7 +59,7 @@ const pageMeta = {
   },
   collide: {
     title: "Generate",
-    step: "Choose the push",
+    step: "Generate",
     stage: "3",
     cue: "Pick a mode and control weirdness to move from sane to chaotic.",
     goal: "Goal: generate one result, then save what you like.",
@@ -68,14 +73,28 @@ const pageMeta = {
   },
   result: {
     title: "Result",
-    step: "Use the spark",
+    step: "Choose",
     stage: "4",
     cue: "Turn the best hook into your next task, post, or format.",
-    goal: "Goal: save or export the result that sparks the strongest action.",
+    goal: "Goal: choose the result worth shaping into a saved project.",
     tips: [
       "Use 'Regenerate Variant' to move energy without losing context.",
-      "Use Save Favourite before you clear or overwrite current output.",
+      "Use Save as Project when a spark feels like something you could actually do.",
       "Copy first, export second; both work without changing your saved copy.",
+    ],
+    actionText: "Open Momentum",
+    actionLink: "/momentum",
+  },
+  momentum: {
+    title: "Momentum",
+    step: "Shape and do next",
+    stage: "5",
+    cue: "Turn one chosen spark into a small project with actions you can return to.",
+    goal: "Goal: pick one tiny next action and mark the project traffic light honestly.",
+    tips: [
+      "Red means the project needs shaping before you touch it.",
+      "Amber means one rough pass is possible now.",
+      "Green means the next action is clear enough to do.",
     ],
     actionText: "Open Library",
     actionLink: "/library",
@@ -83,7 +102,7 @@ const pageMeta = {
   library: {
     title: "Library",
     step: "Saved sparks",
-    stage: "5",
+    stage: "6",
     cue: "Keep only the hits and delete the rest manually.",
     goal: "Goal: review, copy, and pick a favourite to return to later.",
     tips: [
@@ -97,7 +116,7 @@ const pageMeta = {
   settings: {
     title: "Settings",
     step: "Local storage",
-    stage: "6",
+    stage: "7",
     cue: "Your data stays local to this machine.",
     goal: "Goal: know where files are stored and keep the workflow clean.",
     tips: [
@@ -245,6 +264,11 @@ async function loadAll() {
   updateDoctorStatus(doctor);
   const favData = await api("/api/favourites");
   favourites = favData.favourites || [];
+  const projectData = await api("/api/projects");
+  projects = projectData.projects || [];
+  if (!activeProjectId && projects[0]) {
+    activeProjectId = projects[0].id;
+  }
   updateShellStatus();
   updateFlowRail("start");
 }
@@ -281,6 +305,7 @@ function renderRoute() {
     bank: renderBank,
     collide: renderCollide,
     result: renderResult,
+    momentum: renderMomentum,
     library: renderLibrary,
     settings: renderSettings,
   };
@@ -301,7 +326,8 @@ function setPrimaryPageFocus(page) {
     start: ["quickIdeaInput", "quickCollisionButton", "starterBankButton"],
     bank: ["bankQuickIdeaInput", "bankQuickAddButton", "saveBankButton"],
     collide: ["seedInput", "collideButton", "sameSeedButton"],
-    result: ["copyResultButton", "saveFavouriteButton", "exportTxtButton", "openColliderButton"],
+    result: ["saveProjectButton", "copyResultButton", "saveFavouriteButton", "openColliderButton"],
+    momentum: ["projectActionInput", "saveProjectChangesButton", "createProjectFromResultButton"],
     library: ["librarySearchInput", "clearLibraryButton"],
     settings: ["openDataButton", "openExportsButtonSettings", "refreshDoctorButton"],
   };
@@ -337,7 +363,13 @@ function updateFlowRail(currentPage) {
   if (!rail) return;
   const currentIndex = FLOW_STEPS.findIndex((step) => step.id === currentPage);
   rail.innerHTML = FLOW_STEPS.map((step, index) => {
-    const isLocked = step.id === "collide" ? readiness.level === "red" : step.id === "result" ? !currentResult : false;
+    const isLocked = step.id === "collide"
+      ? readiness.level === "red"
+      : step.id === "result"
+        ? !currentResult
+        : step.id === "momentum"
+          ? !currentResult && !projects.length
+          : false;
     const isDone = index < currentIndex;
     const isCurrent = step.id === currentPage;
     const classes = isLocked ? "locked" : isDone ? "done" : isCurrent ? "active" : "";
@@ -404,7 +436,7 @@ function renderStart() {
           <div class="meter"><strong>${readiness.total}</strong><span>Total ingredients</span></div>
           <div class="meter"><strong>${readiness.populated_categories}</strong><span>Active categories</span></div>
           <div class="meter"><strong>${favourites.length}</strong><span>Saved sparks</span></div>
-          <div class="meter"><strong>${readiness.level.toUpperCase()}</strong><span>Readiness</span></div>
+          <div class="meter"><strong>${projects.length}</strong><span>Momentum projects</span></div>
         </div>
         <div class="action-row">
           <a class="button-link primary" href="${nextHref}" data-link>${nextLabel}</a>
@@ -520,11 +552,11 @@ function coachPanel(pageKey) {
 function renderProgressTrack(_pageKey) {
   const hasStorageCheck = hasCheckedStorage();
   const steps = [
-    { key: "start", label: "Start", done: true },
-    { key: "bank", label: "Build Bank", done: (readiness.total || 0) > 0 },
-    { key: "collide", label: "Generate first move", done: Boolean(currentResult) },
-    { key: "library", label: "Save a spark", done: (favourites || []).length > 0 },
-    { key: "settings", label: "Check storage", done: hasStorageCheck },
+    { key: "capture", label: "Capture", done: (readiness.total || 0) > 0 },
+    { key: "generate", label: "Generate", done: Boolean(currentResult) },
+    { key: "choose", label: "Choose", done: (favourites || []).length > 0 || (projects || []).length > 0 },
+    { key: "shape", label: "Shape", done: (projects || []).some((project) => (project.actions || []).length > 0) },
+    { key: "do-next", label: "Do Next", done: (projects || []).some((project) => (project.actions || []).some((action) => action.done)) || hasStorageCheck },
   ];
   const firstIncomplete = steps.findIndex((entry) => !entry.done);
   const activeIndex = firstIncomplete === -1 ? -1 : firstIncomplete;
@@ -871,6 +903,7 @@ function renderResult() {
           <h3>Keep this result</h3>
           <p class="micro-hint">Save the keeper first, then copy or export what you want to use.</p>
           <div class="button-row">
+            <button id="saveProjectButton" class="primary">Save as Project</button>
             <button id="saveFavouriteButton" class="primary">Save Favourite</button>
             <button id="copyResultButton">Copy Output</button>
             <button id="copyHookButton">Copy Hook</button>
@@ -1099,6 +1132,216 @@ function shareSummaryText(result) {
   ].join("\n").trim() + "\n";
 }
 
+function renderMomentum() {
+  const project = activeProject();
+  const canCreate = Boolean(currentResult);
+  if (!project) {
+    return `
+      ${coachPanel("momentum")}
+      <section class="empty-state empty-state-visual">
+        <div class="empty-art empty-art-collider" aria-hidden="true"></div>
+        <div>
+          <h2>No momentum project yet</h2>
+          <p>${canCreate ? "Your current result can become the first project." : "Generate a first move, then save it as a project here."}</p>
+          <div class="action-row">
+            <button id="createProjectFromResultButton" class="primary" ${canCreate ? "" : "disabled"}>Save Current Result as Project</button>
+            <a class="button-link" href="/collide" data-link>Generate First Move</a>
+          </div>
+          <p class="message" role="status" aria-live="polite" id="projectMessage">${escapeHtml(projectMessage)}</p>
+        </div>
+      </section>
+    `;
+  }
+  return `
+    ${coachPanel("momentum")}
+    <div class="project-layout">
+      <aside class="panel flat project-list-panel">
+        <div class="section-heading-row">
+          <div>
+            <h2>Projects</h2>
+            <p>${projects.length} local project${projects.length === 1 ? "" : "s"} saved.</p>
+          </div>
+        </div>
+        <div class="project-stats meter-grid compact">
+          <div class="meter"><strong>${projects.length}</strong><span>Total projects</span></div>
+          <div class="meter"><strong>${projects.filter((item) => item.readiness?.level === "green").length}</strong><span>Green lights</span></div>
+        </div>
+        ${canCreate ? `<button id="createProjectFromResultButton" class="primary">Save Current Result as Project</button>` : `<a class="button-link" href="/collide" data-link>Generate More</a>`}
+        <div class="project-list">${projects.map(renderProjectListItem).join("")}</div>
+      </aside>
+      <section class="panel project-detail-panel">
+        ${renderProjectDetail(project)}
+      </section>
+    </div>
+  `;
+}
+
+function renderProjectListItem(project) {
+  const readinessInfo = clientProjectReadiness(project);
+  const active = project.id === activeProjectId;
+  return `
+    <button class="project-list-item ${active ? "active" : ""}" data-open-project="${escapeHtml(project.id)}" aria-pressed="${active}">
+      <span class="status-dot ${escapeHtml(readinessInfo.level || "amber")}"></span>
+      <span>
+        <strong>${escapeHtml(project.title)}</strong>
+        <small>${escapeHtml(project.stage || "Choose")} - ${escapeHtml(readinessInfo.label || "Ready to try")}</small>
+      </span>
+    </button>
+  `;
+}
+
+function renderProjectDetail(project) {
+  const readinessInfo = clientProjectReadiness(project);
+  const actions = project.actions || [];
+  return `
+    <div class="project-hero">
+      <div>
+        <p class="result-kicker">Project Momentum</p>
+        <h2>${escapeHtml(project.title)}</h2>
+        <p>${escapeHtml(project.best_hook || "No hook saved yet.")}</p>
+        <div class="result-meta-pills">
+          <span>${escapeHtml(project.mode || "Spark")}</span>
+          <span>Seed ${escapeHtml(project.seed ?? "auto")}</span>
+          <span>${escapeHtml(project.stage || "Choose")}</span>
+        </div>
+      </div>
+      <div class="project-light-card ${escapeHtml(readinessInfo.level || "amber")}">
+        <span class="status-dot ${escapeHtml(readinessInfo.level || "amber")}"></span>
+        <strong>${escapeHtml(readinessInfo.label || "Ready to try")}</strong>
+        <p>${escapeHtml(readinessInfo.next_action || "Pick the smallest useful action.")}</p>
+      </div>
+    </div>
+    ${renderProjectWorkflow(project.stage)}
+    <div class="project-editor-grid result-section">
+      <label class="field">Project title
+        <input id="projectTitleInput" type="text" value="${escapeHtml(project.title)}" />
+      </label>
+      <label class="field">Workflow stage
+        <select id="projectStageInput">${["Capture", "Generate", "Choose", "Shape", "Do Next"].map((stage) => `<option ${stage === project.stage ? "selected" : ""}>${stage}</option>`).join("")}</select>
+      </label>
+      <label class="field">Traffic light
+        <select id="projectReadinessInput">
+          <option value="red" ${readinessInfo.level === "red" ? "selected" : ""}>Red - needs shaping</option>
+          <option value="amber" ${readinessInfo.level === "amber" ? "selected" : ""}>Amber - ready to try</option>
+          <option value="green" ${readinessInfo.level === "green" ? "selected" : ""}>Green - ready to do</option>
+        </select>
+      </label>
+    </div>
+    <div class="project-actions-panel result-section">
+      <div class="section-heading-row">
+        <div>
+          <h3>Small actions</h3>
+          <p class="micro-hint">${actions.length ? `${readinessInfo.done || 0} of ${actions.length} actions ticked.` : "Add one action so this project has a handle."}</p>
+        </div>
+      </div>
+      <div class="project-action-list" id="projectActionList">
+        ${actions.length ? actions.map(renderProjectAction).join("") : `<div class="empty-state">No actions yet. Add the smallest next move below.</div>`}
+      </div>
+      <div class="quick-add project-action-add">
+        <label class="field">New action
+          <input id="projectActionInput" type="text" placeholder="one tiny move you can actually do" />
+        </label>
+        <button id="addProjectActionButton">Add Action</button>
+      </div>
+    </div>
+    <label class="field result-section">Notes
+      <textarea id="projectNotesInput" class="project-notes">${escapeHtml(project.notes || "")}</textarea>
+    </label>
+    <div class="button-row">
+      <button id="saveProjectChangesButton" class="primary">Save Project</button>
+      <button id="copyProjectBriefButton">Copy Project Brief</button>
+      <button id="exportProjectCardButton" class="cyan">Export Project Card</button>
+      <button id="deleteProjectButton" class="danger">Delete Project</button>
+      <button id="openProjectExportsButton" ${lastProjectExportPath ? "" : "disabled"}>Open Exports Folder</button>
+    </div>
+    <p class="message" role="status" aria-live="polite" id="projectMessage">${lastProjectExportPath ? `Latest project export: ${escapeHtml(_fileNameFromPath(lastProjectExportPath))}` : escapeHtml(projectMessage)}</p>
+    <textarea id="copyFallback" class="copy-fallback" readonly hidden></textarea>
+  `;
+}
+
+function renderProjectWorkflow(currentStage) {
+  const stages = [
+    ["Capture", "Raw material is saved."],
+    ["Generate", "A spark exists."],
+    ["Choose", "One hook is selected."],
+    ["Shape", "Actions are clear."],
+    ["Do Next", "One move is ready."],
+  ];
+  const currentIndex = Math.max(0, stages.findIndex(([stage]) => stage === currentStage));
+  return `
+    <div class="project-workflow" aria-label="Project workflow">
+      ${stages.map(([stage, copy], index) => `
+        <article class="${index < currentIndex ? "done" : index === currentIndex ? "active" : ""}">
+          <span>${index + 1}</span>
+          <strong>${escapeHtml(stage)}</strong>
+          <p>${escapeHtml(copy)}</p>
+        </article>
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderProjectAction(action, index) {
+  const inputId = `project-action-${action.id}`;
+  return `
+    <div class="project-action-row">
+      <input id="${escapeHtml(inputId)}" type="checkbox" data-project-action="${escapeHtml(action.id)}" ${action.done ? "checked" : ""} />
+      <label for="${escapeHtml(inputId)}">${escapeHtml(action.text)}</label>
+      <button type="button" data-remove-project-action="${escapeHtml(action.id)}" aria-label="Remove action ${index + 1}">Remove</button>
+    </div>
+  `;
+}
+
+function activeProject() {
+  if (!projects.length) return null;
+  return projects.find((project) => project.id === activeProjectId) || projects[0];
+}
+
+function replaceActiveProject(project) {
+  const index = projects.findIndex((item) => item.id === project.id);
+  if (index >= 0) {
+    projects[index] = project;
+  }
+}
+
+function clientProjectReadiness(project) {
+  const actions = project?.actions || [];
+  const done = actions.filter((action) => action.done).length;
+  const level = ["red", "amber", "green"].includes(project?.readiness_level) ? project.readiness_level : project?.readiness?.level || "amber";
+  const labels = { red: "Needs shaping", amber: "Ready to try", green: "Ready to do" };
+  const nextAction = actions.find((action) => !action.done)?.text || (actions.length ? "All listed actions are ticked. Choose the next project move." : "Add one small action.");
+  return {
+    level,
+    label: labels[level] || "Ready to try",
+    done,
+    total: actions.length,
+    next_action: nextAction,
+  };
+}
+
+function projectBriefText(project) {
+  const readinessInfo = project.readiness || {};
+  const actions = project.actions || [];
+  return [
+    `ProMentum Project: ${project.title || "Untitled Project"}`,
+    "",
+    `Traffic light: ${readinessInfo.label || "Ready to try"}`,
+    `Stage: ${project.stage || "Choose"}`,
+    "",
+    `Hook: ${project.best_hook || ""}`,
+    "",
+    "Do Next:",
+    ...(actions.length ? actions.map((action) => `- [${action.done ? "x" : " "}] ${action.text}`) : ["- [ ] Make one rough version."]),
+    "",
+    project.recipe || "",
+  ].join("\n").trim() + "\n";
+}
+
+function cssEscape(value) {
+  if (window.CSS?.escape) return CSS.escape(String(value));
+  return String(value).replace(/["\\]/g, "\\$&");
+}
+
 function renderLibrary() {
   const visible = filteredLibraryFavourites();
   return `
@@ -1280,6 +1523,11 @@ function renderSettingsHealthGrid(payload = null) {
         <strong>${escapeHtml(String(doctor.favourite_count ?? "-"))}</strong>
         <p>Saved locally in your favourites file.</p>
       </article>
+      <article class="settings-health-card">
+        <span>Projects</span>
+        <strong>${escapeHtml(String(doctor.project_count ?? "-"))}</strong>
+        <p>Momentum projects saved locally in your projects file.</p>
+      </article>
       <article class="settings-health-card green">
         <span>Runtime</span>
         <strong>${escapeHtml(payload?.version ? `v${payload.version}` : "Local only")}</strong>
@@ -1295,6 +1543,7 @@ function renderSettingsPathList(payload = null) {
     ["Data folder", doctor.data_dir],
     ["Idea bank", doctor.state_path],
     ["Favourites", doctor.favourites_path],
+    ["Projects", doctor.projects_path],
     ["Exports", doctor.exports_dir],
     ["Portable fallback", doctor.portable_default],
   ];
@@ -1361,6 +1610,7 @@ function bindPage(page) {
   if (page === "bank") bindBank();
   if (page === "collide") bindCollide();
   if (page === "result") bindResult();
+  if (page === "momentum") bindMomentum();
   if (page === "library") bindLibrary();
   if (page === "settings") bindSettings();
 }
@@ -1531,12 +1781,68 @@ function bindResult() {
   el("copyShareButton")?.addEventListener("click", () =>
     withBusyAction("copyShareButton", "Copying...", () => copyText(shareSummaryText(currentResult), "Copied share summary.", "copy-share")),
   );
+  el("saveProjectButton")?.addEventListener("click", () => withBusyAction("saveProjectButton", "Saving...", () => createProjectFromResult(true)));
   el("saveFavouriteButton").addEventListener("click", () => withBusyAction("saveFavouriteButton", "Saving...", saveFavourite));
   el("exportTxtButton").addEventListener("click", () => withBusyAction("exportTxtButton", "Exporting...", () => exportResult("txt")));
   el("exportHtmlButton").addEventListener("click", () => withBusyAction("exportHtmlButton", "Exporting...", () => exportResult("html")));
   el("exportShareButton")?.addEventListener("click", () => withBusyAction("exportShareButton", "Exporting...", () => exportResult("share")));
   el("exportShareCardButton")?.addEventListener("click", () => withBusyAction("exportShareCardButton", "Exporting...", () => exportResult("share")));
   el("openExportsButton")?.addEventListener("click", openExportsFolder);
+}
+
+function bindMomentum() {
+  el("createProjectFromResultButton")?.addEventListener("click", () =>
+    withBusyAction("createProjectFromResultButton", "Saving...", () => createProjectFromResult(false)),
+  );
+  document.querySelectorAll("[data-open-project]").forEach((button) => {
+    button.addEventListener("click", () => {
+      activeProjectId = button.dataset.openProject || "";
+      projectMessage = "";
+      lastProjectExportPath = null;
+      renderRoute();
+    });
+  });
+  document.querySelectorAll("[data-project-action]").forEach((checkbox) => {
+    checkbox.addEventListener("change", () => {
+      const project = activeProject();
+      if (!project) return;
+      const action = (project.actions || []).find((item) => item.id === checkbox.dataset.projectAction);
+      if (action) {
+        action.done = checkbox.checked;
+        setProjectMessage("Action ticked. Save when this feels right.");
+      }
+    });
+  });
+  document.querySelectorAll("[data-remove-project-action]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const project = gatherProjectFromInputs() || activeProject();
+      if (!project) return;
+      project.actions = (project.actions || []).filter((item) => item.id !== button.dataset.removeProjectAction);
+      replaceActiveProject(project);
+      projectMessage = "Action removed. Save the project to keep this.";
+      renderRoute();
+    });
+  });
+  el("addProjectActionButton")?.addEventListener("click", addProjectAction);
+  el("projectActionInput")?.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      addProjectAction();
+    }
+  });
+  el("saveProjectChangesButton")?.addEventListener("click", () =>
+    withBusyAction("saveProjectChangesButton", "Saving...", () => saveProjectChanges()),
+  );
+  el("copyProjectBriefButton")?.addEventListener("click", () =>
+    withBusyAction("copyProjectBriefButton", "Copying...", copyProjectBrief),
+  );
+  el("exportProjectCardButton")?.addEventListener("click", () =>
+    withBusyAction("exportProjectCardButton", "Exporting...", exportProjectCard),
+  );
+  el("deleteProjectButton")?.addEventListener("click", () =>
+    withBusyAction("deleteProjectButton", "Deleting...", deleteActiveProject),
+  );
+  el("openProjectExportsButton")?.addEventListener("click", openExportsFolder);
 }
 
 async function quickAddFrom(categoryId, inputId, messageId) {
@@ -1781,6 +2087,136 @@ async function saveFavourite() {
   favourites = data.favourites || [];
   markResultAction("save", "Saved to library.");
   refreshProgressUI("result");
+}
+
+async function createProjectFromResult(fromResultPage = false) {
+  if (!currentResult) {
+    projectMessage = "Generate a result before saving a project.";
+    if (el("projectMessage")) el("projectMessage").textContent = projectMessage;
+    return;
+  }
+  const data = await api("/api/projects", { method: "POST", body: JSON.stringify({ result: currentResult }) });
+  projects = data.projects || [];
+  activeProjectId = data.project.id;
+  projectMessage = "Project saved. Shape the next action here.";
+  lastProjectExportPath = null;
+  refreshProgressUI(fromResultPage ? "result" : "momentum");
+  if (fromResultPage) {
+    markResultAction("project", "Saved as a Momentum project.");
+    navigate("/momentum");
+  } else {
+    renderRoute();
+  }
+}
+
+function addProjectAction() {
+  const input = el("projectActionInput");
+  const text = input?.value.trim() || "";
+  const project = gatherProjectFromInputs() || activeProject();
+  if (!project) return;
+  if (!text) {
+    setProjectMessage("Type one small action first.");
+    return;
+  }
+  project.actions = [...(project.actions || []), { id: `action-${Date.now()}`, text, done: false }];
+  replaceActiveProject(project);
+  projectMessage = "Action added. Save the project to keep it.";
+  lastProjectExportPath = null;
+  renderRoute();
+}
+
+function gatherProjectFromInputs() {
+  const project = activeProject();
+  if (!project) return null;
+  const readinessInput = el("projectReadinessInput");
+  const stageInput = el("projectStageInput");
+  const titleInput = el("projectTitleInput");
+  const notesInput = el("projectNotesInput");
+  const actions = (project.actions || []).map((action) => ({
+    ...action,
+    done: Boolean(document.querySelector(`[data-project-action="${cssEscape(action.id)}"]`)?.checked),
+  }));
+  return {
+    ...project,
+    title: titleInput?.value.trim() || project.title,
+    stage: stageInput?.value || project.stage || "Choose",
+    readiness_level: readinessInput?.value || project.readiness?.level || "amber",
+    notes: notesInput?.value || "",
+    actions,
+  };
+}
+
+async function saveProjectChanges({ rerender = true } = {}) {
+  const project = gatherProjectFromInputs();
+  if (!project) return null;
+  const data = await api("/api/projects", { method: "POST", body: JSON.stringify({ project }) });
+  projects = data.projects || [];
+  activeProjectId = data.project.id;
+  projectMessage = "Project saved locally.";
+  if (rerender) renderRoute();
+  return data.project;
+}
+
+async function copyProjectBrief() {
+  const project = gatherProjectFromInputs() || activeProject();
+  if (!project) return;
+  const text = projectBriefText({ ...project, readiness: clientProjectReadiness(project) });
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      fallbackProjectCopy(text, "Copied project brief.");
+      return;
+    }
+    setProjectMessage("Copied project brief.");
+  } catch {
+    fallbackProjectCopy(text, "Clipboard blocked. Text is selected below.");
+  }
+}
+
+function fallbackProjectCopy(text, message) {
+  const fallback = el("copyFallback");
+  if (!fallback) {
+    setProjectMessage(message);
+    return;
+  }
+  fallback.hidden = false;
+  fallback.value = text;
+  fallback.focus();
+  fallback.select();
+  try {
+    document.execCommand("copy");
+    fallback.hidden = true;
+  } catch {
+    // The selected fallback text is still visible for manual copy.
+  }
+  setProjectMessage(message);
+}
+
+async function exportProjectCard() {
+  const project = await saveProjectChanges({ rerender: false });
+  if (!project) return;
+  const data = await api("/api/projects/export", { method: "POST", body: JSON.stringify({ project, format: "project-card" }) });
+  lastProjectExportPath = data.export.path;
+  projectMessage = `Exported Project Card as ${_fileNameFromPath(data.export.path)}.`;
+  renderRoute();
+}
+
+async function deleteActiveProject() {
+  const project = activeProject();
+  if (!project || !confirm("Delete this Momentum project?")) return;
+  const data = await api("/api/projects", { method: "DELETE", body: JSON.stringify({ id: project.id }) });
+  projects = data.projects || [];
+  activeProjectId = projects[0]?.id || "";
+  projectMessage = "Project deleted.";
+  lastProjectExportPath = null;
+  renderRoute();
+}
+
+function setProjectMessage(message) {
+  projectMessage = message;
+  const target = el("projectMessage");
+  if (target) target.textContent = message;
 }
 
 async function exportResult(format) {

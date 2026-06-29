@@ -3,7 +3,14 @@ from __future__ import annotations
 import html
 import unittest
 
-from idea_collider_app.engine import generate_collision, readiness, share_card_to_html, share_card_to_text
+from idea_collider_app.engine import (
+    generate_collision,
+    project_card_to_html,
+    project_card_to_text,
+    readiness,
+    share_card_to_html,
+    share_card_to_text,
+)
 from scripts.sample_collisions import DEMO_CASES
 from idea_collider_app.storage import load_default_state
 
@@ -49,6 +56,24 @@ class EngineTests(unittest.TestCase):
         self.assertIn("ProMentum Share Card", card_html)
         self.assertIn(html.escape(result["best_hook"]), card_html)
         self.assertIn(result["recipe"], card_html)
+
+    def test_project_card_renderers_include_actions_and_readiness(self) -> None:
+        result = generate_collision(self.state, {"seed": 556, "mode": "Scene Seed"})
+        project = {
+            "title": result["title"],
+            "best_hook": result["best_hook"],
+            "stage": "Shape",
+            "recipe": result["recipe"],
+            "readiness": {"level": "green", "label": "Ready to do"},
+            "actions": [{"text": "Write the first ten lines.", "done": False}],
+        }
+        text = project_card_to_text(project)
+        card_html = project_card_to_html(project)
+        self.assertIn("ProMentum Project:", text)
+        self.assertIn("Write the first ten lines.", text)
+        self.assertIn("Ready to do", text)
+        self.assertIn("ProMentum Project Card", card_html)
+        self.assertIn(html.escape(result["best_hook"]), card_html)
 
     def test_readiness_traffic_lights(self) -> None:
         empty = {key: [] for key in ["ideas", "phrases", "people", "places", "obsessions", "questions", "formats", "rules"]}
