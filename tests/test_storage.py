@@ -48,12 +48,24 @@ class StorageTests(unittest.TestCase):
 
                 project = storage.save_project_from_result(result)
                 self.assertEqual(storage.list_projects()[0]["id"], project["id"])
+                self.assertEqual(project["stage"], "Spark")
                 self.assertEqual(project["readiness"]["level"], "amber")
+                self.assertIn("history", project)
                 project["actions"][0]["done"] = True
                 project["readiness_level"] = "green"
+                project["stage"] = "First Step"
+                project["wins"] = ["Made a first pass."]
+                project["blockers"] = ["Need a title."]
+                project["history"] = [{"kind": "win", "text": "Made a first pass.", "created_at": "2026-06-29T00:00:00Z"}]
                 updated = storage.save_project(project)
                 self.assertEqual(updated["readiness"]["done"], 1)
                 self.assertEqual(updated["readiness"]["level"], "green")
+                self.assertEqual(updated["stage"], "First Step")
+                self.assertEqual(updated["wins"], ["Made a first pass."])
+                self.assertEqual(updated["blockers"], ["Need a title."])
+                today = storage.today_plan()
+                self.assertTrue(today["has_action"])
+                self.assertEqual(today["project_id"], updated["id"])
                 project_export = storage.export_project(updated)
                 project_path = Path(project_export["path"])
                 self.assertEqual(project_export["format"], "project-card")
@@ -61,8 +73,18 @@ class StorageTests(unittest.TestCase):
                 self.assertTrue(project_path.name.endswith("-project-card.html"))
                 self.assertIn("ProMentum Project Card", project_path.read_text(encoding="utf-8"))
                 self.assertTrue(project_path.is_relative_to(Path(tmp)))
+                brief_export = storage.export_project(updated, "project-brief")
+                self.assertEqual(brief_export["format"], "project-brief")
+                self.assertTrue(Path(brief_export["path"]).name.endswith("-project-brief.txt"))
+                today_export = storage.export_project(updated, "today-plan")
+                self.assertEqual(today_export["format"], "today-plan")
+                self.assertIn("ProMentum Today Plan", Path(today_export["path"]).read_text(encoding="utf-8"))
+                log_export = storage.export_project(updated, "progress-log")
+                self.assertEqual(log_export["format"], "progress-log")
+                self.assertIn("ProMentum Progress Log", Path(log_export["path"]).read_text(encoding="utf-8"))
                 storage.delete_project(updated["id"])
                 self.assertEqual(storage.list_projects(), [])
+                self.assertFalse(storage.today_plan()["has_action"])
 
                 blank = storage.reset_blank_state()
                 self.assertEqual(sum(len(blank[key]) for key in storage.INGREDIENT_KEYS), 0)

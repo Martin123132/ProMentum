@@ -27,7 +27,7 @@ class AppSmokeTests(unittest.TestCase):
             )
             try:
                 url = self._read_url(proc)
-                for path in ("/", "/start", "/bank", "/collide", "/result", "/momentum", "/library", "/settings"):
+                for path in ("/", "/today", "/start", "/bank", "/collide", "/result", "/momentum", "/library", "/settings"):
                     with request.urlopen(f"{url}{path}", timeout=5) as response:
                         self.assertEqual(response.status, 200)
                         body = response.read().decode("utf-8")
@@ -49,6 +49,10 @@ class AppSmokeTests(unittest.TestCase):
                 self.assertIn("PROMENTUM_HOME", launcher)
                 self.assertIn("D:\\ProMentumData", launcher)
                 self.assertIn("ProMentum v", app_js)
+                self.assertIn("PROJECT_STAGES", app_js)
+                self.assertIn("renderToday", app_js)
+                self.assertIn("bindToday", app_js)
+                self.assertIn("Today's 10 Minutes", app_js)
                 self.assertIn("renderProgressTrack", app_js)
                 self.assertIn("const activeIndex = firstIncomplete === -1 ? -1 : firstIncomplete", app_js)
                 self.assertIn("coachGenerateButton", app_js)
@@ -80,6 +84,9 @@ class AppSmokeTests(unittest.TestCase):
                 self.assertIn("renderMomentum", app_js)
                 self.assertIn("bindMomentum", app_js)
                 self.assertIn("Save as Project", app_js)
+                self.assertIn("Export Today Plan", app_js)
+                self.assertIn("Export Progress Log", app_js)
+                self.assertIn("project-journal-grid", app_js)
                 self.assertIn("Export Project Card", app_js)
                 self.assertIn("projectBriefText", app_js)
                 self.assertIn("clientProjectReadiness", app_js)
@@ -89,6 +96,8 @@ class AppSmokeTests(unittest.TestCase):
                 self.assertIn("renderSettingsPathList", app_js)
                 self.assertIn("updateSettingsDoctor", app_js)
                 self.assertIn("promentum-workshop.webp", app_css)
+                self.assertIn(".today-layout", app_css)
+                self.assertIn(".today-action-card", app_css)
                 self.assertIn("promentum-console.webp", app_css)
                 self.assertIn("spark-bank-workbench.webp", app_css)
                 self.assertIn("saved-sparks-shelf.webp", app_css)
@@ -105,6 +114,8 @@ class AppSmokeTests(unittest.TestCase):
                 self.assertIn(".result-use-card", app_css)
                 self.assertIn(".share-card-panel", app_css)
                 self.assertIn(".project-layout", app_css)
+                self.assertIn(".project-journal-grid", app_css)
+                self.assertIn(".history-entry", app_css)
                 self.assertIn(".project-workflow", app_css)
                 self.assertIn(".project-action-row", app_css)
                 self.assertIn(".result-handoff-panel", app_css)
@@ -139,6 +150,7 @@ class AppSmokeTests(unittest.TestCase):
                 self.assertTrue(doctor["ok"])
                 self.assertTrue(doctor["doctor"]["state_ok"])
                 self.assertTrue(doctor["doctor"]["data_dir"].startswith(tmp))
+                self.assertIn("today", doctor["doctor"])
 
                 started = time.perf_counter()
                 generated = self._post_json(
@@ -154,21 +166,36 @@ class AppSmokeTests(unittest.TestCase):
                 self.assertTrue(project["ok"])
                 self.assertIn("actions", project["project"])
                 self.assertEqual(project["project"]["readiness"]["level"], "amber")
+                self.assertEqual(project["project"]["stage"], "Spark")
+                self.assertIn("history", project["project"])
                 self.assertTrue(project["project"]["id"].startswith("project-"))
 
                 projects = self._json(url + "/api/projects")
                 self.assertEqual(len(projects["projects"]), 1)
+                self.assertTrue(projects["today"]["has_action"])
+                today = self._json(url + "/api/today")
+                self.assertTrue(today["today"]["has_action"])
 
                 project["project"]["readiness_level"] = "green"
+                project["project"]["stage"] = "First Step"
+                project["project"]["wins"] = ["Made a first pass."]
+                project["project"]["blockers"] = ["Need a screenshot."]
                 project["project"]["actions"][0]["done"] = True
                 updated = self._post_json(url + "/api/projects", {"project": project["project"]})
                 self.assertEqual(updated["project"]["readiness"]["level"], "green")
                 self.assertEqual(updated["project"]["readiness"]["done"], 1)
+                self.assertEqual(updated["project"]["stage"], "First Step")
 
                 project_export = self._post_json(url + "/api/projects/export", {"project": updated["project"]})
                 self.assertTrue(project_export["ok"])
                 self.assertEqual(project_export["export"]["format"], "project-card")
                 self.assertTrue(project_export["export"]["path"].endswith("-project-card.html"))
+                brief_export = self._post_json(url + "/api/projects/export", {"project": updated["project"], "format": "project-brief"})
+                self.assertEqual(brief_export["export"]["format"], "project-brief")
+                today_export = self._post_json(url + "/api/projects/export", {"project": updated["project"], "format": "today-plan"})
+                self.assertEqual(today_export["export"]["format"], "today-plan")
+                progress_export = self._post_json(url + "/api/projects/export", {"project": updated["project"], "format": "progress-log"})
+                self.assertEqual(progress_export["export"]["format"], "progress-log")
 
                 exported = self._post_json(url + "/api/export", {"result": generated["result"], "format": "share"})
                 self.assertTrue(exported["ok"])

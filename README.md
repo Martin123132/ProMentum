@@ -12,9 +12,9 @@ No API keys. No cloud calls. No accounts. No npm. No build step.
 
 [Download the latest Windows ZIP](https://github.com/Martin123132/ProMentum/releases/latest)
 
-Here it is on first launch:
+Here it is on the Today page:
 
-![ProMentum Start page](docs/screenshots/promentum-start.png)
+![ProMentum Today page](docs/screenshots/promentum-today.png)
 
 ## Quick Start
 
@@ -22,7 +22,7 @@ Here it is on first launch:
 2. Unzip it somewhere normal, such as your Desktop or D: drive.
 3. Double-click `START_ProMentum_WINDOWS.bat`.
 4. Your browser opens locally.
-5. Press **Generate First Move**.
+5. If Today has no project yet, press **Generate First Move** and save one spark as a project.
 
 If Windows says Python is missing, install Python 3.10 or newer from:
 
@@ -35,27 +35,29 @@ again.
 
 ## What It Feels Like
 
-ProMentum is built around movement, not menus. Each page has one job, and the
-traffic-light system tells you what to do next:
+ProMentum is built around movement, not menus. The app now opens on **Today**:
+one saved project, one tiny action, ten honest minutes, then a win or blocker
+logged before you leave. Each page has one job, and the traffic-light system
+tells you what to do next:
 
-- **Red**: add more raw material.
-- **Amber**: you can try a first move.
-- **Green**: generate, save, export, and keep going.
+- **Red**: blocked; name the blocker.
+- **Amber**: needs shaping before action.
+- **Green**: ready to do.
 
 It is meant to feel playful but useful: a small local machine that helps you
 get unstuck without turning your own thoughts into a cloud service.
 
 ![ProMentum Result page](docs/screenshots/promentum-result.png)
 
-The v0.2.0 workflow is deliberately simple:
+The core workflow is deliberately simple:
 
 ```text
-Capture -> Generate -> Choose -> Shape -> Do Next
+Today -> Capture -> Generate -> Choose -> Shape -> Do Next
 ```
 
 When a result feels useful, save it as a Momentum project. The project keeps the
-hook, traffic-light readiness, notes, and small actions so you can return later
-without reconstructing the idea from memory.
+hook, traffic-light readiness, notes, blockers, wins, action history, and small
+actions so you can return later without reconstructing the idea from memory.
 
 ![ProMentum Momentum page](docs/screenshots/promentum-momentum.png)
 
@@ -67,11 +69,15 @@ without reconstructing the idea from memory.
 - Raise or lower weirdness depending on whether you want grounded or chaotic.
 - Save favourites locally.
 - Save a generated spark as a **Momentum Project**.
+- Open **Today** to get one recommended next action.
 - Break a project into small actions and tick them off.
+- Move projects through `Spark`, `Shaping`, `First Step`, `In Progress`, `Parked`, and `Done`.
 - Mark project readiness with a red, amber, or green traffic light.
+- Log wins and blockers so progress survives between sessions.
 - Export TXT or HTML files.
 - Export a standalone **Share Card** HTML file for the best hook and next move.
 - Export a standalone **Project Card** HTML file for a project plan.
+- Export a **Project Brief**, **Today Plan**, or **Progress Log**.
 - Open your data and exports folders from inside the app.
 
 ![ProMentum Share card controls](docs/screenshots/promentum-share-card.png)
@@ -98,11 +104,12 @@ on GitHub is the same local app people open on Windows.
 
 ## Pages
 
-- `Start`: traffic lights, quick add, and the next useful move.
+- `Today`: one recommended project action and a 10-minute progress loop.
+- `Capture`: traffic lights, quick add, and the next useful move.
 - `Spark Bank`: edit the raw ingredients that make the output feel like yours.
 - `Generate`: choose mode, seed, weirdness, and ingredient count.
 - `Result`: read the generated spark, copy it, shape it, save it, or export it.
-- `Momentum`: turn a chosen spark into a local project with actions and readiness.
+- `Momentum`: turn a chosen spark into a local project with actions, wins, blockers, history, and readiness.
 - `Library`: reload favourites you want to keep.
 - `Settings`: check local storage and open data folders.
 
@@ -114,11 +121,13 @@ Try this simple loop:
 2. Generate a first move.
 3. Save it as a Momentum project.
 4. Add one small action and mark the traffic light.
-5. Export a Project Card.
-6. Save a favourite.
-7. Export TXT.
-8. Close the app and reopen it.
-9. Check that your bank, project, and favourite are still there.
+5. Open Today and start the 10-minute flow.
+6. Mark the action done or log a blocker.
+7. Export a Today Plan and Progress Log.
+8. Save a favourite.
+9. Export TXT.
+10. Close the app and reopen it.
+11. Check that your bank, project, history, and favourite are still there.
 
 Good tester notes are plain:
 
@@ -126,7 +135,8 @@ Good tester notes are plain:
 - Did Python block you?
 - Did the launcher make sense?
 - Did save/export make sense?
-- Did the Momentum project page make the next action clearer?
+- Did Today make the next action clearer?
+- Did wins/blockers/history make it easier to return later?
 - Which seed or mode made you grin?
 
 ## Development

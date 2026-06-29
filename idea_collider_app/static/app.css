@@ -1959,7 +1959,7 @@ label.field {
 .project-workflow {
   margin-top: 18px;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 8px;
 }
 
@@ -2077,6 +2077,206 @@ label.field {
 
 .project-notes {
   min-height: 112px;
+}
+
+.today-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.today-board {
+  display: grid;
+  gap: 16px;
+}
+
+.today-empty {
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.45fr);
+  align-items: center;
+}
+
+.today-hero-copy h2 {
+  font-size: clamp(30px, 5vw, 50px);
+  max-width: 18ch;
+}
+
+.today-action-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fbfcfd;
+  padding: 16px;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+}
+
+.today-action-card.red {
+  border-color: #ffd0d0;
+  background: #fff6f6;
+}
+
+.today-action-card.amber {
+  border-color: #ffe3a3;
+  background: #fffaf0;
+}
+
+.today-action-card.green {
+  border-color: #beebcd;
+  background: #f0fff6;
+}
+
+.today-action-card strong {
+  font-size: 20px;
+  line-height: 1.15;
+}
+
+.today-action-card p {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.today-mini-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.today-mini-steps article {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fbfcfd;
+  min-height: 112px;
+  padding: 13px;
+}
+
+.today-mini-steps article.active {
+  border-color: #bfe5ef;
+  background: #f2fcff;
+}
+
+.today-mini-steps span {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.today-mini-steps strong {
+  display: block;
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.today-log-panel {
+  display: grid;
+  gap: 12px;
+}
+
+.project-journal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.project-journal-panel,
+.project-history-panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fbfcfd;
+  padding: 16px;
+}
+
+.tag-list,
+.history-list {
+  margin-top: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.journal-tag {
+  border: 1px solid #dce4e9;
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--ink);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 9px;
+  align-items: center;
+  padding: 9px 10px;
+  font-size: 13px;
+  font-weight: 750;
+  overflow-wrap: anywhere;
+}
+
+.journal-tag.win {
+  border-color: #beebcd;
+  background: #f0fff6;
+}
+
+.journal-tag.blocker {
+  border-color: #ffd0d0;
+  background: #fff6f6;
+}
+
+.journal-tag > span,
+.history-entry > span {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.journal-tag button {
+  min-height: 32px;
+  padding: 6px 8px;
+  font-size: 11px;
+}
+
+.empty-tag {
+  border: 1px dashed #b9c4cc;
+  border-radius: var(--radius);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px;
+}
+
+.journal-add {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+}
+
+.history-entry {
+  border: 1px solid #dce4e9;
+  border-radius: var(--radius);
+  background: #fff;
+  display: grid;
+  grid-template-columns: 82px minmax(0, 1fr);
+  gap: 10px;
+  padding: 10px 12px;
+}
+
+.history-entry p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 750;
+  max-width: none;
+}
+
+.history-entry small {
+  grid-column: 2;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .panel:hover {
@@ -2366,6 +2566,11 @@ label.field {
   .project-workflow,
   .project-editor-grid,
   .project-action-add,
+  .project-journal-grid,
+  .today-layout,
+  .today-empty,
+  .today-mini-steps,
+  .journal-add,
   .coach-compact {
     grid-template-columns: 1fr;
   }
@@ -2517,6 +2722,10 @@ label.field {
 
   .project-workflow article {
     min-height: 0;
+  }
+
+  .project-workflow {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .project-action-row {

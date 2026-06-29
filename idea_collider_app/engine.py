@@ -222,11 +222,14 @@ def share_card_to_html(result: dict[str, Any]) -> str:
 def project_card_to_text(project: dict[str, Any]) -> str:
     actions = project.get("actions") or []
     readiness_info = project.get("readiness") or {}
+    blockers = _project_text_list(project.get("blockers"))
+    wins = _project_text_list(project.get("wins"))
+    history = _project_history(project.get("history"))
     lines = [
         f"ProMentum Project: {project.get('title') or 'Untitled Project'}",
         "",
         f"Traffic light: {readiness_info.get('label') or 'Not marked'}",
-        f"Current stage: {project.get('stage') or 'Capture'}",
+        f"Current stage: {project.get('stage') or 'Spark'}",
         "",
         f"Hook: {project.get('best_hook') or ''}",
         "",
@@ -241,6 +244,69 @@ def project_card_to_text(project: dict[str, Any]) -> str:
     notes = str(project.get("notes") or "").strip()
     if notes:
         lines.extend(["", "Notes:", notes])
+    if blockers:
+        lines.extend(["", "Blockers:"])
+        lines.extend(f"- {item}" for item in blockers)
+    if wins:
+        lines.extend(["", "Wins:"])
+        lines.extend(f"- {item}" for item in wins)
+    if history:
+        lines.extend(["", "Recent history:"])
+        for entry in history[:8]:
+            lines.append(f"- {entry.get('kind', 'note')}: {entry.get('text', '')}")
+    lines.extend(["", str(project.get("recipe") or "")])
+    return "\n".join(lines).strip() + "\n"
+
+
+def today_plan_to_text(project: dict[str, Any]) -> str:
+    readiness_info = project.get("readiness") or {}
+    actions = project.get("actions") or []
+    next_action = next((action.get("text") for action in actions if not action.get("done")), "")
+    if not next_action:
+        next_action = readiness_info.get("next_action") or "Choose one tiny next action."
+    blockers = _project_text_list(project.get("blockers"))
+    lines = [
+        f"ProMentum Today Plan: {project.get('title') or 'Untitled Project'}",
+        "",
+        f"Traffic light: {readiness_info.get('label') or 'Needs shaping'}",
+        f"Stage: {project.get('stage') or 'Spark'}",
+        "",
+        f"10-minute action: {next_action}",
+        "",
+        "Do it like this:",
+        "1. Open only what this action needs.",
+        "2. Work for ten honest minutes.",
+        "3. Log one win or one blocker before moving on.",
+    ]
+    if blockers:
+        lines.extend(["", "Known blocker to watch:", f"- {blockers[0]}"])
+    lines.extend(["", str(project.get("recipe") or "")])
+    return "\n".join(lines).strip() + "\n"
+
+
+def progress_log_to_text(project: dict[str, Any]) -> str:
+    readiness_info = project.get("readiness") or {}
+    history = _project_history(project.get("history"))
+    wins = _project_text_list(project.get("wins"))
+    blockers = _project_text_list(project.get("blockers"))
+    lines = [
+        f"ProMentum Progress Log: {project.get('title') or 'Untitled Project'}",
+        "",
+        f"Traffic light: {readiness_info.get('label') or 'Needs shaping'}",
+        f"Stage: {project.get('stage') or 'Spark'}",
+        "",
+        "Wins:",
+    ]
+    lines.extend([f"- {item}" for item in wins] or ["- No wins logged yet."])
+    lines.extend(["", "Blockers:"])
+    lines.extend([f"- {item}" for item in blockers] or ["- No blockers logged yet."])
+    lines.extend(["", "History:"])
+    if history:
+        for entry in history:
+            when = f" ({entry.get('created_at')})" if entry.get("created_at") else ""
+            lines.append(f"- {entry.get('kind', 'note')}{when}: {entry.get('text', '')}")
+    else:
+        lines.append("- No history logged yet.")
     lines.extend(["", str(project.get("recipe") or "")])
     return "\n".join(lines).strip() + "\n"
 
@@ -248,12 +314,14 @@ def project_card_to_text(project: dict[str, Any]) -> str:
 def project_card_to_html(project: dict[str, Any]) -> str:
     title = html.escape(str(project.get("title") or "Untitled Project"))
     hook = html.escape(str(project.get("best_hook") or ""))
-    stage = html.escape(str(project.get("stage") or "Capture"))
+    stage = html.escape(str(project.get("stage") or "Spark"))
     recipe = html.escape(str(project.get("recipe") or ""))
     readiness_info = project.get("readiness") or {}
     readiness_label = html.escape(str(readiness_info.get("label") or "Not marked"))
     readiness_level = html.escape(str(readiness_info.get("level") or "amber"))
     notes = html.escape(str(project.get("notes") or "")).replace("\n", "<br>\n")
+    blockers = _project_text_list(project.get("blockers"))
+    wins = _project_text_list(project.get("wins"))
     action_items = []
     for action in project.get("actions") or []:
         done = "done" if action.get("done") else ""
@@ -263,6 +331,8 @@ def project_card_to_html(project: dict[str, Any]) -> str:
         )
     if not action_items:
         action_items.append("<li><span>Next</span>Make one rough version.</li>")
+    blocker_html = "".join(f"<li><span>Blocker</span>{html.escape(item)}</li>" for item in blockers)
+    win_html = "".join(f"<li class=\"done\"><span>Win</span>{html.escape(item)}</li>" for item in wins)
     return f"""<!doctype html>
 <html>
 <head>
@@ -287,6 +357,7 @@ def project_card_to_html(project: dict[str, Any]) -> str:
     li span {{ color: #64717b; font-size: 11px; font-weight: 900; text-transform: uppercase; }}
     li.done {{ background: #f0fff6; border-color: #beebcd; }}
     .notes {{ color: #3f4b54; font-size: 15px; font-weight: 700; line-height: 1.5; margin: 20px 0 0; }}
+    h2 {{ font-size: 16px; margin: 24px 0 0; }}
     .recipe {{ border-top: 1px solid #d8dee3; color: #64717b; font-family: Consolas, Courier New, monospace; font-size: 13px; margin: 26px 0 0; padding-top: 16px; overflow-wrap: anywhere; }}
   </style>
 </head>
@@ -297,7 +368,10 @@ def project_card_to_html(project: dict[str, Any]) -> str:
       <h1>{title}</h1>
       <div class="light"><span class="dot {readiness_level}"></span>{readiness_label}</div>
       <p class="hook">{hook}</p>
+      <h2>Do Next</h2>
       <ul>{"".join(action_items)}</ul>
+      {f'<h2>Wins</h2><ul>{win_html}</ul>' if win_html else ''}
+      {f'<h2>Blockers</h2><ul>{blocker_html}</ul>' if blocker_html else ''}
       {f'<p class="notes">{notes}</p>' if notes else ''}
       <p class="recipe">{recipe}</p>
     </article>
@@ -305,6 +379,39 @@ def project_card_to_html(project: dict[str, Any]) -> str:
 </body>
 </html>
 """
+
+
+def _project_text_list(items: Any) -> list[str]:
+    if not isinstance(items, list):
+        return []
+    cleaned = []
+    for item in items:
+        text = str(item.get("text") if isinstance(item, dict) else item).strip()
+        if text:
+            cleaned.append(text)
+    return cleaned
+
+
+def _project_history(items: Any) -> list[dict[str, str]]:
+    if not isinstance(items, list):
+        return []
+    history = []
+    for item in items:
+        if not isinstance(item, dict):
+            text = str(item).strip()
+            if text:
+                history.append({"kind": "note", "text": text, "created_at": ""})
+            continue
+        text = str(item.get("text") or "").strip()
+        if text:
+            history.append(
+                {
+                    "kind": str(item.get("kind") or "note"),
+                    "text": text,
+                    "created_at": str(item.get("created_at") or ""),
+                }
+            )
+    return history
 
 
 def _bank_items(state: dict[str, Any]) -> list[dict[str, str]]:

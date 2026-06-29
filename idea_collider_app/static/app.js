@@ -5,6 +5,7 @@ let readiness = null;
 let modes = [];
 let favourites = [];
 let projects = [];
+let todayPlan = null;
 let currentResult = null;
 let activeBankKey = "ideas";
 let lastVariantSeed = null;
@@ -17,9 +18,14 @@ let collideMessageTimer = null;
 let librarySearch = "";
 let activeProjectId = "";
 let projectMessage = "";
+let todayMessage = "";
+let activeTodaySession = null;
+
+const PROJECT_STAGES = ["Spark", "Shaping", "First Step", "In Progress", "Parked", "Done"];
 
 const FLOW_STEPS = [
-  { id: "start", route: "/start", label: "Start", lockedReason: null },
+  { id: "today", route: "/today", label: "Today", lockedReason: null },
+  { id: "start", route: "/start", label: "Capture", lockedReason: null },
   { id: "bank", route: "/bank", label: "Build Bank", lockedReason: null },
   { id: "collide", route: "/collide", label: "Generate", lockedReason: "Add at least some ingredients first." },
   { id: "result", route: "/result", label: "Result", lockedReason: "Generate once to create something to review." },
@@ -29,10 +35,24 @@ const FLOW_STEPS = [
 ];
 
 const pageMeta = {
-  start: {
-    title: "Start",
-    step: "Capture",
+  today: {
+    title: "Today",
+    step: "Do one thing",
     stage: "1",
+    cue: "Pick one saved action, give it ten honest minutes, then log what happened.",
+    goal: "Goal: leave with one project clearer than when you opened the app.",
+    tips: [
+      "Green is the action to do now.",
+      "Amber needs shaping before you start.",
+      "Red means log the blocker instead of pretending it is fine.",
+    ],
+    actionText: "Open Momentum",
+    actionLink: "/momentum",
+  },
+  start: {
+    title: "Capture",
+    step: "Capture",
+    stage: "2",
     cue: "Add a few ingredients until the traffic light turns amber, then green.",
     goal: "Goal: grow the spark bank so ProMentum can give you a first move.",
     tips: [
@@ -46,7 +66,7 @@ const pageMeta = {
   bank: {
     title: "Spark Bank",
     step: "Capture",
-    stage: "2",
+    stage: "3",
     cue: "Add ingredients by category so results feel personal, not generic.",
     goal: "Goal: build a few entries in at least 3 categories.",
     tips: [
@@ -60,7 +80,7 @@ const pageMeta = {
   collide: {
     title: "Generate",
     step: "Generate",
-    stage: "3",
+    stage: "4",
     cue: "Pick a mode and control weirdness to move from sane to chaotic.",
     goal: "Goal: generate one result, then save what you like.",
     tips: [
@@ -74,7 +94,7 @@ const pageMeta = {
   result: {
     title: "Result",
     step: "Choose",
-    stage: "4",
+    stage: "5",
     cue: "Turn the best hook into your next task, post, or format.",
     goal: "Goal: choose the result worth shaping into a saved project.",
     tips: [
@@ -88,12 +108,12 @@ const pageMeta = {
   momentum: {
     title: "Momentum",
     step: "Shape and do next",
-    stage: "5",
-    cue: "Turn one chosen spark into a small project with actions you can return to.",
+    stage: "6",
+    cue: "Turn one chosen spark into a small project with actions, blockers, wins, and history.",
     goal: "Goal: pick one tiny next action and mark the project traffic light honestly.",
     tips: [
-      "Red means the project needs shaping before you touch it.",
-      "Amber means one rough pass is possible now.",
+      "Red means the project is blocked.",
+      "Amber means it needs shaping before action.",
       "Green means the next action is clear enough to do.",
     ],
     actionText: "Open Library",
@@ -102,7 +122,7 @@ const pageMeta = {
   library: {
     title: "Library",
     step: "Saved sparks",
-    stage: "6",
+    stage: "7",
     cue: "Keep only the hits and delete the rest manually.",
     goal: "Goal: review, copy, and pick a favourite to return to later.",
     tips: [
@@ -116,7 +136,7 @@ const pageMeta = {
   settings: {
     title: "Settings",
     step: "Local storage",
-    stage: "7",
+    stage: "8",
     cue: "Your data stays local to this machine.",
     goal: "Goal: know where files are stored and keep the workflow clean.",
     tips: [
@@ -266,6 +286,7 @@ async function loadAll() {
   favourites = favData.favourites || [];
   const projectData = await api("/api/projects");
   projects = projectData.projects || [];
+  todayPlan = projectData.today || buildTodayPlan();
   if (!activeProjectId && projects[0]) {
     activeProjectId = projects[0].id;
   }
@@ -274,7 +295,7 @@ async function loadAll() {
 }
 
 function pageFromPath() {
-  const part = location.pathname.replace("/", "") || "start";
+  const part = location.pathname.replace("/", "") || "today";
   return pageMeta[part] ? part : "start";
 }
 
@@ -301,6 +322,7 @@ function renderRoute() {
   root.classList.remove("page-enter");
   root.innerHTML = "";
   const renderers = {
+    today: renderToday,
     start: renderStart,
     bank: renderBank,
     collide: renderCollide,
@@ -323,6 +345,7 @@ function renderRoute() {
 
 function setPrimaryPageFocus(page) {
   const focusTargetGroups = {
+    today: ["todayStartButton", "todayMarkDoneButton", "todayOpenProjectButton", "todayGenerateButton"],
     start: ["quickIdeaInput", "quickCollisionButton", "starterBankButton"],
     bank: ["bankQuickIdeaInput", "bankQuickAddButton", "saveBankButton"],
     collide: ["seedInput", "collideButton", "sameSeedButton"],
@@ -419,6 +442,85 @@ function withBusyAction(buttonId, busyText, fn) {
     });
 }
 
+function renderToday() {
+  const plan = todayPlan || buildTodayPlan();
+  const project = plan.has_action ? projects.find((item) => item.id === plan.project_id) : null;
+  if (!plan.has_action) {
+    const targetHref = projects.length ? "/momentum" : currentResult ? "/result" : "/collide";
+    const targetLabel = projects.length ? "Open Momentum" : currentResult ? "Save Current Result" : "Generate First Move";
+    return `
+      ${coachPanel("today")}
+      <section class="panel today-board today-empty">
+        <div class="today-hero-copy">
+          <p class="result-kicker">Home / Today</p>
+          <h2>No open action yet</h2>
+          <p>${escapeHtml(plan.message || "Save a spark as a project, then ProMentum will pick one tiny action.")}</p>
+        </div>
+        <div class="today-action-card amber">
+          <span class="status-dot amber"></span>
+          <strong>${escapeHtml(plan.recommendation || targetLabel)}</strong>
+          <p>${projects.length ? "Add one small action to a project so Today has something honest to choose." : "Create or save one project first."}</p>
+        </div>
+        <div class="action-row">
+          <a id="todayGenerateButton" class="button-link primary" href="${targetHref}" data-link>${escapeHtml(targetLabel)}</a>
+          <a class="button-link" href="/bank" data-link>Feed Spark Bank</a>
+        </div>
+      </section>
+    `;
+  }
+  const readinessInfo = plan.readiness || clientProjectReadiness(project);
+  const action = plan.action || {};
+  const sessionActive = activeTodaySession?.projectId === plan.project_id && activeTodaySession?.actionId === action.id;
+  return `
+    ${coachPanel("today")}
+    <div class="today-layout">
+      <section class="panel today-board">
+        <div class="today-hero-copy">
+          <p class="result-kicker">Today's 10 Minutes</p>
+          <h2>${escapeHtml(action.text || readinessInfo.next_action || "Choose one tiny action.")}</h2>
+          <p>${escapeHtml(plan.project_title || "Saved project")} - ${escapeHtml(plan.project_stage || "Spark")}</p>
+        </div>
+        <div class="today-action-card ${escapeHtml(readinessInfo.level || "amber")}">
+          <span class="status-dot ${escapeHtml(readinessInfo.level || "amber")}"></span>
+          <strong>${escapeHtml(readinessInfo.label || "Needs shaping")}</strong>
+          <p>${escapeHtml(readinessInfo.next_action || action.text || "Pick the smallest useful action.")}</p>
+        </div>
+        <div class="today-mini-steps" aria-label="10 minute guide">
+          ${(plan.steps || []).map((step, index) => `
+            <article class="${sessionActive ? "active" : ""}">
+              <span>${index + 1}</span>
+              <strong>${escapeHtml(step)}</strong>
+            </article>
+          `).join("")}
+        </div>
+        <div class="button-row">
+          <button id="todayStartButton" class="primary">${sessionActive ? "10 Minutes Started" : "Start 10 Minutes"}</button>
+          <button id="todayMarkDoneButton" class="cyan">Mark Action Done</button>
+          <button id="todayOpenProjectButton">Open Project</button>
+          <button id="todayParkButton">Park / Block</button>
+        </div>
+        <p class="message" role="status" aria-live="polite" id="todayMessage">${escapeHtml(todayMessage)}</p>
+      </section>
+      <aside class="panel flat today-log-panel">
+        <h2>Log before you leave</h2>
+        <p>One sentence is enough. The log keeps the project alive between sessions.</p>
+        <label class="field">Win
+          <input id="todayWinInput" type="text" placeholder="what moved, even slightly?" />
+        </label>
+        <label class="field">Blocker
+          <input id="todayBlockerInput" type="text" placeholder="what stopped the next move?" />
+        </label>
+        <div class="button-row">
+          <button id="todaySaveWinButton">Save Win</button>
+          <button id="todaySaveBlockerButton">Save Blocker</button>
+          <button id="todayExportPlanButton">Export Today Plan</button>
+          <button id="todayExportLogButton">Export Progress Log</button>
+        </div>
+      </aside>
+    </div>
+  `;
+}
+
 function renderStart() {
   const nextHref = readiness.level === "red" ? "/bank" : "/collide";
   const nextLabel = readiness.level === "red" ? "Open Spark Bank" : "Generate First Move";
@@ -486,7 +588,7 @@ function renderStartLaunchStrip(nextHref, nextLabel) {
       <div class="start-launch-copy">
         <h3>Build momentum without losing the plot</h3>
         <p>${escapeHtml(launchCopy)}</p>
-        <div class="launch-chip-row" aria-label="Start page guidance">
+        <div class="launch-chip-row" aria-label="Capture page guidance">
           ${steps.map(([level, label, text]) => `
             <a class="launch-chip ${level} ${readiness.level === level ? "active" : ""}" href="${level === "red" ? "/bank" : nextHref}" data-link>
               <span class="status-dot ${level}"></span>
@@ -555,7 +657,8 @@ function renderProgressTrack(_pageKey) {
     { key: "capture", label: "Capture", done: (readiness.total || 0) > 0 },
     { key: "generate", label: "Generate", done: Boolean(currentResult) },
     { key: "choose", label: "Choose", done: (favourites || []).length > 0 || (projects || []).length > 0 },
-    { key: "shape", label: "Shape", done: (projects || []).some((project) => (project.actions || []).length > 0) },
+    { key: "shape", label: "Shape", done: (projects || []).some((project) => ["Shaping", "First Step", "In Progress", "Done"].includes(project.stage) || (project.actions || []).length > 0) },
+    { key: "ten", label: "10 Minutes", done: (projects || []).some((project) => (project.history || []).some((entry) => ["done", "win", "blocker"].includes(entry.kind))) },
     { key: "do-next", label: "Do Next", done: (projects || []).some((project) => (project.actions || []).some((action) => action.done)) || hasStorageCheck },
   ];
   const firstIncomplete = steps.findIndex((entry) => !entry.done);
@@ -1184,7 +1287,7 @@ function renderProjectListItem(project) {
       <span class="status-dot ${escapeHtml(readinessInfo.level || "amber")}"></span>
       <span>
         <strong>${escapeHtml(project.title)}</strong>
-        <small>${escapeHtml(project.stage || "Choose")} - ${escapeHtml(readinessInfo.label || "Ready to try")}</small>
+        <small>${escapeHtml(project.stage || "Spark")} - ${escapeHtml(readinessInfo.label || "Needs shaping")}</small>
       </span>
     </button>
   `;
@@ -1202,12 +1305,12 @@ function renderProjectDetail(project) {
         <div class="result-meta-pills">
           <span>${escapeHtml(project.mode || "Spark")}</span>
           <span>Seed ${escapeHtml(project.seed ?? "auto")}</span>
-          <span>${escapeHtml(project.stage || "Choose")}</span>
+          <span>${escapeHtml(project.stage || "Spark")}</span>
         </div>
       </div>
       <div class="project-light-card ${escapeHtml(readinessInfo.level || "amber")}">
         <span class="status-dot ${escapeHtml(readinessInfo.level || "amber")}"></span>
-        <strong>${escapeHtml(readinessInfo.label || "Ready to try")}</strong>
+        <strong>${escapeHtml(readinessInfo.label || "Needs shaping")}</strong>
         <p>${escapeHtml(readinessInfo.next_action || "Pick the smallest useful action.")}</p>
       </div>
     </div>
@@ -1217,12 +1320,12 @@ function renderProjectDetail(project) {
         <input id="projectTitleInput" type="text" value="${escapeHtml(project.title)}" />
       </label>
       <label class="field">Workflow stage
-        <select id="projectStageInput">${["Capture", "Generate", "Choose", "Shape", "Do Next"].map((stage) => `<option ${stage === project.stage ? "selected" : ""}>${stage}</option>`).join("")}</select>
+        <select id="projectStageInput">${PROJECT_STAGES.map((stage) => `<option ${stage === project.stage ? "selected" : ""}>${stage}</option>`).join("")}</select>
       </label>
       <label class="field">Traffic light
         <select id="projectReadinessInput">
-          <option value="red" ${readinessInfo.level === "red" ? "selected" : ""}>Red - needs shaping</option>
-          <option value="amber" ${readinessInfo.level === "amber" ? "selected" : ""}>Amber - ready to try</option>
+          <option value="red" ${readinessInfo.level === "red" ? "selected" : ""}>Red - blocked</option>
+          <option value="amber" ${readinessInfo.level === "amber" ? "selected" : ""}>Amber - needs shaping</option>
           <option value="green" ${readinessInfo.level === "green" ? "selected" : ""}>Green - ready to do</option>
         </select>
       </label>
@@ -1244,13 +1347,58 @@ function renderProjectDetail(project) {
         <button id="addProjectActionButton">Add Action</button>
       </div>
     </div>
+    <div class="project-journal-grid result-section">
+      <div class="project-journal-panel">
+        <div class="section-heading-row">
+          <div>
+            <h3>Wins</h3>
+            <p class="micro-hint">Small proof that the project moved.</p>
+          </div>
+        </div>
+        <div class="tag-list">
+          ${(project.wins || []).length ? project.wins.map((item, index) => renderProjectTag("win", item, index)).join("") : `<span class="empty-tag">No wins yet.</span>`}
+        </div>
+        <div class="quick-add journal-add">
+          <label class="field">Add win
+            <input id="projectWinInput" type="text" placeholder="one thing that moved" />
+          </label>
+          <button id="addProjectWinButton">Add Win</button>
+        </div>
+      </div>
+      <div class="project-journal-panel">
+        <div class="section-heading-row">
+          <div>
+            <h3>Blockers</h3>
+            <p class="micro-hint">Use red when this is the honest next state.</p>
+          </div>
+        </div>
+        <div class="tag-list">
+          ${(project.blockers || []).length ? project.blockers.map((item, index) => renderProjectTag("blocker", item, index)).join("") : `<span class="empty-tag">No blockers logged.</span>`}
+        </div>
+        <div class="quick-add journal-add">
+          <label class="field">Add blocker
+            <input id="projectBlockerInput" type="text" placeholder="what is actually stopping this?" />
+          </label>
+          <button id="addProjectBlockerButton">Add Blocker</button>
+        </div>
+      </div>
+    </div>
+    <div class="project-history-panel result-section">
+      <h3>Next-action history</h3>
+      <div class="history-list">
+        ${(project.history || []).length ? project.history.slice(0, 8).map(renderProjectHistory).join("") : `<div class="empty-state">No history yet. Use Today to log what happened.</div>`}
+      </div>
+    </div>
     <label class="field result-section">Notes
       <textarea id="projectNotesInput" class="project-notes">${escapeHtml(project.notes || "")}</textarea>
     </label>
     <div class="button-row">
       <button id="saveProjectChangesButton" class="primary">Save Project</button>
       <button id="copyProjectBriefButton">Copy Project Brief</button>
+      <button id="exportProjectBriefButton">Export Project Brief</button>
       <button id="exportProjectCardButton" class="cyan">Export Project Card</button>
+      <button id="exportTodayPlanButton">Export Today Plan</button>
+      <button id="exportProgressLogButton">Export Progress Log</button>
       <button id="deleteProjectButton" class="danger">Delete Project</button>
       <button id="openProjectExportsButton" ${lastProjectExportPath ? "" : "disabled"}>Open Exports Folder</button>
     </div>
@@ -1261,11 +1409,12 @@ function renderProjectDetail(project) {
 
 function renderProjectWorkflow(currentStage) {
   const stages = [
-    ["Capture", "Raw material is saved."],
-    ["Generate", "A spark exists."],
-    ["Choose", "One hook is selected."],
-    ["Shape", "Actions are clear."],
-    ["Do Next", "One move is ready."],
+    ["Spark", "Raw material became a project."],
+    ["Shaping", "The rough idea is being clarified."],
+    ["First Step", "One tiny action is chosen."],
+    ["In Progress", "The project has movement."],
+    ["Parked", "The blocker is named."],
+    ["Done", "This project has landed."],
   ];
   const currentIndex = Math.max(0, stages.findIndex(([stage]) => stage === currentStage));
   return `
@@ -1292,6 +1441,98 @@ function renderProjectAction(action, index) {
   `;
 }
 
+function renderProjectTag(kind, text, index) {
+  const label = kind === "win" ? "Win" : "Blocker";
+  return `
+    <span class="journal-tag ${kind}">
+      <span>${escapeHtml(label)}</span>
+      ${escapeHtml(text)}
+      <button type="button" data-remove-project-${kind}="${index}" aria-label="Remove ${label.toLowerCase()} ${index + 1}">Remove</button>
+    </span>
+  `;
+}
+
+function renderProjectHistory(entry) {
+  return `
+    <article class="history-entry ${escapeHtml(entry.kind || "note")}">
+      <span>${escapeHtml(entry.kind || "note")}</span>
+      <p>${escapeHtml(entry.text || "")}</p>
+      ${entry.created_at ? `<small>${escapeHtml(entry.created_at)}</small>` : ""}
+    </article>
+  `;
+}
+
+function buildTodayPlan() {
+  const candidates = projects
+    .filter((project) => project.stage !== "Done")
+    .map((project) => ({
+      project,
+      action: (project.actions || []).find((action) => !action.done),
+      readiness: clientProjectReadiness(project),
+    }))
+    .filter((entry) => entry.action);
+  if (!candidates.length) {
+    return {
+      has_action: false,
+      project_count: projects.length,
+      message: projects.length ? "No open action found. Add one tiny action to a project." : "No project yet. Generate a first move, then save it as a Momentum project.",
+      recommendation: projects.length ? "Open Momentum" : "Generate First Move",
+    };
+  }
+  const chosen = candidates.sort((a, b) => todayProjectScore(b.project, b.readiness) - todayProjectScore(a.project, a.readiness))[0];
+  return {
+    has_action: true,
+    project_count: projects.length,
+    project_id: chosen.project.id,
+    project_title: chosen.project.title,
+    project_stage: chosen.project.stage,
+    readiness: chosen.readiness,
+    action: chosen.action,
+    steps: [
+      "Open only what this action needs.",
+      "Work for ten honest minutes.",
+      "Log one win or one blocker before moving on.",
+    ],
+    message: `Do this next: ${chosen.action.text}`,
+  };
+}
+
+function todayProjectScore(project, readinessInfo) {
+  const stageScore = { "First Step": 70, "In Progress": 65, Shaping: 45, Spark: 35, Parked: 10, Done: -100 };
+  const levelScore = { green: 25, amber: 12, red: -8 };
+  const openActions = (project.actions || []).filter((action) => !action.done).length;
+  return (stageScore[project.stage] || 25) + (levelScore[readinessInfo.level] || 0) + Math.min(openActions, 5);
+}
+
+function todayProject() {
+  const plan = todayPlan || buildTodayPlan();
+  if (!plan.has_action) return null;
+  return projects.find((project) => project.id === plan.project_id) || null;
+}
+
+function appendProjectHistory(project, kind, text) {
+  const entry = {
+    id: `history-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+    kind,
+    text,
+    created_at: new Date().toISOString().replace(/\.\d{3}Z$/, "Z"),
+  };
+  project.history = [entry, ...(project.history || [])].slice(0, 80);
+  return project;
+}
+
+async function saveProjectObject(project, { message = "Project saved locally.", rerender = true } = {}) {
+  const data = await api("/api/projects", { method: "POST", body: JSON.stringify({ project }) });
+  projects = data.projects || [];
+  todayPlan = data.today || buildTodayPlan();
+  activeProjectId = data.project.id;
+  projectMessage = message;
+  todayMessage = message;
+  lastProjectExportPath = null;
+  if (rerender) renderRoute();
+  return data.project;
+}
+
 function activeProject() {
   if (!projects.length) return null;
   return projects.find((project) => project.id === activeProjectId) || projects[0];
@@ -1308,11 +1549,19 @@ function clientProjectReadiness(project) {
   const actions = project?.actions || [];
   const done = actions.filter((action) => action.done).length;
   const level = ["red", "amber", "green"].includes(project?.readiness_level) ? project.readiness_level : project?.readiness?.level || "amber";
-  const labels = { red: "Needs shaping", amber: "Ready to try", green: "Ready to do" };
-  const nextAction = actions.find((action) => !action.done)?.text || (actions.length ? "All listed actions are ticked. Choose the next project move." : "Add one small action.");
+  const labels = { red: "Blocked", amber: "Needs shaping", green: "Ready to do" };
+  const blockers = project?.blockers || [];
+  let nextAction = actions.find((action) => !action.done)?.text || (actions.length ? "All listed actions are ticked. Choose the next project move." : "Add one small action.");
+  if (project?.stage === "Done") {
+    nextAction = "Project is done. Pick another saved project when you want to move again.";
+  } else if (project?.stage === "Parked") {
+    nextAction = blockers[0] || "Parked. Write the blocker before restarting.";
+  } else if (level === "red" && blockers[0]) {
+    nextAction = `Resolve blocker: ${blockers[0]}`;
+  }
   return {
     level,
-    label: labels[level] || "Ready to try",
+    label: labels[level] || "Needs shaping",
     done,
     total: actions.length,
     next_action: nextAction,
@@ -1325,13 +1574,22 @@ function projectBriefText(project) {
   return [
     `ProMentum Project: ${project.title || "Untitled Project"}`,
     "",
-    `Traffic light: ${readinessInfo.label || "Ready to try"}`,
-    `Stage: ${project.stage || "Choose"}`,
+    `Traffic light: ${readinessInfo.label || "Needs shaping"}`,
+    `Stage: ${project.stage || "Spark"}`,
     "",
     `Hook: ${project.best_hook || ""}`,
     "",
     "Do Next:",
     ...(actions.length ? actions.map((action) => `- [${action.done ? "x" : " "}] ${action.text}`) : ["- [ ] Make one rough version."]),
+    "",
+    "Wins:",
+    ...((project.wins || []).length ? project.wins.map((item) => `- ${item}`) : ["- No wins logged yet."]),
+    "",
+    "Blockers:",
+    ...((project.blockers || []).length ? project.blockers.map((item) => `- ${item}`) : ["- No blockers logged yet."]),
+    "",
+    "Recent history:",
+    ...((project.history || []).length ? project.history.slice(0, 8).map((entry) => `- ${entry.kind || "note"}: ${entry.text || ""}`) : ["- No history logged yet."]),
     "",
     project.recipe || "",
   ].join("\n").trim() + "\n";
@@ -1587,6 +1845,94 @@ function storageHomeHint(path) {
   return "Using a portable folder beside the app.";
 }
 
+function bindToday() {
+  const plan = todayPlan || buildTodayPlan();
+  const project = todayProject();
+  el("todayStartButton")?.addEventListener("click", () => {
+    if (!project || !plan.action) return;
+    activeTodaySession = { projectId: project.id, actionId: plan.action.id, started_at: new Date().toISOString() };
+    todayMessage = "Timer is simple on purpose: give this one action ten honest minutes.";
+    renderRoute();
+  });
+  el("todayOpenProjectButton")?.addEventListener("click", () => {
+    if (!project) return;
+    activeProjectId = project.id;
+    navigate("/momentum");
+  });
+  el("todayMarkDoneButton")?.addEventListener("click", () =>
+    withBusyAction("todayMarkDoneButton", "Saving...", async () => markTodayActionDone()),
+  );
+  el("todayParkButton")?.addEventListener("click", () =>
+    withBusyAction("todayParkButton", "Parking...", async () => parkTodayProject()),
+  );
+  el("todaySaveWinButton")?.addEventListener("click", () =>
+    withBusyAction("todaySaveWinButton", "Saving...", async () => saveTodayJournal("win")),
+  );
+  el("todaySaveBlockerButton")?.addEventListener("click", () =>
+    withBusyAction("todaySaveBlockerButton", "Saving...", async () => saveTodayJournal("blocker")),
+  );
+  el("todayExportPlanButton")?.addEventListener("click", () =>
+    withBusyAction("todayExportPlanButton", "Exporting...", () => exportProjectFormat("today-plan", { fromToday: true })),
+  );
+  el("todayExportLogButton")?.addEventListener("click", () =>
+    withBusyAction("todayExportLogButton", "Exporting...", () => exportProjectFormat("progress-log", { fromToday: true })),
+  );
+}
+
+async function markTodayActionDone() {
+  const project = todayProject();
+  const plan = todayPlan || buildTodayPlan();
+  if (!project || !plan.action) return;
+  const action = (project.actions || []).find((item) => item.id === plan.action.id);
+  if (action) action.done = true;
+  const winText = el("todayWinInput")?.value.trim();
+  if (winText) {
+    project.wins = [winText, ...(project.wins || [])].slice(0, 20);
+    appendProjectHistory(project, "win", winText);
+  }
+  appendProjectHistory(project, "done", `Finished action: ${action?.text || plan.action.text}`);
+  const hasOpenAction = (project.actions || []).some((item) => !item.done);
+  project.stage = hasOpenAction ? "In Progress" : "Done";
+  project.readiness_level = hasOpenAction ? "green" : "green";
+  activeTodaySession = null;
+  await saveProjectObject(project, { message: hasOpenAction ? "Action done. Today has picked the next one." : "Action done. Project moved to Done." });
+}
+
+async function saveTodayJournal(kind) {
+  const project = todayProject();
+  if (!project) return;
+  const input = kind === "win" ? el("todayWinInput") : el("todayBlockerInput");
+  const text = input?.value.trim() || "";
+  if (!text) {
+    todayMessage = kind === "win" ? "Write one win first." : "Write one blocker first.";
+    const message = el("todayMessage");
+    if (message) message.textContent = todayMessage;
+    return;
+  }
+  const key = kind === "win" ? "wins" : "blockers";
+  project[key] = [text, ...(project[key] || [])].slice(0, 20);
+  appendProjectHistory(project, kind, text);
+  if (kind === "blocker") {
+    project.stage = "Parked";
+    project.readiness_level = "red";
+  } else if (project.stage === "Spark" || project.stage === "Shaping") {
+    project.stage = "In Progress";
+  }
+  input.value = "";
+  await saveProjectObject(project, { message: kind === "win" ? "Win saved. That counts." : "Blocker saved. Project parked honestly." });
+}
+
+async function parkTodayProject() {
+  const project = todayProject();
+  if (!project) return;
+  const blocker = el("todayBlockerInput")?.value.trim() || "Parked from Today because the next move is blocked.";
+  project.blockers = [blocker, ...(project.blockers || [])].slice(0, 20);
+  project.stage = "Parked";
+  project.readiness_level = "red";
+  appendProjectHistory(project, "parked", blocker);
+  await saveProjectObject(project, { message: "Project parked. The blocker is written down." });
+}
+
 function bindPage(page) {
   if (page === "start") {
     el("quickCollisionButton")?.addEventListener("click", () => {
@@ -1607,6 +1953,7 @@ function bindPage(page) {
     el("blankBankButton")?.addEventListener("click", () => resetBank("blank"));
     el("starterBankButton")?.addEventListener("click", () => resetBank(true));
   }
+  if (page === "today") bindToday();
   if (page === "bank") bindBank();
   if (page === "collide") bindCollide();
   if (page === "result") bindResult();
@@ -1836,13 +2183,42 @@ function bindMomentum() {
   el("copyProjectBriefButton")?.addEventListener("click", () =>
     withBusyAction("copyProjectBriefButton", "Copying...", copyProjectBrief),
   );
+  el("exportProjectBriefButton")?.addEventListener("click", () =>
+    withBusyAction("exportProjectBriefButton", "Exporting...", () => exportProjectFormat("project-brief")),
+  );
   el("exportProjectCardButton")?.addEventListener("click", () =>
-    withBusyAction("exportProjectCardButton", "Exporting...", exportProjectCard),
+    withBusyAction("exportProjectCardButton", "Exporting...", () => exportProjectFormat("project-card")),
+  );
+  el("exportTodayPlanButton")?.addEventListener("click", () =>
+    withBusyAction("exportTodayPlanButton", "Exporting...", () => exportProjectFormat("today-plan")),
+  );
+  el("exportProgressLogButton")?.addEventListener("click", () =>
+    withBusyAction("exportProgressLogButton", "Exporting...", () => exportProjectFormat("progress-log")),
   );
   el("deleteProjectButton")?.addEventListener("click", () =>
     withBusyAction("deleteProjectButton", "Deleting...", deleteActiveProject),
   );
   el("openProjectExportsButton")?.addEventListener("click", openExportsFolder);
+  el("addProjectWinButton")?.addEventListener("click", () => addProjectJournalEntry("win", "projectWinInput"));
+  el("addProjectBlockerButton")?.addEventListener("click", () => addProjectJournalEntry("blocker", "projectBlockerInput"));
+  el("projectWinInput")?.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      addProjectJournalEntry("win", "projectWinInput");
+    }
+  });
+  el("projectBlockerInput")?.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      addProjectJournalEntry("blocker", "projectBlockerInput");
+    }
+  });
+  document.querySelectorAll("[data-remove-project-win]").forEach((button) => {
+    button.addEventListener("click", () => removeProjectJournalEntry("win", Number(button.dataset.removeProjectWin)));
+  });
+  document.querySelectorAll("[data-remove-project-blocker]").forEach((button) => {
+    button.addEventListener("click", () => removeProjectJournalEntry("blocker", Number(button.dataset.removeProjectBlocker)));
+  });
 }
 
 async function quickAddFrom(categoryId, inputId, messageId) {
@@ -2097,6 +2473,7 @@ async function createProjectFromResult(fromResultPage = false) {
   }
   const data = await api("/api/projects", { method: "POST", body: JSON.stringify({ result: currentResult }) });
   projects = data.projects || [];
+  todayPlan = data.today || buildTodayPlan();
   activeProjectId = data.project.id;
   projectMessage = "Project saved. Shape the next action here.";
   lastProjectExportPath = null;
@@ -2139,7 +2516,7 @@ function gatherProjectFromInputs() {
   return {
     ...project,
     title: titleInput?.value.trim() || project.title,
-    stage: stageInput?.value || project.stage || "Choose",
+    stage: stageInput?.value || project.stage || "Spark",
     readiness_level: readinessInput?.value || project.readiness?.level || "amber",
     notes: notesInput?.value || "",
     actions,
@@ -2151,6 +2528,7 @@ async function saveProjectChanges({ rerender = true } = {}) {
   if (!project) return null;
   const data = await api("/api/projects", { method: "POST", body: JSON.stringify({ project }) });
   projects = data.projects || [];
+  todayPlan = data.today || buildTodayPlan();
   activeProjectId = data.project.id;
   projectMessage = "Project saved locally.";
   if (rerender) renderRoute();
@@ -2193,12 +2571,60 @@ function fallbackProjectCopy(text, message) {
   setProjectMessage(message);
 }
 
-async function exportProjectCard() {
-  const project = await saveProjectChanges({ rerender: false });
+function addProjectJournalEntry(kind, inputId) {
+  const input = el(inputId);
+  const text = input?.value.trim() || "";
+  const project = gatherProjectFromInputs() || activeProject();
   if (!project) return;
-  const data = await api("/api/projects/export", { method: "POST", body: JSON.stringify({ project, format: "project-card" }) });
+  if (!text) {
+    setProjectMessage(kind === "win" ? "Write one win first." : "Write one blocker first.");
+    return;
+  }
+  const key = kind === "win" ? "wins" : "blockers";
+  project[key] = [text, ...(project[key] || [])].slice(0, 20);
+  appendProjectHistory(project, kind, text);
+  if (kind === "blocker") {
+    project.stage = "Parked";
+    project.readiness_level = "red";
+  } else if (project.stage === "Spark") {
+    project.stage = "First Step";
+  }
+  replaceActiveProject(project);
+  projectMessage = kind === "win" ? "Win added. Save the project to keep it." : "Blocker added. Save the project to keep it.";
+  lastProjectExportPath = null;
+  renderRoute();
+}
+
+function removeProjectJournalEntry(kind, index) {
+  const project = gatherProjectFromInputs() || activeProject();
+  if (!project || Number.isNaN(index)) return;
+  const key = kind === "win" ? "wins" : "blockers";
+  project[key] = (project[key] || []).filter((_, itemIndex) => itemIndex !== index);
+  appendProjectHistory(project, "note", `${kind === "win" ? "Win" : "Blocker"} removed from project notes.`);
+  replaceActiveProject(project);
+  projectMessage = "Entry removed. Save the project to keep this.";
+  lastProjectExportPath = null;
+  renderRoute();
+}
+
+async function exportProjectFormat(format, options = {}) {
+  let project = options.fromToday ? todayProject() : gatherProjectFromInputs() || activeProject();
+  if (!project) return;
+  if (!options.fromToday) {
+    project = await saveProjectChanges({ rerender: false });
+    if (!project) return;
+  }
+  const data = await api("/api/projects/export", { method: "POST", body: JSON.stringify({ project, format }) });
   lastProjectExportPath = data.export.path;
-  projectMessage = `Exported Project Card as ${_fileNameFromPath(data.export.path)}.`;
+  const label = {
+    "project-card": "Project Card",
+    "project-brief": "Project Brief",
+    "today-plan": "Today Plan",
+    "progress-log": "Progress Log",
+  }[data.export.format] || "Project export";
+  const message = `Exported ${label} as ${_fileNameFromPath(data.export.path)}.`;
+  projectMessage = message;
+  todayMessage = message;
   renderRoute();
 }
 
@@ -2207,6 +2633,7 @@ async function deleteActiveProject() {
   if (!project || !confirm("Delete this Momentum project?")) return;
   const data = await api("/api/projects", { method: "DELETE", body: JSON.stringify({ id: project.id }) });
   projects = data.projects || [];
+  todayPlan = data.today || buildTodayPlan();
   activeProjectId = projects[0]?.id || "";
   projectMessage = "Project deleted.";
   lastProjectExportPath = null;

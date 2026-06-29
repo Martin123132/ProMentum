@@ -15,12 +15,22 @@ from .engine import (
     collision_to_text,
     project_card_to_html,
     project_card_to_text,
+    progress_log_to_text,
     readiness,
     share_card_to_html,
+    today_plan_to_text,
 )
 
 
 APP_NAME = "ProMentum"
+PROJECT_STAGES = ["Spark", "Shaping", "First Step", "In Progress", "Parked", "Done"]
+LEGACY_STAGE_MAP = {
+    "capture": "Spark",
+    "generate": "Spark",
+    "choose": "Spark",
+    "shape": "Shaping",
+    "do next": "First Step",
+}
 
 
 def repo_root() -> Path:
@@ -170,6 +180,54 @@ def list_projects() -> list[dict[str, Any]]:
     return [_normalize_project(item) for item in data if isinstance(item, dict)]
 
 
+def today_plan(projects: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+    project_list = projects if projects is not None else list_projects()
+    candidates = []
+    for project in project_list:
+        if project.get("stage") == "Done":
+            continue
+        open_action = next((action for action in project.get("actions", []) if not action.get("done")), None)
+        if not open_action:
+            continue
+        readiness_info = project.get("readiness") or project_readiness(project)
+        stage = str(project.get("stage") or "Spark")
+        level = str(readiness_info.get("level") or "amber")
+        candidates.append(
+            {
+                "score": _today_score(stage, level, project),
+                "project": project,
+                "action": open_action,
+                "readiness": readiness_info,
+            }
+        )
+    if not candidates:
+        return {
+            "has_action": False,
+            "project_count": len(project_list),
+            "message": _today_empty_message(project_list),
+            "recommendation": _today_empty_recommendation(project_list),
+        }
+    chosen = sorted(candidates, key=lambda item: item["score"], reverse=True)[0]
+    project = chosen["project"]
+    action = chosen["action"]
+    readiness_info = chosen["readiness"]
+    return {
+        "has_action": True,
+        "project_count": len(project_list),
+        "project_id": project.get("id"),
+        "project_title": project.get("title"),
+        "project_stage": project.get("stage"),
+        "readiness": readiness_info,
+        "action": action,
+        "steps": [
+            "Open only what this action needs.",
+            "Work for ten honest minutes.",
+            "Log one win or one blocker before moving on.",
+        ],
+        "message": f"Do this next: {action.get('text')}",
+    }
+
+
 def save_project_from_result(result: dict[str, Any], payload: dict[str, Any] | None = None) -> dict[str, Any]:
     payload = payload or {}
     now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
@@ -180,9 +238,19 @@ def save_project_from_result(result: dict[str, Any], payload: dict[str, Any] | N
         "mode": result.get("mode"),
         "seed": result.get("seed"),
         "weirdness": result.get("weirdness"),
-        "stage": str(payload.get("stage") or "Choose"),
+        "stage": str(payload.get("stage") or "Spark"),
         "readiness_level": str(payload.get("readiness_level") or "amber"),
         "notes": str(payload.get("notes") or ""),
+        "blockers": _normalize_text_items(payload.get("blockers") or []),
+        "wins": _normalize_text_items(payload.get("wins") or []),
+        "history": [
+            {
+                "id": f"history-{int(time.time() * 1000)}",
+                "kind": "created",
+                "text": "Project saved from a generated spark.",
+                "created_at": now,
+            }
+        ],
         "recipe": str(result.get("recipe") or ""),
         "actions": _actions_from_result(result, payload.get("actions")),
         "source_result": result,
@@ -228,11 +296,21 @@ def clear_projects() -> None:
 def export_project(project: dict[str, Any], export_format: str = "project-card") -> dict[str, Any]:
     normalized = _normalize_project(project)
     requested = str(export_format or "project-card").lower()
-    if requested in {"txt", "text"}:
+    if requested in {"today", "today-plan", "plan"}:
+        content = today_plan_to_text(normalized)
+        extension = "txt"
+        export_format = "today-plan"
+        suffix = "-today-plan"
+    elif requested in {"progress", "progress-log", "log"}:
+        content = progress_log_to_text(normalized)
+        extension = "txt"
+        export_format = "progress-log"
+        suffix = "-progress-log"
+    elif requested in {"txt", "text", "brief", "project-brief"}:
         content = project_card_to_text(normalized)
         extension = "txt"
-        export_format = "project-txt"
-        suffix = "-project-card"
+        export_format = "project-brief"
+        suffix = "-project-brief"
     else:
         content = project_card_to_html(normalized)
         extension = "html"
@@ -309,6 +387,7 @@ def open_exports_folder(opener: Any | None = None) -> dict[str, Any]:
 
 def doctor() -> dict[str, Any]:
     state = load_state()
+    projects = list_projects()
     return {
         "data_dir": str(app_data_dir()),
         "state_path": str(user_state_path()),
@@ -318,9 +397,19 @@ def doctor() -> dict[str, Any]:
         "state_ok": bool(sum(len(state.get(key, [])) for key in INGREDIENT_KEYS)),
         "readiness": readiness(state),
         "favourite_count": len(list_favourites()),
-        "project_count": len(list_projects()),
+        "project_count": len(projects),
+        "project_stage_counts": _stage_counts(projects),
+        "today": today_plan(projects),
         "portable_default": str(repo_root() / "promentum_data"),
     }
+
+
+def _stage_counts(projects: list[dict[str, Any]]) -> dict[str, int]:
+    counts = {stage: 0 for stage in PROJECT_STAGES}
+    for project in projects:
+        stage = _normalize_stage(project.get("stage"))
+        counts[stage] = counts.get(stage, 0) + 1
+    return counts
 
 
 def _normalize_state(state: dict[str, Any]) -> dict[str, Any]:
@@ -371,6 +460,9 @@ def _normalize_project(project: dict[str, Any]) -> dict[str, Any]:
         "stage": _normalize_stage(project.get("stage")),
         "readiness_level": readiness_level,
         "notes": str(project.get("notes") or ""),
+        "blockers": _normalize_text_items(project.get("blockers") or []),
+        "wins": _normalize_text_items(project.get("wins") or []),
+        "history": _normalize_history(project.get("history") or []),
         "recipe": str(project.get("recipe") or source_result.get("recipe") or ""),
         "actions": actions,
         "source_result": source_result,
@@ -398,25 +490,71 @@ def _normalize_actions(actions: Any) -> list[dict[str, Any]]:
     return normalized[:12]
 
 
+def _normalize_text_items(items: Any) -> list[str]:
+    source = items if isinstance(items, list) else []
+    normalized = []
+    seen = set()
+    for item in source:
+        text = str(item.get("text") if isinstance(item, dict) else item).strip()
+        key = text.lower()
+        if not text or key in seen:
+            continue
+        seen.add(key)
+        normalized.append(text)
+    return normalized[:20]
+
+
+def _normalize_history(items: Any) -> list[dict[str, str]]:
+    source = items if isinstance(items, list) else []
+    normalized: list[dict[str, str]] = []
+    for index, item in enumerate(source):
+        if isinstance(item, dict):
+            text = str(item.get("text") or "").strip()
+            kind = str(item.get("kind") or "note").strip().lower()
+            created_at = str(item.get("created_at") or "").strip()
+            history_id = str(item.get("id") or f"history-{index + 1}")
+        else:
+            text = str(item).strip()
+            kind = "note"
+            created_at = ""
+            history_id = f"history-{index + 1}"
+        if not text:
+            continue
+        if kind not in {"created", "done", "win", "blocker", "note", "parked", "stage"}:
+            kind = "note"
+        normalized.append({"id": history_id, "kind": kind, "text": text, "created_at": created_at})
+    return normalized[:80]
+
+
 def _normalize_stage(value: Any) -> str:
-    allowed = ["Capture", "Generate", "Choose", "Shape", "Do Next"]
-    text = str(value or "Choose").strip().lower()
+    text = str(value or "Spark").strip().lower()
+    if text in LEGACY_STAGE_MAP:
+        return LEGACY_STAGE_MAP[text]
+    allowed = PROJECT_STAGES
     for stage in allowed:
         if text == stage.lower():
             return stage
-    return "Choose"
+    return "Spark"
 
 
 def project_readiness(project: dict[str, Any]) -> dict[str, Any]:
     actions = project.get("actions") or []
+    blockers = _normalize_text_items(project.get("blockers") or [])
     total = len(actions)
     done = sum(1 for action in actions if action.get("done"))
     level = str(project.get("readiness_level") or "amber").lower()
     if level not in {"red", "amber", "green"}:
         level = "amber"
-    labels = {"red": "Needs shaping", "amber": "Ready to try", "green": "Ready to do"}
+    labels = {"red": "Blocked", "amber": "Needs shaping", "green": "Ready to do"}
+    stage = str(project.get("stage") or "Spark")
     next_action = "Add one small action."
-    if total:
+    if stage == "Done":
+        next_action = "Project is done. Pick another saved project when you want to move again."
+    elif stage == "Parked":
+        next_action = blockers[0] if blockers else "Parked. Write the blocker before restarting."
+    elif blockers and level == "red":
+        next_action = f"Resolve blocker: {blockers[0]}"
+    elif total:
         next_open = next((action.get("text") for action in actions if not action.get("done")), "")
         if next_open:
             next_action = str(next_open)
@@ -429,6 +567,27 @@ def project_readiness(project: dict[str, Any]) -> dict[str, Any]:
         "total": total,
         "next_action": next_action,
     }
+
+
+def _today_score(stage: str, level: str, project: dict[str, Any]) -> int:
+    stage_score = {"First Step": 70, "In Progress": 65, "Shaping": 45, "Spark": 35, "Parked": 10, "Done": -100}
+    level_score = {"green": 25, "amber": 12, "red": -8}
+    open_actions = sum(1 for action in project.get("actions", []) if not action.get("done"))
+    return stage_score.get(stage, 25) + level_score.get(level, 0) + min(open_actions, 5)
+
+
+def _today_empty_message(projects: list[dict[str, Any]]) -> str:
+    if not projects:
+        return "No project yet. Generate a first move, then save it as a Momentum project."
+    if all(project.get("stage") == "Done" for project in projects):
+        return "All saved projects are done. Start a fresh spark when you want the next thing."
+    return "No open action found. Add one tiny action to a project."
+
+
+def _today_empty_recommendation(projects: list[dict[str, Any]]) -> str:
+    if not projects:
+        return "Generate First Move"
+    return "Open Momentum"
 
 
 def _read_json(path: Path, fallback: Any) -> Any:

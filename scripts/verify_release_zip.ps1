@@ -89,6 +89,7 @@ try {
     "scripts\stop_dev_processes.ps1",
     "docs\demo-bench\README.md",
     "docs\release-notes\$Version.md",
+    "docs\screenshots\promentum-today.png",
     "docs\screenshots\promentum-start.png",
     "docs\screenshots\promentum-result.png",
     "docs\screenshots\promentum-momentum.png",
@@ -102,6 +103,7 @@ try {
   }
 
   $allowedScreenshots = @(
+    "promentum-today.png",
     "promentum-start.png",
     "promentum-result.png",
     "promentum-momentum.png",

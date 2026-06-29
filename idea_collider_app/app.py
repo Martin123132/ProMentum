@@ -18,7 +18,7 @@ from . import storage
 ROOT = storage.repo_root()
 STATIC_DIR = ROOT / "idea_collider_app" / "static"
 TEMPLATE_DIR = ROOT / "idea_collider_app" / "templates"
-APP_ROUTES = {"/", "/start", "/bank", "/collide", "/result", "/momentum", "/library", "/settings"}
+APP_ROUTES = {"/", "/today", "/start", "/bank", "/collide", "/result", "/momentum", "/library", "/settings"}
 
 
 def _json_bytes(payload: object) -> bytes:
@@ -68,7 +68,9 @@ class IdeaColliderHandler(BaseHTTPRequestHandler):
             elif path == "/api/favourites":
                 self._json({"ok": True, "favourites": storage.list_favourites()})
             elif path == "/api/projects":
-                self._json({"ok": True, "projects": storage.list_projects()})
+                self._json({"ok": True, "projects": storage.list_projects(), "today": storage.today_plan()})
+            elif path == "/api/today":
+                self._json({"ok": True, "today": storage.today_plan()})
             elif path == "/api/doctor":
                 self._json({"ok": True, "version": __version__, "python": sys.version.split()[0], "doctor": storage.doctor()})
             elif path.startswith("/static/"):
@@ -120,7 +122,7 @@ class IdeaColliderHandler(BaseHTTPRequestHandler):
                 else:
                     self._json({"ok": False, "error": "No project or result supplied"}, HTTPStatus.BAD_REQUEST)
                     return
-                self._json({"ok": True, "project": project, "projects": storage.list_projects()})
+                self._json({"ok": True, "project": project, "projects": storage.list_projects(), "today": storage.today_plan()})
             elif path == "/api/projects/export":
                 project = payload.get("project") or {}
                 if not isinstance(project, dict) or not project.get("id"):
@@ -159,14 +161,14 @@ class IdeaColliderHandler(BaseHTTPRequestHandler):
             if path == "/api/projects":
                 if payload.get("clear") is True:
                     storage.clear_projects()
-                    self._json({"ok": True, "projects": storage.list_projects()})
+                    self._json({"ok": True, "projects": storage.list_projects(), "today": storage.today_plan()})
                     return
                 target_id = payload.get("id")
                 if not target_id:
                     self._json({"ok": False, "error": "No project id supplied"}, HTTPStatus.BAD_REQUEST)
                     return
                 storage.delete_project(str(target_id))
-                self._json({"ok": True, "projects": storage.list_projects()})
+                self._json({"ok": True, "projects": storage.list_projects(), "today": storage.today_plan()})
                 return
             self._json({"ok": False, "error": "Unknown route"}, HTTPStatus.NOT_FOUND)
         except json.JSONDecodeError:

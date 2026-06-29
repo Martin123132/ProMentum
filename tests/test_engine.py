@@ -5,11 +5,13 @@ import unittest
 
 from idea_collider_app.engine import (
     generate_collision,
+    progress_log_to_text,
     project_card_to_html,
     project_card_to_text,
     readiness,
     share_card_to_html,
     share_card_to_text,
+    today_plan_to_text,
 )
 from scripts.sample_collisions import DEMO_CASES
 from idea_collider_app.storage import load_default_state
@@ -62,18 +64,41 @@ class EngineTests(unittest.TestCase):
         project = {
             "title": result["title"],
             "best_hook": result["best_hook"],
-            "stage": "Shape",
+            "stage": "Shaping",
             "recipe": result["recipe"],
             "readiness": {"level": "green", "label": "Ready to do"},
             "actions": [{"text": "Write the first ten lines.", "done": False}],
+            "wins": ["Found the opening beat."],
+            "blockers": ["Need a name for the room."],
+            "history": [{"kind": "win", "text": "Found the opening beat.", "created_at": "2026-06-29T00:00:00Z"}],
         }
         text = project_card_to_text(project)
         card_html = project_card_to_html(project)
         self.assertIn("ProMentum Project:", text)
         self.assertIn("Write the first ten lines.", text)
         self.assertIn("Ready to do", text)
+        self.assertIn("Found the opening beat.", text)
+        self.assertIn("Need a name for the room.", text)
         self.assertIn("ProMentum Project Card", card_html)
         self.assertIn(html.escape(result["best_hook"]), card_html)
+
+    def test_today_plan_and_progress_log_exports(self) -> None:
+        project = {
+            "title": "Tiny launch",
+            "stage": "First Step",
+            "readiness": {"level": "green", "label": "Ready to do", "next_action": "Make the rough version."},
+            "actions": [{"text": "Make the rough version.", "done": False}],
+            "wins": ["Picked the first user."],
+            "blockers": ["Need screenshot."],
+            "history": [{"kind": "blocker", "text": "Need screenshot.", "created_at": "2026-06-29T00:00:00Z"}],
+        }
+        today_text = today_plan_to_text(project)
+        log_text = progress_log_to_text(project)
+        self.assertIn("ProMentum Today Plan", today_text)
+        self.assertIn("10-minute action: Make the rough version.", today_text)
+        self.assertIn("ProMentum Progress Log", log_text)
+        self.assertIn("Picked the first user.", log_text)
+        self.assertIn("Need screenshot.", log_text)
 
     def test_readiness_traffic_lights(self) -> None:
         empty = {key: [] for key in ["ideas", "phrases", "people", "places", "obsessions", "questions", "formats", "rules"]}
